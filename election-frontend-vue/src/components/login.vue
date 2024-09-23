@@ -50,6 +50,9 @@ export default defineComponent({
       <label for="password">Password</label>
       <input type="password" id="password" v-model="password" required>
       <button type="submit">Login</button>
+      <p>Not have a account?</p>
+      <router-link to="/Registration">Register</router-link>
+
     </form>
   </main>
 </template>
