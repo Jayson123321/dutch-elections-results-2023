@@ -17,7 +17,7 @@ export default defineComponent({
       <input type="password" id="password" required>
       <label for="email">Email</label>
       <input type="email" id="email" required>
-      <button type="submit">Reegister</button>
+      <button type="submit">Register</button>
     </form>
   </main>
 </template>
