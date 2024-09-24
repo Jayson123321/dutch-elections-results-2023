@@ -9,7 +9,7 @@ public class APIconfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5173", "http://*.hva.nl")
+                .allowedOrigins("http://localhost:5173", "http://*.hva.nl", "http://localhost:5173/Register", "http://localhost:5173/Login")
                 .allowedMethods("GET", "POST", "PUT", "DELETE");
     }
 }
