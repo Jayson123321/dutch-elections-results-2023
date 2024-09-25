@@ -3,20 +3,55 @@ import {defineComponent} from 'vue'
 import { useRouter } from 'vue-router';
 
 export default defineComponent({
-  name: "Registration"
+  name: "Registration",
+  data() {
+    return {
+      username: '',
+      password: '',
+      email: ''
+    }
+  },
+  methods: {
+    async register() {
+      try {
+        const response = await fetch('http://localhost:8080/api/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: this.username,
+            password: this.password,
+            email: this.email
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Registration failed');
+        }
+
+        const data = await response.json();
+        console.log(data);
+
+        this.$router.push('/login'); // Use this.$router to navigate
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+  }
 })
 </script>
 
 <template>
   <main>
     <h1>Registration</h1>
-    <form>
+    <form @submit.prevent="register">
       <label for="username">Username</label>
-      <input type="text" id="username" required>
+      <input type="text" id="username" v-model="username" required>
       <label for="password">Password</label>
-      <input type="password" id="password" required>
+      <input type="password" id="password" v-model="password" required>
       <label for="email">Email</label>
-      <input type="email" id="email" required>
+      <input type="email" id="email" v-model="email" required>
       <button type="submit">Register</button>
     </form>
   </main>
