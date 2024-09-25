@@ -33,7 +33,7 @@ export default defineComponent({
         const data = await response.json();
         console.log(data);
 
-        this.$router.push('/login'); // Use this.$router to navigate
+        this.$router.push('/'); // Use this.$router to navigate
       } catch (error) {
         console.error('Error:', error);
       }
