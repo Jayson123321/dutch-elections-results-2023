@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>com.election</groupId>
-    <artifactId>elections</artifactId>
+    <artifactId>backend-java</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>backend-java</name>
     <description>backend-java</description>
