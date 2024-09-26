@@ -9,7 +9,7 @@ public class LoginRequest {
     }
 
     public void setUsername(String username) {
-        this.usersname = username;
+        this.username = username;
     }
 
     public String getPassword() {
