@@ -1,5 +1,6 @@
 package com.election.backendjava;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
@@ -7,20 +8,19 @@ import org.springframework.http.ResponseEntity;
 @RequestMapping("/api")
 public class Login {
 
+    @Autowired
+    private UserRepository userRepository;
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest userCredentials) {
-        System.out.println("Received login request:");
-        System.out.println("Username: " + userCredentials.getUsername());
-        System.out.println("Password: " + userCredentials.getPassword());
+    public ResponseEntity<String> login(@RequestBody User userCredentials) {
+        // Zoek de gebruiker op basis van gebruikersnaam en wachtwoord
+        User userFromDb = userRepository.findByUsernameAndPassword(userCredentials.getUsername(), userCredentials.getPassword());
 
-        String username = userCredentials.getUsername();
-        String password = userCredentials.getPassword();
-
-        if ("admin".equals(username) && "password".equals(password)) {
+        if (userFromDb != null) {
+            // Als de gebruiker bestaat en het wachtwoord correct is
             return ResponseEntity.ok("{\"message\": \"Login successful\"}");
-
         } else {
-            return ResponseEntity.status(401).body("{\"message\": \"Login failed\"}");
+            // Als de gebruiker niet bestaat of het wachtwoord onjuist is
+            return ResponseEntity.status(401).body("{\"message\": \"Login failed: Incorrect username or password\"}");
         }
     }
 }
