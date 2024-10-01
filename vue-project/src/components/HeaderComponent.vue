@@ -47,7 +47,7 @@ export default {
   z-index: 1;
   top: 85px;
   left: 0;
-  right: 0; /* Sidebar strekt zich uit over de volledige breedte */
+  width: 250px;
   background-color: #78b178; /* Kleur van de sidebar */
   overflow: hidden; /* Verbergt de inhoud wanneer de hoogte 0 is */
   transition: max-height 0.5s ease; /* Soepele overgang voor max-height */
