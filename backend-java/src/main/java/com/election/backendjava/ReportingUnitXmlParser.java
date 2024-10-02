@@ -60,14 +60,14 @@ public class ReportingUnitXmlParser {
                                 .item(0);
 
                         String reportingUnitName = reportingUnitIdentifierElement.getTextContent();
-                        String nameWithoutPostalCode = extractNameWithoutPostalCode(reportingUnitName);
+                        String managingAuthorityNumber = extractManagingAuthorityNumber(reportingUnitIdentifierElement.getAttribute("Id"));
 
-                        // Maak een nieuwe ReportingUnit aan zonder postcode
-                        ReportingUnit reportingUnit = new ReportingUnit(nameWithoutPostalCode, null, managingAuthority);
+                        // Maak een nieuwe ReportingUnit aan met de naam en de bijbehorende ManagingAuthority
+                        ReportingUnit reportingUnit = new ReportingUnit(reportingUnitName, managingAuthority, managingAuthorityNumber);
 
                         // Sla de ReportingUnit op in de database
                         reportingUnitRepository.save(reportingUnit);
-                        System.out.println("Reporting Unit " + nameWithoutPostalCode + " succesvol opgeslagen.");
+                        System.out.println("Reporting Unit " + reportingUnitName + " succesvol opgeslagen.");
                     }
                 } else {
                     System.out.println("Geen Managing Authority gevonden met identifier " + authorityIdentifier);
@@ -78,12 +78,9 @@ public class ReportingUnitXmlParser {
         }
     }
 
-    private String extractNameWithoutPostalCode(String reportingUnitName) {
-        // Neem alleen de naam tot de substring "(postcode:" als die er is.
-        int index = reportingUnitName.indexOf("(postcode:");
-        if (index > 0) {
-            return reportingUnitName.substring(0, index).trim();
-        }
-        return reportingUnitName.trim(); // Geen postcode aanwezig, retourneer de volledige naam
+    private String extractManagingAuthorityNumber(String reportingUnitId) {
+        // Splits de ID om het nummer te extraheren
+        String[] parts = reportingUnitId.split("::");
+        return parts.length > 1 ? parts[1] : null;  // Neem het nummer na '::'
     }
 }

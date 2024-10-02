@@ -13,15 +13,19 @@ public class ReportingUnit {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)  // Verwijst naar ManagingAuthority
-    @JoinColumn(name = "managing_authority_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "managing_authority_identifier", referencedColumnName = "authority_identifier", nullable = false)
     private ManagingAuthority managingAuthority;
+
+    @Column(name = "managing_authority_number", nullable = false) // Voeg deze regel toe
+    private String managingAuthorityNumber;  // Voeg dit veld toe
 
     public ReportingUnit() {}
 
-    public ReportingUnit(String name, String postalCode, ManagingAuthority managingAuthority) {
+    public ReportingUnit(String name, ManagingAuthority managingAuthority, String managingAuthorityNumber) {
         this.name = name;
         this.managingAuthority = managingAuthority;
+        this.managingAuthorityNumber = managingAuthorityNumber;  // Vul het nummer in
     }
 
     // Getters en Setters
@@ -47,5 +51,13 @@ public class ReportingUnit {
 
     public void setManagingAuthority(ManagingAuthority managingAuthority) {
         this.managingAuthority = managingAuthority;
+    }
+
+    public String getManagingAuthorityNumber() {
+        return managingAuthorityNumber;
+    }
+
+    public void setManagingAuthorityNumber(String managingAuthorityNumber) {
+        this.managingAuthorityNumber = managingAuthorityNumber;
     }
 }

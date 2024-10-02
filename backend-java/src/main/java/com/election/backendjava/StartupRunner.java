@@ -15,6 +15,10 @@ public class StartupRunner implements CommandLineRunner {
     @Autowired
     private ReportingUnitXmlParser reportingUnitXmlParser;
 
+    @Autowired
+    private PartyVotesParser PartyVotesParser;
+
+
     @Override
     public void run(String... args) throws Exception {
         String directoryPath = "C:\\Users\\Jayso\\IdeaProjects\\wiipuujaamee42";
@@ -34,6 +38,7 @@ public class StartupRunner implements CommandLineRunner {
 
                     reportingUnitXmlParser.processXML(file.getAbsolutePath());
 
+                    PartyVotesParser.parseXML(file.getAbsolutePath());
                     fileCount++;
                 }
 
