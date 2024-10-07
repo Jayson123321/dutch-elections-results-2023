@@ -1,17 +1,20 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
-
+import FooterComponent from './FooterComponent.vue'
+import HeaderComponent from './HeaderComponent.vue'
 export default defineComponent({
   name: "loginPage",
-  data() {
-    return {
-      username: '',
-      password: ''
-    }
+  components: {
+    FooterComponent,
+    HeaderComponent
   },
-  methods: {
-    async login() {
+  setup() {
+    const router = useRouter();
+    const username = ref('');
+    const password = ref('');
+
+    const login = async () => {
       try {
         const response = await fetch('http://localhost:8080/api/login', {
           method: 'POST',
@@ -19,8 +22,8 @@ export default defineComponent({
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            username: this.username,
-            password: this.password
+            username: username.value,
+            password: password.value
           }),
         });
 
@@ -31,17 +34,24 @@ export default defineComponent({
         const data = await response.json();
         console.log(data);
 
-        this.$router.push('/home'); // Use this.$router to navigate
+        router.push('/managing-authorities');
       } catch (error) {
         console.error('Error:', error);
       }
-    }
+    };
+
+    return {
+      username,
+      password,
+      login
+    };
   }
-})
+});
 </script>
 
-
 <template>
+  <header-component />
+  <footer-component />
   <main>
     <h1>Login</h1>
     <form @submit.prevent="login">
@@ -50,9 +60,8 @@ export default defineComponent({
       <label for="password">Password</label>
       <input type="password" id="password" v-model="password" required>
       <button type="submit">Login</button>
-      <p>Not have a account?</p>
-      <router-link to="/Registration">Register</router-link>
-
+      <p>Not have an account?</p>
+      <router-link to="/registration">Register</router-link>
     </form>
   </main>
 </template>
