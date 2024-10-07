@@ -1,9 +1,9 @@
 package com.election.backendjava;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/party-votes")
@@ -13,8 +13,7 @@ public class PartyVotesController {
     private PartyVotesRepository partyVotesRepository;
 
     @GetMapping
-    public List<PartyVotes> getAllPartyVotes() {
-        return partyVotesRepository.findAll();
+    public Page<PartyVotes> getAllPartyVotes(Pageable pageable) {
+        return partyVotesRepository.findAll(pageable);
     }
-
 }

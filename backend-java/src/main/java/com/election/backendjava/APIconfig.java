@@ -11,6 +11,7 @@ public class APIconfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins(
                         "http://localhost:5173",
+                        "http://localhost:5175",
                         "http://demo-crazy.com",
                         "https://demo-crazy.com",
                         "http://*.hva.nl"

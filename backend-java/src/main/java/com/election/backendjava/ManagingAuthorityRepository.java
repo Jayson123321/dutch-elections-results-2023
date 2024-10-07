@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface ManagingAuthorityRepository extends JpaRepository<ManagingAuthority, Long> {
     Optional<ManagingAuthority> findByAuthorityIdentifier(String authorityIdentifier);
+    Optional<ManagingAuthority> findByAuthorityName(String authorityName);
 }

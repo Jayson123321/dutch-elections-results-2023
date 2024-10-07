@@ -1,9 +1,7 @@
-import './assets/main.css';
 import { createApp } from 'vue';
-import App from './App.vue';
-import router from './router';
-import Registration from "@/components/Registration.vue";
+import App from './App.vue'; // Zorg ervoor dat dit pad correct is
+import router from './router'; // Zorg ervoor dat dit pad correct is
 
-createApp(App)
-    .use(router) // Gebruik de router
-    .mount('#app');
+const app = createApp(App);
+app.use(router); // Gebruik de router
+app.mount('#app');

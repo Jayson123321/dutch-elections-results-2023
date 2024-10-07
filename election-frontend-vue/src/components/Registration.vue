@@ -1,18 +1,18 @@
 <script lang="ts">
-import {defineComponent} from 'vue'
+import { defineComponent, ref } from 'vue'; // Import ref
 import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: "Registration",
-  data() {
-    return {
-      username: '',
-      password: '',
-      email: ''
-    }
-  },
-  methods: {
-    async register() {
+  setup() {
+    const router = useRouter();
+
+    // Gebruik ref om reactieve variabelen te maken
+    const username = ref('');
+    const password = ref('');
+    const email = ref('');
+
+    const register = async () => {
       try {
         const response = await fetch('http://localhost:8080/api/register', {
           method: 'POST',
@@ -20,9 +20,9 @@ export default defineComponent({
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            username: this.username,
-            password: this.password,
-            email: this.email
+            username: username.value,
+            password: password.value,
+            email: email.value
           }),
         });
 
@@ -33,13 +33,20 @@ export default defineComponent({
         const data = await response.json();
         console.log(data);
 
-        this.$router.push('/'); // Use this.$router to navigate
+        router.push('/managing-authorities');
       } catch (error) {
         console.error('Error:', error);
       }
-    }
+    };
+
+    return {
+      username,
+      password,
+      email,
+      register
+    };
   }
-})
+});
 </script>
 
 <template>
@@ -58,35 +65,35 @@ export default defineComponent({
 </template>
 
 <style scoped>
-  main {
-    display: flex;
-    flex-direction: column;
-    place-items: center;
-    gap: 1rem;
-  }
+main {
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  gap: 1rem;
+}
 
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
 
-  label {
-    font-weight: bold;
-  }
+label {
+  font-weight: bold;
+}
 
-  input {
-    padding: 0.5rem;
-    border-radius: 0.25rem;
-    border: 1px solid #ccc;
-  }
+input {
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid #ccc;
+}
 
-  button {
-    padding: 0.5rem 1rem;
-    border-radius: 0.25rem;
-    border: none;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-  }
+button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
 </style>
