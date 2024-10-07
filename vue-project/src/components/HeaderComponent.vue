@@ -32,10 +32,10 @@ export default {
       <a href="#" class="account-icon"><i class="fas fa-user"></i></a>
     </div>
     <div :class="['sidebar', { 'sidebar-visible': sidebarVisible }]">
-      <a href="#">Home</a>
-      <a href="#">Partijen</a>
-      <a href="#">Uitslagen</a>
-      <a href="#">Forum</a>
+      <router-link to="/">Home</router-link>
+      <router-link to="/partijenpagina">Partijen</router-link>
+      <router-link to="/uitslagen">Uitslagen</router-link>
+      <router-link to="/forum">Forum</router-link>
     </div>
   </div>
 </template>
