@@ -1,6 +1,6 @@
 # Project Overzicht
-
-## 1. Belangrijkste Userstories
+https://gitlab.fdmci.hva.nl/semester-3-hbo-ict/onderwijs/student-projecten/2024-2025/out-p-se-ti/semester-1/wiipuujaamee42/-/issues/?sort=created_date&state=opened&first_page_size=100
+## 1. Belangrijkste Userstories 
 Planning poker: [planning-poker.md](planning-poker.md)
 - #18 -  As a user, I want to see the national voting results so that I can gain insight into the election outcomes and the distribution of votes per party.
 - #20 -  As a user, I want to see the election results for each polling station of the local authority
@@ -17,6 +17,7 @@ Planning poker: [planning-poker.md](planning-poker.md)
 - (lokaal) MySQL database met de benodigde tabellen, zoals party_votes, affiliations, candidates, etc.
 - front-end die party_votes tabel van de database kan ophalen en weergeven.
 ![screenshot uitslag per stembureau](img_2.png)
-
+![img_3.png](img_3.png)
+![img_4.png](img_4.png)
 ## 5. Testen
 

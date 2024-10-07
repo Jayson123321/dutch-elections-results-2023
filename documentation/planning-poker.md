@@ -31,23 +31,5 @@ These are the weights (time estimates) we assigned to each user story.
 | #18        | 3      |
 | #19        | 3      |
 | #20        | 3      |
-## Task distribution
-After this, we divided the user stories. Everyone was first given the opportunity to select a user story based on their preference. Then, the remaining user stories were assigned based on their weight, and we calculated the total weight per person. Based on this, we adjusted the distribution until we had balanced weights and everyone was satisfied.
 
-| User-story | Who    |
-|------------|--------|
-| #          |        |
-| #          |        | 
-| #          |        |
-| #          |        |
-| #          |        |
-| #          |        |
-| #          |        |
-| #          |        |
-| #          |        |
-| #10        | Jayson |
-| #          |        |
-| #          |        |
-| #13        | Jayson |
-| #20        | Jayson |
 
