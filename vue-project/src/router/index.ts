@@ -23,7 +23,16 @@ const router = createRouter({
     },
     { path: '/header',
       name: 'header',
-      component: () => import('../components/HeaderComponent.vue')}
+      component: () => import('../components/HeaderComponent.vue')},
+    { path: '/partijenpagina',
+      name: 'partijenpagina',
+      component: () => import('../components/partijenpagina.vue')},
+    { path: '/forum',
+      name: 'forum',
+      component: () => import('../components/forum.vue')},
+    { path: '/uitslagen',
+      name: 'uitslagen',
+      component: () => import('../components/uitslagen.vue')},
   ]
 })
 
