@@ -19,6 +19,13 @@ const routes = [
     { path: '/partijenpagina', component: Partijenpagina},
     { path: '/forum', component: Forum },
     { path: '/uitslagen', component: Uitslagen },
+    { path: '/footer',
+        name: 'footer',
+        component: () => import('../components/FooterComponent.vue')
+    },
+    { path: '/header',
+        name: 'header',
+        component: () => import('../components/HeaderComponent.vue')},
 ];
 
 const router = createRouter({
