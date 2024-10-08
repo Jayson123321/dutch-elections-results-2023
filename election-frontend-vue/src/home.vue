@@ -12,7 +12,6 @@ export default defineComponent({
   <main>
     <h1>Home</h1>
     <p>test</p>
-    <Registration/>
   </main>
 </template>
 
