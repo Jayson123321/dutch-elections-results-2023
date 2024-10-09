@@ -12,7 +12,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 
 @Component
-public class XMLProcessor {
+public class XMLAffiliationProcessor {
 
     @Autowired
     private AffiliationRepository affiliationRepository;

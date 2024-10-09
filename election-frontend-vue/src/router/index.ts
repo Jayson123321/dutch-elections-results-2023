@@ -9,6 +9,8 @@ import ManagingAuthority from "@/components/ManagingAuthority.vue";
 import Partijenpagina from "@/components/partijenpagina.vue";
 import Forum from "@/components/forum.vue";
 import Uitslagen from "@/components/uitslagen.vue";
+import KandidatenPagina from "@/components/kandidatenpagina.vue";
+import kandidatenpagina from "@/components/kandidatenpagina.vue";
 
 const routes = [
     { path: '/', component: home },
@@ -17,6 +19,11 @@ const routes = [
     { path: '/party-votes', component: PartyVotesTable },
     { path: '/managing-authorities', component: ManagingAuthority },
     { path: '/partijenpagina', component: Partijenpagina},
+    {
+        path: '/partijen/:id',
+        name: 'kandidatenpagina',
+        component: kandidatenpagina,
+    },
     { path: '/forum', component: Forum },
     { path: '/uitslagen', component: Uitslagen },
     { path: '/footer',
