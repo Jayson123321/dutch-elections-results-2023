@@ -1,6 +1,5 @@
 // src/router/index.ts
 import { createRouter, createWebHistory } from 'vue-router';
-import LoginPage from '../components/login.vue';
 import Home from '../home.vue';
 import home from '../components/home.vue';
 import Registration from "@/components/Registration.vue";
@@ -9,6 +8,7 @@ import ManagingAuthority from "@/components/ManagingAuthority.vue";
 import Partijenpagina from "@/components/partijenpagina.vue";
 import Forum from "@/components/forum.vue";
 import Uitslagen from "@/components/uitslagen.vue";
+import ChooseResults from "@/components/ChooseResults.vue";
 
 const routes = [
     { path: '/', component: home },
@@ -19,13 +19,7 @@ const routes = [
     { path: '/partijenpagina', component: Partijenpagina},
     { path: '/forum', component: Forum },
     { path: '/uitslagen', component: Uitslagen },
-    { path: '/footer',
-        name: 'footer',
-        component: () => import('../components/FooterComponent.vue')
-    },
-    { path: '/header',
-        name: 'header',
-        component: () => import('../components/HeaderComponent.vue')},
+    { path: '/choose-results', component: ChooseResults },
 ];
 
 const router = createRouter({
