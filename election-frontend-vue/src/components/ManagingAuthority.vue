@@ -1,9 +1,13 @@
 <template>
   <div>
-    <h1>Gemeentelijke verkiezingen per stembureau</h1>
     <HeaderComponent/>
+    <div id="titel">
+      <h1>Score per stembureau</h1>
+      <h1>Verkiezingen 2023 gemeente {{ selectedAuthority?.authorityName }}</h1>
+    </div>
+    <canvas id="partyVotesChart"></canvas>
 
-    <label for="authority-select">Selecteer een gemeente</label>
+    <span class="authority-select"><label for="authority-select">Selecteer een gemeente</label></span>
     <select id="authority-select" v-model="selectedAuthorityId" @change="showDetails">
       <option value="" disabled>Select an authority</option>
       <option v-for="authority in authorities" :key="authority.id" :value="authority.id">
@@ -11,26 +15,23 @@
       </option>
     </select>
 
-    <label for="reportingUnit-select">Selecteer een stembureau</label>
+    <span class="reportingUnit-select"><label for="reportingUnit-select">Selecteer een stembureau</label></span>
     <select id="reportingUnit-select" v-model="selectedReportingUnitId"
             @change="() => fetchPartyVotesByReportingUnitAndAuthorityNumber(selectedReportingUnitId, selectedAuthority.authorityIdentifier)">
-      <option value="" disabled>Selecteer eem Stembureau</option>
+      <option value="" disabled>Selecteer een Stembureau</option>
       <option v-for="reportingUnit in reportingUnits" :key="reportingUnit.id" :value="reportingUnit.id">
         {{ reportingUnit.name }}
       </option>
     </select>
 
     <div v-if="partyVotes.length > 0">
-      <div id="uitslagGemeente">
-        <h2>Uitslag gemeente {{ selectedAuthority?.authorityName }}</h2>
-      </div>
       <div id="StembureauName">
         <h3>{{ selectedReportingUnitId ? reportingUnits.find(unit => unit.id === selectedReportingUnitId)?.name : '' }}</h3>
       </div>
       <table>
         <tbody>
         <tr v-for="vote in partyVotes" :key="vote.id">
-          <td>{{ vote.affiliation.registeredName }}</td>
+          <td><span class="affiliation-name">{{ vote.affiliation.registeredName }}</span></td>
           <td>{{ vote.validVotes }} stemmen</td>
         </tr>
         </tbody>
@@ -40,9 +41,12 @@
 </template>
 
 <script>
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 import FooterComponent from "@/components/FooterComponent.vue";
 import HeaderComponent from "@/components/HeaderComponent.vue";
+import { Chart, BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend } from 'chart.js';
+
+Chart.register(BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
 
 export default defineComponent({
   name: 'ManagingAuthorities',
@@ -54,7 +58,8 @@ export default defineComponent({
       selectedReportingUnitId: null,
       partyVotes: [],
       reportingUnits: [],
-      stemBureau: []
+      stemBureau: [],
+      chart: null
     };
   },
 
@@ -83,6 +88,7 @@ export default defineComponent({
             throw new Error('Failed to fetch party votes');
           }
           this.partyVotes = await response.json();
+          this.renderChart();
         } catch (error) {
           console.error('Error fetching party votes:', error);
         }
@@ -105,7 +111,7 @@ export default defineComponent({
       }
     },
     async fetchPartyVotesByReportingUnitAndAuthorityNumber() {
-      this.partyVotes = []; // Reset partyVotes before fetching new data
+      this.partyVotes = [];
       try {
         let reportingUnit = this.reportingUnits.find(reportingUnit => reportingUnit.id === this.selectedReportingUnitId);
         let authority = this.authorities.find(authority => authority.id === this.selectedAuthorityId);
@@ -116,22 +122,53 @@ export default defineComponent({
           throw new Error('Failed to fetch party votes for reporting unit');
         }
         this.partyVotes = await response.json();
-        // Sort the partyVotes by validVotes in descending order
         this.partyVotes.sort((a, b) => b.validVotes - a.validVotes);
         console.log(this.partyVotes);
+        this.$nextTick(() => {
+          this.renderChart();
+        });
       } catch (error) {
         console.error('Error fetching party votes for reporting unit:', error);
       }
     },
+    renderChart() {
+      if (this.chart) {
+        this.chart.destroy();
+      }
+
+      const ctx = document.getElementById('partyVotesChart').getContext('2d');
+      this.chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: this.partyVotes.map(vote => vote.affiliation.registeredName),
+          datasets: [{
+            label: 'Valid Votes',
+            data: this.partyVotes.map(vote => vote.validVotes),
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
   },
-  components: {FooterComponent, HeaderComponent}
+  components: { FooterComponent, HeaderComponent }
 });
 </script>
 
 <style>
-h1 {
-  font-size: 2em;
-  margin-bottom: 20px;
+#titel {
+  text-align: center;
+  margin-top: 5%;
+  font-size: larger;
+  font-family: sans-serif;
 }
 
 label {
@@ -148,7 +185,7 @@ select {
 }
 
 table {
-  width: 50%;
+  width: 30%;
   border-collapse: collapse;
   margin-left: 30%;
 }
@@ -156,7 +193,7 @@ table {
 th, td {
   padding: 8px 12px;
   display: block;
-  margin: 20px ;
+  margin: 20px;
   border: none;
 }
 
@@ -168,16 +205,41 @@ thead {
 tbody tr:nth-child(even) {
   background-color: #b1afaf;
 }
-#uitslagGemeente {
-  margin-left: 30%;
-  font-size: 1.5em;
-  font-weight: bold;
-  color: #000000;
-}
+
 #StembureauName {
   margin-left: 30%;
   font-size: 1.2em;
   font-weight: bold;
   color: #000000;
+  font-family: sans-serif;
+}
+
+.affiliation-name {
+  font-size: x-large;
+  font-family: sans-serif;
+}
+
+#authority-select {
+  border-radius: 15px 15px 0 0;
+  font-family: sans-serif;
+}
+
+#reportingUnit-select {
+  border-radius: 15px 15px 0 0;
+  font-family: sans-serif;
+}
+
+.authority-select {
+  font-family: sans-serif;
+  font-weight: bold;
+}
+
+.reportingUnit-select {
+  font-family: sans-serif;
+  font-weight: bold;
+}
+
+canvas {
+  max-height: 10%;
 }
 </style>
