@@ -2,6 +2,7 @@
   <div>
     <h1>Gemeentelijke verkiezingen per stembureau</h1>
     <HeaderComponent/>
+
     <label for="authority-select">Selecteer een gemeente</label>
     <select id="authority-select" v-model="selectedAuthorityId" @change="showDetails">
       <option value="" disabled>Select an authority</option>
@@ -19,21 +20,19 @@
       </option>
     </select>
 
-    <div v-if="partyVotes.length > 0">
-      <h2>Uitslag gemeente {{ selectedAuthority?.authorityName }}</h2>
-      <h3>{{ selectedReportingUnitId ? reportingUnits.find(unit => unit.id === selectedReportingUnitId)?.name : '' }}</h3>
 
+    <div v-if="partyVotes.length > 0">
+      <div id="uitslagGemeente">
+      <h2>Uitslag gemeente {{ selectedAuthority?.authorityName }}</h2>
+      </div>
+      <div id="StembureauName">
+      <h3>{{ selectedReportingUnitId ? reportingUnits.find(unit => unit.id === selectedReportingUnitId)?.name : '' }}</h3>
+      </div>
       <table>
-        <thead>
-        <tr>
-          <th>Valid Votes</th>
-          <th>Affiliation ID</th>
-        </tr>
-        </thead>
         <tbody>
         <tr v-for="vote in partyVotes" :key="vote.id">
-          <td>{{ vote.validVotes }}</td>
           <td>{{ vote.affiliationId }}</td>
+          <td>{{ vote.validVotes }} stemmen</td>
         </tr>
         </tbody>
       </table>
@@ -139,22 +138,28 @@ h1 {
 
 label {
   margin-right: 10px;
+  display: block;
+  margin-top: 20px;
 }
 
 select {
   margin-bottom: 20px;
   padding: 5px;
+  display: block;
+  margin-top: 10px;
 }
 
 table {
-  width: 100%;
+  width: 50%;
   border-collapse: collapse;
-  margin-top: 20px;
+  margin-left: 30%;
 }
 
 th, td {
   padding: 8px 12px;
-  border: 1px solid #ddd;
+  display: block;
+  margin: 20px ;
+  border: none;
 }
 
 thead {
@@ -164,5 +169,17 @@ thead {
 
 tbody tr:nth-child(even) {
   background-color: #b1afaf;
+}
+#uitslagGemeente {
+  margin-left: 30%;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #000000;
+}
+#StembureauName {
+  margin-left: 30%;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #000000;
 }
 </style>
