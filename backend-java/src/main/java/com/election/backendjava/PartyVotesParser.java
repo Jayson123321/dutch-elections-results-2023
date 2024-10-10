@@ -16,38 +16,38 @@ import java.util.List;
 public class PartyVotesParser {
 
     @Autowired
-    private PartyVotesRepository partyVotesRepository; // Assuming you have a repository for saving PartyVotes
+    private PartyVotesRepository partyVotesRepository;
 
     public List<PartyVotes> parseXML(String filePath) {
         List<PartyVotes> partyVotesList = new ArrayList<>();
 
         try {
-            // Create DocumentBuilderFactory and DocumentBuilder
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(new File(filePath));
             document.getDocumentElement().normalize();
 
-            // Get all ReportingUnitVotes elements
             NodeList reportingUnits = document.getElementsByTagName("ReportingUnitVotes");
 
             for (int i = 0; i < reportingUnits.getLength(); i++) {
                 Element reportingUnit = (Element) reportingUnits.item(i);
 
-                // Haal de ReportingUnitIdentifier op
                 String reportingUnitId = reportingUnit.getElementsByTagName("ReportingUnitIdentifier").item(0).getAttributes().getNamedItem("Id").getNodeValue();
                 String reportingUnitIdentifier = reportingUnit.getElementsByTagName("ReportingUnitIdentifier").item(0).getTextContent();
 
-                // Splits de reportingUnitId om alleen het eerste deel te behouden (voor de ID)
                 if (reportingUnitId.contains("::")) {
-                    reportingUnitId = reportingUnitId.split("::")[0]; // Neem alleen het deel vóór "::"
+                    reportingUnitId = reportingUnitId.split("::")[0];
                 }
 
-                // Extract postal code and clean ReportingUnitIdentifier
                 String postalCode = extractPostalCode(reportingUnitIdentifier);
                 String cleanReportingUnitIdentifier = removePostalCode(reportingUnitIdentifier, postalCode);
 
-                // Get Affiliation and ValidVotes
+                // Extract managing authority number (assuming it's the part after "::")
+                String managingAuthorityNumber = reportingUnit.getElementsByTagName("ReportingUnitIdentifier").item(0).getAttributes().getNamedItem("Id").getNodeValue();
+                if (managingAuthorityNumber.contains("::")) {
+                    managingAuthorityNumber = managingAuthorityNumber.split("::")[1];
+                }
+
                 NodeList selections = reportingUnit.getElementsByTagName("Selection");
                 for (int j = 0; j < selections.getLength(); j++) {
                     Element selection = (Element) selections.item(j);
@@ -58,9 +58,10 @@ public class PartyVotesParser {
 
                         PartyVotes partyVotes = new PartyVotes();
                         partyVotes.setValidVotes(validVotes);
-                        partyVotes.setReportingUnitIdentifier(cleanReportingUnitIdentifier); // Opslaan zonder postcode
-                        partyVotes.setReportingUnitId(reportingUnitId); // De aangepaste ID zonder "::SB1"
+                        partyVotes.setReportingUnitIdentifier(cleanReportingUnitIdentifier);
+                        partyVotes.setReportingUnitId(reportingUnitId);
                         partyVotes.setAffiliationId(affiliationId);
+                        partyVotes.setManagingAuthorityNumber(managingAuthorityNumber); // Stel het nieuwe veld in
 
                         partyVotesList.add(partyVotes);
                     }
@@ -71,31 +72,26 @@ public class PartyVotesParser {
             e.printStackTrace();
         }
 
-        // Save the party votes to the database
         partyVotesRepository.saveAll(partyVotesList);
 
         return partyVotesList;
     }
 
-    // Methode om de volledige postcode te extraheren uit de ReportingUnitIdentifier
     private String extractPostalCode(String reportingUnitIdentifier) {
-        // Zoek de postcode in de ReportingUnitIdentifier
-        String[] parts = reportingUnitIdentifier.split("\\s+"); // Splits op spaties
-        String postalCode = ""; // Lege postcode initiëren
+        String[] parts = reportingUnitIdentifier.split("\\s+");
+        String postalCode = "";
 
-        // Loop door de delen om de postcode te vinden
         for (String part : parts) {
-            if (part.matches("\\d{4}\\s?[A-Z]{2}")) { // Controleer of het een geldige postcode is
-                postalCode = part.replaceAll("\\s+", ""); // Verwijder spaties (indien aanwezig)
-                break; // Stop met zoeken na het vinden van de postcode
+            if (part.matches("\\d{4}\\s?[A-Z]{2}")) {
+                postalCode = part.replaceAll("\\s+", "");
+                break;
             }
         }
 
         return postalCode;
     }
 
-    // Methode om de postcode uit de ReportingUnitIdentifier te verwijderen
     private String removePostalCode(String reportingUnitIdentifier, String postalCode) {
-        return reportingUnitIdentifier.replace(postalCode, "").replaceAll("\\s+", "").trim(); // Verwijder de postcode en trim eventuele extra spaties
+        return reportingUnitIdentifier.replace(postalCode, "").replaceAll("\\s+", "").trim();
     }
 }
