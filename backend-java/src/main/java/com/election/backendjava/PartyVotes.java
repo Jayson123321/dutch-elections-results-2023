@@ -1,9 +1,11 @@
 package com.election.backendjava;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "party_votes")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class PartyVotes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,8 +14,9 @@ public class PartyVotes {
     @Column(name = "reporting_unit_id")
     private String reportingUnitId;
 
-    @Column(name = "affiliation_id")
-    private int affiliationId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "affiliation_id", nullable = false)
+    private Affiliation affiliation;
 
     @Column(name = "managing_authority_number")
     private String managingAuthorityNumber;
@@ -41,12 +44,12 @@ public class PartyVotes {
         this.reportingUnitId = reportingUnitId;
     }
 
-    public int getAffiliationId() {
-        return affiliationId;
+    public Affiliation getAffiliation() {
+        return affiliation;
     }
 
-    public void setAffiliationId(int affiliationId) {
-        this.affiliationId = affiliationId;
+    public void setAffiliation(Affiliation affiliation) {
+        this.affiliation = affiliation;
     }
 
     public String getManagingAuthorityNumber() {

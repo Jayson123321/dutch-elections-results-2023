@@ -20,23 +20,21 @@
       </option>
     </select>
 
-
     <div v-if="partyVotes.length > 0">
       <div id="uitslagGemeente">
-      <h2>Uitslag gemeente {{ selectedAuthority?.authorityName }}</h2>
+        <h2>Uitslag gemeente {{ selectedAuthority?.authorityName }}</h2>
       </div>
       <div id="StembureauName">
-      <h3>{{ selectedReportingUnitId ? reportingUnits.find(unit => unit.id === selectedReportingUnitId)?.name : '' }}</h3>
+        <h3>{{ selectedReportingUnitId ? reportingUnits.find(unit => unit.id === selectedReportingUnitId)?.name : '' }}</h3>
       </div>
       <table>
         <tbody>
         <tr v-for="vote in partyVotes" :key="vote.id">
-          <td>{{ vote.affiliationId }}</td>
+          <td>{{ vote.affiliation.registeredName }}</td>
           <td>{{ vote.validVotes }} stemmen</td>
         </tr>
         </tbody>
       </table>
-
     </div>
   </div>
 </template>

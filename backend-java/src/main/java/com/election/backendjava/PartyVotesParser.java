@@ -53,14 +53,14 @@ public class PartyVotesParser {
                     Element selection = (Element) selections.item(j);
 
                     if (selection.getElementsByTagName("AffiliationIdentifier").getLength() > 0) {
-                        int affiliationId = Integer.parseInt(selection.getElementsByTagName("AffiliationIdentifier").item(0).getAttributes().getNamedItem("Id").getNodeValue());
+                        String affiliationId = selection.getElementsByTagName("AffiliationIdentifier").item(0).getAttributes().getNamedItem("Id").getNodeValue();
                         int validVotes = Integer.parseInt(selection.getElementsByTagName("ValidVotes").item(0).getTextContent());
 
                         PartyVotes partyVotes = new PartyVotes();
                         partyVotes.setValidVotes(validVotes);
                         partyVotes.setReportingUnitIdentifier(cleanReportingUnitIdentifier);
                         partyVotes.setReportingUnitId(reportingUnitId);
-                        partyVotes.setAffiliationId(affiliationId);
+                        partyVotes.setAffiliation(new Affiliation());
                         partyVotes.setManagingAuthorityNumber(managingAuthorityNumber); // Stel het nieuwe veld in
 
                         partyVotesList.add(partyVotes);
