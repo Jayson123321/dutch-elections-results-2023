@@ -32,7 +32,6 @@ import { defineComponent } from 'vue';
 
 interface Vote {
   id: number;  // Voeg deze regel toe
-  reportingUnitIdentifier: string;
   reportingUnitId: string;
   affiliationId: string;
   validVotes: number;

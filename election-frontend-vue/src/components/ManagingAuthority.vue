@@ -2,7 +2,6 @@
   <div>
     <h1>Gemeentelijke verkiezingen per stembureau</h1>
     <HeaderComponent/>
-    <!-- Dropdown to select authority -->
     <label for="authority-select">Selecteer een gemeente</label>
     <select id="authority-select" v-model="selectedAuthorityId" @change="showDetails">
       <option value="" disabled>Select an authority</option>
@@ -11,11 +10,10 @@
       </option>
     </select>
 
-    <!-- Dropdown to select reporting unit -->
     <label for="reportingUnit-select">Selecteer een stembureau</label>
     <select id="reportingUnit-select" v-model="selectedReportingUnitId"
             @change="() => fetchPartyVotesByReportingUnitAndAuthorityNumber(selectedReportingUnitId, selectedAuthority.authorityIdentifier)">
-      <option value="" disabled>Select a reporting unit</option>
+      <option value="" disabled>Selecteer eem Stembureau</option>
       <option v-for="reportingUnit in reportingUnits" :key="reportingUnit.id" :value="reportingUnit.id">
         {{ reportingUnit.name }}
       </option>
@@ -23,22 +21,23 @@
 
     <div v-if="partyVotes.length > 0">
       <h2>Uitslag gemeente {{ selectedAuthority?.authorityName }}</h2>
+      <h3>{{ selectedReportingUnitId ? reportingUnits.find(unit => unit.id === selectedReportingUnitId)?.name : '' }}</h3>
+
       <table>
         <thead>
         <tr>
-          <th>Reporting Unit Identifier</th>
           <th>Valid Votes</th>
           <th>Affiliation ID</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="vote in partyVotes" :key="vote.id">
-          <td>{{ vote.reportingUnitIdentifier }}</td>
           <td>{{ vote.validVotes }}</td>
           <td>{{ vote.affiliationId }}</td>
         </tr>
         </tbody>
       </table>
+
     </div>
   </div>
 </template>
@@ -108,7 +107,7 @@ export default defineComponent({
         }
       }
     },
-    async fetchPartyVotesByReportingUnitAndAuthorityNumber(){
+    async fetchPartyVotesByReportingUnitAndAuthorityNumber() {
       this.partyVotes = []; // Reset partyVotes before fetching new data
       try {
         let reportingUnit = this.reportingUnits.find(reportingUnit => reportingUnit.id === this.selectedReportingUnitId);
@@ -120,6 +119,8 @@ export default defineComponent({
           throw new Error('Failed to fetch party votes for reporting unit');
         }
         this.partyVotes = await response.json();
+        // Sort the partyVotes by validVotes in descending order
+        this.partyVotes.sort((a, b) => b.validVotes - a.validVotes);
         console.log(this.partyVotes);
       } catch (error) {
         console.error('Error fetching party votes for reporting unit:', error);
