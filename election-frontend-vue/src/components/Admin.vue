@@ -13,8 +13,9 @@ export default {
   <div>
     <HeaderComponent />
     <div class="admin-page">
-      <h1>Admin Dashboard</h1>
-      <p>Welkom op de adminpagina.</p>
+      <h2>John Doe</h2>
+      <h1>Admin</h1>
+      <h3>Analytics</h3>
     </div>
     <FooterComponent />
   </div>
