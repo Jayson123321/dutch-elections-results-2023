@@ -27,15 +27,15 @@
     <div v-if="partyVotes.length > 0">
       <div id="StembureauName">
         <h3>{{ selectedReportingUnitId ? reportingUnits.find(unit => unit.id === selectedReportingUnitId)?.name : '' }}</h3>
+        <table>
+          <tbody>
+          <tr v-for="vote in partyVotes" :key="vote.id">
+            <td><span class="affiliation-name">{{ vote.affiliation.registeredName }}</span></td>
+            <td>{{ vote.validVotes }} stemmen</td>
+          </tr>
+          </tbody>
+        </table>
       </div>
-      <table>
-        <tbody>
-        <tr v-for="vote in partyVotes" :key="vote.id">
-          <td><span class="affiliation-name">{{ vote.affiliation.registeredName }}</span></td>
-          <td>{{ vote.validVotes }} stemmen</td>
-        </tr>
-        </tbody>
-      </table>
     </div>
   </div>
 </template>
@@ -132,17 +132,18 @@ export default defineComponent({
       }
     },
     renderChart() {
+      // Destroy the previous chart if it exists
       if (this.chart) {
         this.chart.destroy();
       }
 
-      const ctx = document.getElementById('partyVotesChart').getContext('2d');
-      this.chart = new Chart(ctx, {
+      const chart = document.getElementById('partyVotesChart').getContext('2d');
+      this.chart = new Chart(chart, {
         type: 'bar',
         data: {
           labels: this.partyVotes.map(vote => vote.affiliation.registeredName),
           datasets: [{
-            label: 'Valid Votes',
+            label: 'Stemmen',
             data: this.partyVotes.map(vote => vote.validVotes),
             backgroundColor: 'rgba(75, 192, 192, 0.2)',
             borderColor: 'rgba(75, 192, 192, 1)',
@@ -185,9 +186,7 @@ select {
 }
 
 table {
-  width: 30%;
   border-collapse: collapse;
-  margin-left: 30%;
 }
 
 th, td {
@@ -227,6 +226,7 @@ tbody tr:nth-child(even) {
 #reportingUnit-select {
   border-radius: 15px 15px 0 0;
   font-family: sans-serif;
+  width: 20%;
 }
 
 .authority-select {
@@ -237,9 +237,11 @@ tbody tr:nth-child(even) {
 .reportingUnit-select {
   font-family: sans-serif;
   font-weight: bold;
+
 }
 
 canvas {
   max-height: 10%;
+
 }
 </style>
