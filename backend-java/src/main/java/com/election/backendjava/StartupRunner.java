@@ -36,10 +36,6 @@ public class StartupRunner implements CommandLineRunner {
                 for (File file : files) {
                     System.out.println("Verwerken van bestand: " + file.getName());
 
-                    managingAuthorityXmlParser.processXML(file.getAbsolutePath());
-
-                    reportingUnitXmlParser.processXML(file.getAbsolutePath());
-
                     PartyVotesParser.parseXML(file.getAbsolutePath());
                     fileCount++;
                 }

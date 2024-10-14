@@ -9,7 +9,6 @@ import ManagingAuthority from "@/components/ManagingAuthority.vue";
 import Partijenpagina from "@/components/partijenpagina.vue";
 import Forum from "@/components/forum.vue";
 import Uitslagen from "@/components/uitslagen.vue";
-import kandidatenpagina from "@/components/kandidatenpagina.vue";
 
 const routes = [
     { path: '/', component: home },
@@ -27,13 +26,8 @@ const routes = [
     },
     { path: '/forum', component: Forum },
     { path: '/uitslagen', component: Uitslagen },
-    { path: '/footer',
-        name: 'footer',
-        component: () => import('../components/FooterComponent.vue')
-    },
-    { path: '/header',
-        name: 'header',
-        component: () => import('../components/HeaderComponent.vue')},
+    { path: '/choose-results', component: ChooseResults },
+    { path: '/totalResults', component: TotalResults },
 ];
 
 const router = createRouter({

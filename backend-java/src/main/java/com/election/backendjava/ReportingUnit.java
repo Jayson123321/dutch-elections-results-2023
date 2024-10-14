@@ -18,15 +18,15 @@ public class ReportingUnit {
     @JoinColumn(name = "managing_authority_identifier", referencedColumnName = "authority_identifier", nullable = false)
     private ManagingAuthority managingAuthority;
 
-    @Column(name = "managing_authority_number", nullable = false) // Voeg deze regel toe
-    private String managingAuthorityNumber;  // Voeg dit veld toe
+    @Column(name = "managing_authority_number", nullable = false)
+    private String managingAuthorityNumber;
 
     public ReportingUnit() {}
 
     public ReportingUnit(String name, ManagingAuthority managingAuthority, String managingAuthorityNumber) {
         this.name = name;
         this.managingAuthority = managingAuthority;
-        this.managingAuthorityNumber = managingAuthorityNumber;  // Vul het nummer in
+        this.managingAuthorityNumber = managingAuthorityNumber;
     }
 
     // Getters en Setters

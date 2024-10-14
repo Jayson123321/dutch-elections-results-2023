@@ -1,9 +1,11 @@
 package com.election.backendjava.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "affiliation")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Affiliation {
 
     @Id
@@ -16,13 +18,11 @@ public class Affiliation {
     @Column(name = "registered_name", nullable = false)
     private String registeredName;
 
-
     public Affiliation() {}
 
     public Affiliation(String affiliationId, String registeredName) {
         this.affiliationId = affiliationId;
         this.registeredName = registeredName;
-
     }
 
     public Long getId() {
