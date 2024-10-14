@@ -33,3 +33,18 @@ These are the weights (time estimates) we assigned to each user story.
 | #20        | 3      |
 
 
+Verdeling:
+#4 - Daria
+#6 - Daria
+
+#11 Ruben
+#18 Ruben 
+
+#22 Achraf
+
+#21 Kailin
+#
+
+#Userstorie nog maken - Kailin 
+#userstorie nog maken - Achraf
+ 
