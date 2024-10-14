@@ -1,5 +1,7 @@
-package com.election.backendjava;
+package com.election.backendjava.controllers;
 
+import com.election.backendjava.PartyVotes;
+import com.election.backendjava.repositories.PartyVotesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

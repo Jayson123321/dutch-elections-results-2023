@@ -1,5 +1,7 @@
-package com.election.backendjava;
+package com.election.backendjava.processors;
 
+import com.election.backendjava.entities.Candidate;
+import com.election.backendjava.repositories.CandidateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

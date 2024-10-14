@@ -1,5 +1,9 @@
-package com.election.backendjava;
+package com.election.backendjava.controllers;
 
+import com.election.backendjava.PartyVotes;
+import com.election.backendjava.entities.ManagingAuthority;
+import com.election.backendjava.repositories.ManagingAuthorityRepository;
+import com.election.backendjava.repositories.PartyVotesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

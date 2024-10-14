@@ -1,5 +1,6 @@
 package com.election.backendjava;
 
+import com.election.backendjava.entities.ManagingAuthority;
 import jakarta.persistence.*;
 
 @Entity
