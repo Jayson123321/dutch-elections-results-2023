@@ -15,8 +15,15 @@ public class CandidateController {
     @Autowired
     private CandidateService candidateService;
 
+    // Endpoint om kandidaten op basis van affiliationId op te halen
     @GetMapping
     public List<Candidate> getCandidatesByAffiliationId(@RequestParam String affiliationId) {
         return candidateService.getCandidatesByAffiliationId(affiliationId);
+    }
+
+    // Endpoint om alle kandidaten op te halen
+    @GetMapping("/all")
+    public List<Candidate> getAllCandidates() {
+        return candidateService.getAllCandidates();
     }
 }

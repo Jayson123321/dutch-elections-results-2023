@@ -16,7 +16,7 @@ import FooterComponent from './FooterComponent.vue';
 import HeaderComponent from './HeaderComponent.vue';
 
 export default {
-  name: "kandidatenpagina",
+  name: "KandidatenPagina",
   components: {
     FooterComponent,
     HeaderComponent
@@ -33,6 +33,7 @@ export default {
   methods: {
     async fetchCandidates() {
       try {
+        console.log(`Fetching candidates for affiliationId: ${this.affiliationId}`);
         const response = await fetch(`http://localhost:8080/api/candidate?affiliationId=${this.affiliationId}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -46,7 +47,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 body {
   margin-top: 70px;
 }
