@@ -1,9 +1,5 @@
 package com.election.backendjava.processors;
 
-import com.election.backendjava.ReportingUnit;
-import com.election.backendjava.entities.ManagingAuthority;
-import com.election.backendjava.repositories.ManagingAuthorityRepository;
-import com.election.backendjava.repositories.ReportingUnitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
@@ -88,3 +84,4 @@ public class ReportingUnitXmlParser {
         return parts.length > 1 ? parts[1] : null;  // Neem het nummer na '::'
     }
 }
+
