@@ -33,7 +33,7 @@ export default {
   methods: {
     async fetchCandidates() {
       try {
-        const response = await fetch(`http://localhost:8080/api/affiliations/${this.affiliationId}/candidates`);
+        const response = await fetch(`http://localhost:8080/api/candidate?affiliationId=${this.affiliationId}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

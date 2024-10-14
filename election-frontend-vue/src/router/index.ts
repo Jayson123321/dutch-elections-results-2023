@@ -9,7 +9,6 @@ import ManagingAuthority from "@/components/ManagingAuthority.vue";
 import Partijenpagina from "@/components/partijenpagina.vue";
 import Forum from "@/components/forum.vue";
 import Uitslagen from "@/components/uitslagen.vue";
-import KandidatenPagina from "@/components/kandidatenpagina.vue";
 import kandidatenpagina from "@/components/kandidatenpagina.vue";
 
 const routes = [
@@ -23,6 +22,8 @@ const routes = [
         path: '/partijen/:id',
         name: 'kandidatenpagina',
         component: kandidatenpagina,
+        props: true // Zorg ervoor dat params als props worden doorgegeven
+
     },
     { path: '/forum', component: Forum },
     { path: '/uitslagen', component: Uitslagen },

@@ -2,21 +2,21 @@ package com.election.backendjava;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/affiliations")
-public class candidateController {
+@RequestMapping("/api/candidate")
+public class CandidateController {
 
     @Autowired
-    private candidateService candidateService;
+    private CandidateService candidateService;
 
-    @GetMapping("/{affiliationId}/candidates")
-    public List<Candidate> getCandidatesByAffiliationId(@PathVariable Long affiliationId) {
+    @GetMapping
+    public List<Candidate> getCandidatesByAffiliationId(@RequestParam String affiliationId) {
         return candidateService.getCandidatesByAffiliationId(affiliationId);
     }
 }

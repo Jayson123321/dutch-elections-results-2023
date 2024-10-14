@@ -5,12 +5,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class candidateService {
+public class CandidateService {
 
     @Autowired
-    private candidateRepository candidateRepository;
+    private CandidateRepository candidateRepository;
 
-    public List<Candidate> getCandidatesByAffiliationId(Long affiliationId) {
+    public List<Candidate> getCandidatesByAffiliationId(String affiliationId) {
         return candidateRepository.findByAffiliationId(affiliationId);
     }
 }
