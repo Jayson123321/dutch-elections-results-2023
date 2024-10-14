@@ -1,6 +1,7 @@
 // backend-java/src/main/java/com/election/backendjava/PartyVotesRepository.java
-package com.election.backendjava;
+package com.election.backendjava.repositories;
 
+import com.election.backendjava.PartyVotes;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;

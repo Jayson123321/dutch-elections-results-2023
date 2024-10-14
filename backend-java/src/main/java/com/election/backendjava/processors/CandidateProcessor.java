@@ -1,11 +1,12 @@
-package com.election.backendjava;
+package com.election.backendjava.processors;
 
+import com.election.backendjava.entities.Candidate;
+import com.election.backendjava.repositories.CandidateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -16,7 +17,7 @@ import java.io.File;
 public class CandidateProcessor {
 
     @Autowired
-    private candidateRepository candidateRepository;
+    private CandidateRepository candidateRepository;
 
     @Transactional
     public void processXML(String filePath) {
@@ -93,7 +94,7 @@ public class CandidateProcessor {
                     }
 
                     // Maak een nieuw Candidate object
-                    Candidate candidate = new Candidate(candidateIdentifier, candidateName, gender, qualifyingAddress, Long.parseLong(affiliationId));
+                    Candidate candidate = new Candidate(candidateIdentifier, candidateName, gender, qualifyingAddress, affiliationId);
 
                     // Sla de kandidaat op in de database
                     candidateRepository.save(candidate);

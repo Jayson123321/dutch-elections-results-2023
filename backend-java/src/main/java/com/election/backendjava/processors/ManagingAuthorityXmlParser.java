@@ -1,5 +1,7 @@
-package com.election.backendjava;
+package com.election.backendjava.processors;
 
+import com.election.backendjava.entities.ManagingAuthority;
+import com.election.backendjava.repositories.ManagingAuthorityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;

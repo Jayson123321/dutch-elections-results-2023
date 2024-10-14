@@ -1,5 +1,6 @@
-package com.election.backendjava;
+package com.election.backendjava.repositories;
 
+import com.election.backendjava.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
