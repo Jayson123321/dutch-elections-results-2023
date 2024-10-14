@@ -1,5 +1,6 @@
 package com.election.backendjava;
 
+import com.election.backendjava.entities.Affiliation;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 

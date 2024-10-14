@@ -9,7 +9,8 @@ import ManagingAuthority from "@/components/ManagingAuthority.vue";
 import Partijenpagina from "@/components/partijenpagina.vue";
 import Forum from "@/components/forum.vue";
 import Uitslagen from "@/components/uitslagen.vue";
-
+import ChooseResults from "@/components/ChooseResults.vue";
+import kandidatenpagina from "@/components/kandidatenpagina.vue";
 const routes = [
     { path: '/', component: home },
     { path: '/home', component: Home },
@@ -17,17 +18,10 @@ const routes = [
     { path: '/party-votes', component: PartyVotesTable },
     { path: '/managing-authorities', component: ManagingAuthority },
     { path: '/partijenpagina', component: Partijenpagina},
-    {
-        path: '/partijen/:id',
-        name: 'kandidatenpagina',
-        component: kandidatenpagina,
-        props: true // Zorg ervoor dat params als props worden doorgegeven
-
-    },
+    { path: '/partijen/:id', name: 'kandidatenpagina', component: kandidatenpagina, props: true},
     { path: '/forum', component: Forum },
     { path: '/uitslagen', component: Uitslagen },
     { path: '/choose-results', component: ChooseResults },
-    { path: '/totalResults', component: TotalResults },
 ];
 
 const router = createRouter({
