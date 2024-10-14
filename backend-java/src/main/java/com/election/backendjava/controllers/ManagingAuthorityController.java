@@ -1,9 +1,5 @@
-package com.election.backendjava.controllers;
+package com.election.backendjava;
 
-import com.election.backendjava.PartyVotes;
-import com.election.backendjava.entities.ManagingAuthority;
-import com.election.backendjava.repositories.ManagingAuthorityRepository;
-import com.election.backendjava.repositories.PartyVotesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,10 +13,10 @@ public class ManagingAuthorityController {
     private ManagingAuthorityRepository managingAuthorityRepository;
 
     @Autowired
-    private PartyVotesRepository partyVotesRepository;
+    private com.election.backendjava.PartyVotesRepository partyVotesRepository;
 
     @Autowired
-    private ReportingUnitRepository reportingUnitRepository;
+    private com.election.backendjava.ReportingUnitRepository reportingUnitRepository;
 
     @GetMapping
     public List<ManagingAuthority> getAllManagingAuthorities() {
@@ -45,4 +41,5 @@ public class ManagingAuthorityController {
     }
 
 }
+
 
