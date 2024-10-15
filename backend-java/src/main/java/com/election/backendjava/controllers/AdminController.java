@@ -1,5 +1,7 @@
-package com.election.backendjava;
+package com.election.backendjava.controllers;
 
+import com.election.backendjava.Admin;
+import com.election.backendjava.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,5 +1,7 @@
-package com.election.backendjava;
+package com.election.backendjava.services;
 
+import com.election.backendjava.Admin;
+import com.election.backendjava.repositories.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
