@@ -1,0 +1,138 @@
+<template>
+  <div>
+    <HeaderComponent />
+    <div class="totalResults">
+      <h1>Uitslagen</h1>
+      <canvas id="electionResults" ref="electionResults"></canvas>
+      <table>
+        <tbody>
+        <tr v-for="result in results" :key="result.id">
+          <td>{{ result.affiliationName }}</td>
+          <td>{{ result.totalVotes }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <FooterComponent />
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+import HeaderComponent from "@/components/HeaderComponent.vue";
+import { Chart, DoughnutController, ArcElement, Tooltip, Legend } from "chart.js";
+
+Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
+
+export default defineComponent({
+  name: "totalResults",
+  components: {
+    HeaderComponent,
+  },
+  data() {
+    return {
+      results: [],
+      chart: null,
+    };
+  },
+  methods: {
+    async fetchResults() {
+      try {
+        const response = await fetch('http://localhost:8080/api/results');
+        if (!response.ok) {
+          throw new Error('Failed to fetch results');
+        }
+        this.results = await response.json();
+        this.results.sort((a, b) => b.totalVotes - a.totalVotes);
+        this.$nextTick(() => {
+          this.renderChart();
+        });
+      } catch (error) {
+        console.error('Error fetching results:', error);
+      }
+    },
+    renderChart() {
+      if (this.chart) {
+        this.chart.destroy();
+      }
+
+      const ctx = this.$refs.electionResults.getContext('2d');
+      const colors = [
+        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#FFCD56', '#4BC0C0', '#36A2EB', '#FF6384',
+        '#FF9F40', '#9966FF', '#FFCE56', '#4BC0C0', '#36A2EB', '#FF6384', '#FF9F40', '#9966FF', '#FFCE56', '#4BC0C0',
+        '#36A2EB', '#f83964', '#FF9F40', '#9966FF', '#FFCE56', '#4BC0C0'
+      ];
+
+      this.chart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: this.results.map(result => result.affiliationName),
+          datasets: [{
+            label: 'Valid Votes',
+            data: this.results.map(result => result.totalVotes),
+            backgroundColor: colors,
+            borderColor: colors.map(color => color.replace('0.2', '1')),
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  let label = context.label || '';
+                  if (label) {
+                    label += ': ';
+                  }
+                  if (context.raw !== null) {
+                    label += context.raw;
+                  }
+                  return label;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+  },
+  mounted() {
+    this.fetchResults();
+  }
+});
+</script>
+
+<style scoped>
+.totalResults {
+  margin: 20px;
+}
+
+table {
+  width: 30%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  border: none;
+}
+
+th, td {
+  padding: 8px;
+  border: none;
+}
+
+th {
+  background-color: #f2f2f2;
+  text-align: left;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tr:hover {
+  background-color: #ddd;
+}
+</style>
