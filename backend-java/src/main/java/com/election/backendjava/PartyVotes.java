@@ -1,26 +1,32 @@
 package com.election.backendjava;
 
+import com.election.backendjava.entities.Affiliation;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "party_votes")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class PartyVotes {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "valid_votes")
-    private int validVotes;
+    @Column(name = "reporting_unit_id")
+    private String reportingUnitId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "affiliation_id", nullable = false)
+    private Affiliation affiliation;
+
+    @Column(name = "managing_authority_number")
+    private String managingAuthorityNumber;
 
     @Column(name = "reporting_unit_identifier")
     private String reportingUnitIdentifier;
 
-    @Column(name = "reporting_unit_id")
-    private String reportingUnitId;
-
-    @Column(name = "affiliation_id")
-    private int affiliationId;
+    @Column(name = "valid_votes")
+    private int validVotes;
 
     // Getters and Setters
     public Long getId() {
@@ -31,12 +37,28 @@ public class PartyVotes {
         this.id = id;
     }
 
-    public int getValidVotes() {
-        return validVotes;
+    public String getReportingUnitId() {
+        return reportingUnitId;
     }
 
-    public void setValidVotes(int validVotes) {
-        this.validVotes = validVotes;
+    public void setReportingUnitId(String reportingUnitId) {
+        this.reportingUnitId = reportingUnitId;
+    }
+
+    public Affiliation getAffiliation() {
+        return affiliation;
+    }
+
+    public void setAffiliation(Affiliation affiliation) {
+        this.affiliation = affiliation;
+    }
+
+    public String getManagingAuthorityNumber() {
+        return managingAuthorityNumber;
+    }
+
+    public void setManagingAuthorityNumber(String managingAuthorityNumber) {
+        this.managingAuthorityNumber = managingAuthorityNumber;
     }
 
     public String getReportingUnitIdentifier() {
@@ -47,19 +69,11 @@ public class PartyVotes {
         this.reportingUnitIdentifier = reportingUnitIdentifier;
     }
 
-    public String getReportingUnitId() {
-        return reportingUnitId;
+    public int getValidVotes() {
+        return validVotes;
     }
 
-    public void setReportingUnitId(String reportingUnitId) {
-        this.reportingUnitId = reportingUnitId;
-    }
-
-    public int getAffiliationId() {
-        return affiliationId;
-    }
-
-    public void setAffiliationId(int affiliationId) {
-        this.affiliationId = affiliationId;
+    public void setValidVotes(int validVotes) {
+        this.validVotes = validVotes;
     }
 }

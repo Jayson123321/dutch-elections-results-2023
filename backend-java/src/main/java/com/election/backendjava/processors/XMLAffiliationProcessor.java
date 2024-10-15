@@ -1,5 +1,7 @@
-package com.election.backendjava;
+package com.election.backendjava.processors;
 
+import com.election.backendjava.entities.Affiliation;
+import com.election.backendjava.repositories.AffiliationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +14,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 
 @Component
-public class XMLProcessor {
+public class XMLAffiliationProcessor {
 
     @Autowired
     private AffiliationRepository affiliationRepository;

@@ -1,3 +1,4 @@
+// src/router/index.ts
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../home.vue';
 import home from '../components/home.vue';
@@ -8,7 +9,6 @@ import Partijenpagina from "@/components/partijenpagina.vue";
 import Forum from "@/components/forum.vue";
 import Uitslagen from "@/components/uitslagen.vue";
 import ChooseResults from "@/components/ChooseResults.vue";
-import Admin from '../components/Admin.vue';
 
 const routes = [
     { path: '/', component: home },
@@ -20,7 +20,6 @@ const routes = [
     { path: '/forum', component: Forum },
     { path: '/uitslagen', component: Uitslagen },
     { path: '/choose-results', component: ChooseResults },
-    { path: '/admin', component: Admin }
 ];
 
 const router = createRouter({

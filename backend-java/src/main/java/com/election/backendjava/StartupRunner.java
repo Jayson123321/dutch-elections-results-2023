@@ -1,5 +1,7 @@
 package com.election.backendjava;
 
+import com.election.backendjava.processors.ManagingAuthorityXmlParser;
+import com.election.backendjava.processors.ReportingUnitXmlParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -16,7 +18,7 @@ public class StartupRunner implements CommandLineRunner {
     private ReportingUnitXmlParser reportingUnitXmlParser;
 
     @Autowired
-    private PartyVotesParser PartyVotesParser;
+    private com.election.backendjava.processors.PartyVotesParser PartyVotesParser;
 
 
     @Override
@@ -33,10 +35,6 @@ public class StartupRunner implements CommandLineRunner {
 
                 for (File file : files) {
                     System.out.println("Verwerken van bestand: " + file.getName());
-
-                    managingAuthorityXmlParser.processXML(file.getAbsolutePath());
-
-                    reportingUnitXmlParser.processXML(file.getAbsolutePath());
 
                     PartyVotesParser.parseXML(file.getAbsolutePath());
                     fileCount++;
