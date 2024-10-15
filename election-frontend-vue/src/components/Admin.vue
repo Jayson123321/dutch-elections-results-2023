@@ -15,7 +15,7 @@ export default {
     };
   },
   mounted() {
-    axios.get('/api/users/all')
+    axios.get('/api/admin/all')
         .then(response => {
           this.users = response.data.map(user => ({ username: user.username }));
         })
@@ -23,6 +23,7 @@ export default {
           console.error('Er is een fout opgetreden bij het ophalen van de gebruikersgegevens:', error);
         });
   }
+
 }
 </script>
 <template>
