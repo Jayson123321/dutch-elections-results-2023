@@ -10,6 +10,11 @@
           </router-link>
         </h2>
       </div>
+      <div>
+        <router-link to="/allekandidatenpagina">
+          Alle kandidaten
+        </router-link>
+      </div>
     </div>
     <FooterComponent />
   </div>
