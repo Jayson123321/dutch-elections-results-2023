@@ -11,7 +11,8 @@ import Forum from "@/components/forum.vue";
 import Uitslagen from "@/components/uitslagen.vue";
 import ChooseResults from "@/components/ChooseResults.vue";
 import kandidatenpagina from "@/components/kandidatenpagina.vue";
-// import TotalResults from "@/components/TotalResults.vue";
+import TotalResults from "@/components/TotalVotes.vue";
+
 const routes = [
     { path: '/', component: home },
     { path: '/home', component: Home },
@@ -23,7 +24,7 @@ const routes = [
     { path: '/forum', component: Forum },
     { path: '/uitslagen', component: Uitslagen },
     { path: '/choose-results', component: ChooseResults },
-    // { path: '/totalResults', component: TotalResults },
+    { path: '/totalResults', component: TotalResults },
 ];
 
 const router = createRouter({
