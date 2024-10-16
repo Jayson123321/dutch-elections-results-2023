@@ -8,6 +8,7 @@ public class TotalVote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
+
     @Column(name = "affiliation_name")
     private String affiliationName;
 
