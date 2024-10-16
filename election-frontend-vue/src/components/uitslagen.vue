@@ -16,7 +16,6 @@ export default {
       <h1>Uitslagen</h1>
       <p>De uitslagen van de partijen worden hier weergegeven.</p>
     </div>
-
     <FooterComponent />
   </div>
 </template>
