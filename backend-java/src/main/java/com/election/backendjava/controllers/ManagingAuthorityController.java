@@ -1,6 +1,6 @@
 package com.election.backendjava.controllers;
 
-import com.election.backendjava.PartyVotes;
+import com.election.backendjava.entities.PartyVotes;
 import com.election.backendjava.ReportingUnit;
 import com.election.backendjava.entities.ManagingAuthority;
 import com.election.backendjava.repositories.ManagingAuthorityRepository;
@@ -22,14 +22,13 @@ public class ManagingAuthorityController {
     @Autowired
     private com.election.backendjava.repositories.ReportingUnitRepository reportingUnitRepository;
 
-    @GetMapping
+    @GetMapping("/getAllAuthorities")
     public List<ManagingAuthority> getAllManagingAuthorities() {
         return managingAuthorityRepository.findAll();
     }
-
-
-    @GetMapping("/{authorityIdentifier}/party-votes")
-    public List<PartyVotes> getPartyVotesByAuthorityIdentifier(@PathVariable("authorityIdentifier") String authorityIdentifier) {
+    // PathVariable zorgt ervoor dat de waarde uit URL wordt gehaald en in Variabele parameter wordt gestopt.
+    @GetMapping("/{authorityIdentifier}")
+    public List<PartyVotes> getPartyVotesByReportingUnitId(@PathVariable("authorityIdentifier") String authorityIdentifier) {
         return partyVotesRepository.findByReportingUnitId(authorityIdentifier);
     }
 
@@ -37,6 +36,7 @@ public class ManagingAuthorityController {
     public List<ReportingUnit> getReportingUnitsByAuthorityIdentifier(@PathVariable("authorityIdentifier") String authorityIdentifier) {
         return reportingUnitRepository.findByManagingAuthority_AuthorityIdentifier(authorityIdentifier);
     }
+
     @GetMapping("/{authorityIdentifier}/party-votes/{reportingUnitId}")
     public List<PartyVotes> getPartyVotesByAuthorityAndReportingUnit(
             @PathVariable("authorityIdentifier") String authorityIdentifier,

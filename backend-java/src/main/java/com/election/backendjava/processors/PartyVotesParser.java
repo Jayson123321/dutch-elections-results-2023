@@ -1,6 +1,6 @@
 package com.election.backendjava.processors;
 
-import com.election.backendjava.PartyVotes;
+import com.election.backendjava.entities.PartyVotes;
 import com.election.backendjava.entities.Affiliation;
 import com.election.backendjava.repositories.PartyVotesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
