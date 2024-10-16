@@ -20,9 +20,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import HeaderComponent from "@/components/HeaderComponent.vue";
-import { Chart, DoughnutController, ArcElement, Tooltip, Legend } from "chart.js";
+import { Chart, DoughnutController, PieController, ArcElement, Tooltip, Legend } from "chart.js";
 
-Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
+Chart.register(DoughnutController, ArcElement, PieController, Tooltip, Legend);
 
 export default defineComponent({
   name: "totalResults",
@@ -64,7 +64,7 @@ export default defineComponent({
       ];
 
       this.chart = new Chart(ctx, {
-        type: 'doughnut',
+        type: 'pie',
         data: {
           labels: this.results.map(result => result.affiliationName),
           datasets: [{
