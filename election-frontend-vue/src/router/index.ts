@@ -12,6 +12,7 @@ import Uitslagen from "@/components/uitslagen.vue";
 import ChooseResults from "@/components/ChooseResults.vue";
 import kandidatenpagina from "@/components/kandidatenpagina.vue";
 import allekandidatenpagina from "@/components/allekandidatenpagina.vue";
+import kandidatenuitslag from "@/components/kandidatenuitslag.vue";
 // import TotalResults from "@/components/TotalResults.vue";
 const routes = [
     { path: '/', component: home },
@@ -26,6 +27,7 @@ const routes = [
     { path: '/choose-results', component: ChooseResults },
     // { path: '/totalResults', component: TotalResults },
     { path: '/allekandidatenpagina', component: allekandidatenpagina },
+    { path: '/kandidatenuitslag/:id', name: 'kandidatenuitslag', component: kandidatenuitslag, props: true }
 ];
 
 const router = createRouter({

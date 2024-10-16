@@ -4,12 +4,14 @@
     <h1>Alle Kandidaten</h1>
     <ul class="candidate-list">
       <li v-for="candidate in candidates" :key="candidate.id" class="candidate-item">
-        <div class="candidate-card">
-          <h2>{{ candidate.candidateName }}</h2>
-          <p>Gender: {{ candidate.gender }}</p>
-          <p>Adres: {{ candidate.qualifyingAddress }}</p>
-          <p>Partij: {{ candidate.affiliation.name }}</p>
-        </div>
+        <router-link :to="{ name: 'kandidatenuitslag', params: { id: candidate.id } }">
+          <div class="candidate-card">
+            <h2>{{ candidate.candidateName }}</h2>
+            <p>Gender: {{ candidate.gender }}</p>
+            <p>Adres: {{ candidate.qualifyingAddress }}</p>
+            <p>Partij: {{ candidate.affiliation ? candidate.affiliation.registeredName : 'Onbekend' }}</p>
+          </div>
+        </router-link>
       </li>
     </ul>
     <FooterComponent />
@@ -28,22 +30,34 @@ export default {
   },
   data() {
     return {
-      candidates: []
+      candidates: [],
+      affiliations: []
     };
   },
   mounted() {
-    this.fetchCandidates();
+    this.fetchData();
   },
   methods: {
-    async fetchCandidates() {
+    async fetchData() {
       try {
-        const response = await fetch(`http://localhost:8080/api/candidate/all`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+        const [candidatesResponse, affiliationsResponse] = await Promise.all([
+          fetch(`http://localhost:8080/api/candidate/all`),
+          fetch(`http://localhost:8080/api/affiliations`)
+        ]);
+
+        if (!candidatesResponse.ok || !affiliationsResponse.ok) {
+          throw new Error('HTTP error! status: ' + candidatesResponse.status + ' ' + affiliationsResponse.status);
         }
-        this.candidates = await response.json();
+
+        const candidates = await candidatesResponse.json();
+        const affiliations = await affiliationsResponse.json();
+
+        this.candidates = candidates.map(candidate => {
+          const affiliation = affiliations.find(aff => aff.affiliationId === candidate.affiliationId);
+          return { ...candidate, affiliation };
+        });
       } catch (error) {
-        console.error('Error fetching candidates:', error);
+        console.error('Error fetching data:', error);
       }
     }
   }
@@ -53,9 +67,10 @@ export default {
 <style scoped>
 .container {
   max-width: 1200px;
-  margin: 0 auto;
   padding: 20px;
   font-family: Arial, sans-serif;
+  margin-bottom: 100px;
+  margin-top: 50px;
 }
 
 h1 {
