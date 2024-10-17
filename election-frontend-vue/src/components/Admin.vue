@@ -15,28 +15,32 @@ export default {
     };
   },
   mounted() {
-    axios.get('/api/admin/all')
+    axios.get('/api/users/all', {responseType: 'json'})
         .then(response => {
-          this.users = response.data.map(user => ({ username: user.username }));
+          console.log('API response:', response.data); // logging
+          this.users = response.data;
+        })
+        .then(response => {
+          this.users = response.data;
         })
         .catch(error => {
           console.error('Er is een fout opgetreden bij het ophalen van de gebruikersgegevens:', error);
         });
   }
-
 }
 </script>
+
 <template>
   <div>
-    <HeaderComponent />
+    <HeaderComponent/>
     <div class="admin-page">
       <h1>Admin Dashboard</h1>
       <p>Welkom op de adminpagina.</p>
       <div v-if="users.length > 0">
         <h2>Users:</h2>
         <ul>
-          <li v-for="user in users" :key="user.username">
-            {{ user.username }}
+          <li v-for="user in users" :key="user">
+            {{ user }}
           </li>
         </ul>
       </div>
@@ -44,9 +48,10 @@ export default {
         <p>Geen users gevonden.</p>
       </div>
     </div>
-    <FooterComponent />
+    <FooterComponent/>
   </div>
 </template>
+
 <style>
 .admin-page {
   display: flex;
