@@ -9,6 +9,7 @@
         <tr v-for="result in results" :key="result.id">
           <td>{{ result.affiliationName }}</td>
           <td>{{ result.totalVotes }}</td>
+          <td>{{ result.percentage ? result.percentage.toFixed(2) : 0 }}%</td>
         </tr>
         </tbody>
       </table>
@@ -94,7 +95,8 @@ export default defineComponent({
                   return label;
                 }
               }
-            }
+            },
+
           }
         }
       });
