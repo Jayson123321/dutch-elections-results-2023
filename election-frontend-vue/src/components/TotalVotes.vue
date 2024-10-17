@@ -61,8 +61,10 @@ export default defineComponent({
       const colors = [
         '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#FFCD56', '#4BC0C0', '#36A2EB', '#FF6384',
         '#FF9F40', '#9966FF', '#FFCE56', '#4BC0C0', '#36A2EB', '#FF6384', '#FF9F40', '#9966FF', '#FFCE56', '#4BC0C0',
-        '#36A2EB', '#f83964', '#FF9F40', '#9966FF', '#FFCE56', '#4BC0C0'
+        '#36A2EB', '#f83964', '#FF9F40', '#ff6691', '#FFCE56', '#4BC0C0'
       ];
+
+      const totalVotes = this.results.reduce((sum, result) => sum + result.totalVotes, 0);
 
       this.chart = new Chart(ctx, {
         type: 'pie',
@@ -70,7 +72,7 @@ export default defineComponent({
           labels: this.results.map(result => result.affiliationName),
           datasets: [{
             label: 'Valid Votes',
-            data: this.results.map(result => result.totalVotes),
+            data: this.results.map(result => result.totalVotes) ,
             backgroundColor: colors,
             borderColor: colors.map(color => color.replace('0.2', '1')),
             borderWidth: 1
@@ -85,14 +87,11 @@ export default defineComponent({
             tooltip: {
               callbacks: {
                 label: function(context) {
-                  let label = context.label || '';
-                  if (label) {
-                    label += ': ';
-                  }
-                  if (context.raw !== null) {
-                    label += context.raw;
-                  }
-                  return label;
+                  const result = context.chart.data.labels[context.dataIndex];
+                  const totalVotesForResult = context.raw;
+                  const percentage = ((totalVotesForResult / totalVotes) * 100).toFixed(2);
+                  return `${result}: ${percentage}% (${totalVotesForResult}) Stemmen`;
+                  // return '';
                 }
               }
             },
