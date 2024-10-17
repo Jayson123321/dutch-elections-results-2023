@@ -1,6 +1,6 @@
 package com.election.backendjava.controllers;
 
-import com.election.backendjava.User;
+import com.election.backendjava.entities.User;
 import com.election.backendjava.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
