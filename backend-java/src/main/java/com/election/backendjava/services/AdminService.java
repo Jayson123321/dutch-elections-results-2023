@@ -10,9 +10,12 @@ import java.util.List;
 @Service
 public class AdminService {
 
+    // Repository toegevoegd. Nodig als je data wilt ophalen uit de database.
     @Autowired
     private AdminRepository adminRepository;
 
+
+    // Dus door de naamgevind 'getAllAdmins' weet Spring dat het alle data van Admins uit de database moet halen. Door findAll te gebruiken haal je alle data op.
     public List<Admin> getAllAdmins() {
         return adminRepository.findAll();
     }
