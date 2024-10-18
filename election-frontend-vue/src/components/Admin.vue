@@ -15,11 +15,7 @@ export default {
     };
   },
   mounted() {
-    axios.get('/api/users/all', {responseType: 'json'})
-        .then(response => {
-          console.log('API response:', response.data); // logging
-          this.users = response.data;
-        })
+    axios.get('http://localhost:8080/api/users/all', { responseType: 'json' }) // Pas de poort aan naar jouw backend server
         .then(response => {
           this.users = response.data;
         })
@@ -32,32 +28,24 @@ export default {
 
 <template>
   <div>
-    <HeaderComponent/>
+    <HeaderComponent />
     <div class="admin-page">
-      <h1>Admin Dashboard</h1>
-      <p>Welkom op de adminpagina.</p>
       <div v-if="users.length > 0">
-        <h2>Users:</h2>
-        <ul>
-          <li v-for="user in users" :key="user">
-            {{ user }}
-          </li>
-        </ul>
+        <table >
+          <tr>
+            <th>Usernames</th>
+          </tr>
+          <tr v-for="user in users" :key="user">
+            <td>{{ user }}</td>
+          </tr>
+        </table>
       </div>
       <div v-else>
         <p>Geen users gevonden.</p>
       </div>
     </div>
-    <FooterComponent/>
+    <FooterComponent />
   </div>
 </template>
 
-<style>
-.admin-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  margin-top: 75px;
-}
-</style>
+
