@@ -3,7 +3,9 @@
     <HeaderComponent />
     <div class="totalResults">
       <h1>Uitslagen</h1>
-      <canvas id="electionResults" ref="electionResults"></canvas>
+      <div class="chartContainer">
+            <canvas id="electionResults" ref="electionResults"></canvas>
+      </div>
       <table>
         <tbody>
         <tr v-for="result in results" :key="result.id">
@@ -109,14 +111,30 @@ export default defineComponent({
 
 <style scoped>
 .totalResults {
-  margin: 20px;
+  margin-top: 200px;
+  display: flex;
+  justify-content: space-between;
 }
 
+.chartContainer {
+  width: 35%;
+  float: left;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-height: 600px;
+
+}
+
+canvas {
+  max-width: 100%;
+  max-height: 100%;
+}
 table {
-  width: 30%;
+  width:40%;
   border-collapse: collapse;
   margin-top: 20px;
-  border: none;
+  border-style: groove;
 }
 
 th, td {
