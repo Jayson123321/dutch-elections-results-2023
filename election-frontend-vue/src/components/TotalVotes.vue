@@ -1,8 +1,8 @@
 <template>
   <div>
     <HeaderComponent />
+    <h1 class="titel">Tweede kamer uitslagen</h1>
     <div class="totalResults">
-      <h1>Uitslagen</h1>
       <div class="chartContainer">
             <canvas id="electionResults" ref="electionResults"></canvas>
       </div>
@@ -111,30 +111,49 @@ export default defineComponent({
 
 <style scoped>
 .totalResults {
-  margin-top: 200px;
+  margin-top: 100px;
   display: flex;
   justify-content: space-between;
 }
 
+.titel {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  margin-top: 100px;
+}
+
 .chartContainer {
   width: 35%;
-  float: left;
+  float: right;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   max-height: 600px;
+  transition: transform 0.5s ease;
+  margin-left: 100px;
+}
 
+.chartContainer:hover {
+  transform: scale(1.05);
 }
 
 canvas {
   max-width: 100%;
   max-height: 100%;
 }
+
 table {
-  width:40%;
+  width:25%;
   border-collapse: collapse;
-  margin-top: 20px;
-  border-style: groove;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+  margin-right: 150px;
+}
+
+.table:hover {
+  transform: scale(1.05);
 }
 
 th, td {
@@ -153,5 +172,7 @@ tr:nth-child(even) {
 
 tr:hover {
   background-color: #ddd;
+  transform: scale(1.05);
+  transition: transform 0.2s ease;
 }
 </style>
