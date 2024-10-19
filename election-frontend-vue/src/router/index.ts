@@ -12,6 +12,7 @@ import Uitslagen from "@/components/uitslagen.vue";
 import ChooseResults from "@/components/ChooseResults.vue";
 import kandidatenpagina from "@/components/kandidatenpagina.vue";
 import allekandidatenpagina from "@/components/allekandidatenpagina.vue";
+import LocalAuthoritiesResults from "@/components/LocalAuthoritiesResults.vue";
 // import TotalResults from "@/components/TotalResults.vue";
 const routes = [
     { path: '/', component: home },
@@ -19,6 +20,7 @@ const routes = [
     { path: '/registration', component: Registration },
     { path: '/party-votes', component: PartyVotesTable },
     { path: '/managing-authorities', component: ManagingAuthority },
+    { path: '/localAuthorityResults', component: LocalAuthoritiesResults },
     { path: '/partijenpagina', component: Partijenpagina},
     { path: '/partijen/:id', name: 'kandidatenpagina', component: kandidatenpagina, props: true},
     { path: '/forum', component: Forum },
