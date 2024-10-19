@@ -51,22 +51,22 @@ export default {
         <table>
           <thead>
           <tr>
-            <th>Gebruikersnaam</th>
-            <th>Acties</th>
+            <th>Username</th>
+            <th>Actions</th>
           </tr>
           </thead>
           <tbody>
           <tr v-for="user in users" :key="user.id">
             <td>{{ user.username }}</td>
             <td>
-              <button @click="deleteUser(user.id)">Verwijder</button>
+              <button @click="deleteUser(user.id)">Delete user</button>
             </td>
           </tr>
           </tbody>
         </table>
       </div>
       <div v-else>
-        <p>Geen users gevonden.</p>
+        <p>No users found</p>
       </div>
     </div>
     <FooterComponent />
