@@ -3,9 +3,7 @@ package com.election.backendjava.controllers;
 import com.election.backendjava.entities.User;
 import com.election.backendjava.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,9 +16,12 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/all")
-    public List<String> getAllUsernames() {
-        return userService.getAllUsers().stream()
-                .map(User::getUsername)
-                .collect(Collectors.toList());
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable Long id) {
+        userService.deleteUserById(id);
     }
 }
