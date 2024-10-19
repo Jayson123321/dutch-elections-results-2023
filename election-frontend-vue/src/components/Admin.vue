@@ -15,13 +15,30 @@ export default {
     };
   },
   mounted() {
-    axios.get('http://localhost:8080/api/users/all', { responseType: 'json' }) // Pas de poort aan naar jouw backend server
-        .then(response => {
-          this.users = response.data;
-        })
-        .catch(error => {
-          console.error('Er is een fout opgetreden bij het ophalen van de gebruikersgegevens:', error);
-        });
+    this.fetchUsers();
+  },
+  methods: {
+    fetchUsers() {
+      axios.get('http://localhost:8080/api/users/all', { responseType: 'json' })
+          .then(response => {
+            this.users = response.data;
+          })
+          .catch(error => {
+            console.error('Er is een fout opgetreden bij het ophalen van de gebruikersgegevens:', error);
+          });
+    },
+    deleteUser(userId) {
+      if (confirm('Weet je zeker dat je deze gebruiker wilt verwijderen?')) {
+        axios.delete(`http://localhost:8080/api/users/${userId}`)
+            .then(() => {
+              alert('Gebruiker succesvol verwijderd.');
+              this.fetchUsers();
+            })
+            .catch(error => {
+              console.error('Er is een fout opgetreden bij het verwijderen van de gebruiker:', error);
+            });
+      }
+    }
   }
 }
 </script>
@@ -31,13 +48,21 @@ export default {
     <HeaderComponent />
     <div class="admin-page">
       <div v-if="users.length > 0">
-        <table >
+        <table>
+          <thead>
           <tr>
-            <th>Usernames</th>
+            <th>Gebruikersnaam</th>
+            <th>Acties</th>
           </tr>
-          <tr v-for="user in users" :key="user">
-            <td>{{ user }}</td>
+          </thead>
+          <tbody>
+          <tr v-for="user in users" :key="user.id">
+            <td>{{ user.username }}</td>
+            <td>
+              <button @click="deleteUser(user.id)">Verwijder</button>
+            </td>
           </tr>
+          </tbody>
         </table>
       </div>
       <div v-else>
@@ -48,4 +73,20 @@ export default {
   </div>
 </template>
 
+<style scoped>
+.admin-page {
+  padding: 20px;
+}
 
+button {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #c9302c;
+}
+</style>
