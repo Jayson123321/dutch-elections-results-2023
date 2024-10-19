@@ -1,11 +1,10 @@
-// File: backend-java/src/main/java/com/election/backendjava/PartyVotesController.java
-package com.election.backendjava;
+package com.election.backendjava.controllers;
 
-import org.hibernate.query.Page;
+import com.election.backendjava.entities.PartyVotes;
+import com.election.backendjava.repositories.PartyVotesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 @RestController

@@ -1,4 +1,4 @@
-package com.election.backendjava;
+package com.election.backendjava.entities;
 
 import jakarta.persistence.*;
 
@@ -22,12 +22,16 @@ public class Candidate {
     @Column(name = "qualifying_address", nullable = false)
     private String qualifyingAddress;
 
+    @ManyToOne
+    @JoinColumn(name = "affiliation_id", nullable = false, insertable = false, updatable = false)
+    private Affiliation affiliation;
+
     @Column(name = "affiliation_id", nullable = false)
-    private Long affiliationId;
+    private String affiliationId;
 
     public Candidate() {}
 
-    public Candidate(String candidateIdentifier, String candidateName, String gender, String qualifyingAddress, Long affiliationId) {
+    public Candidate(String candidateIdentifier, String candidateName, String gender, String qualifyingAddress, String affiliationId) {
         this.candidateIdentifier = candidateIdentifier;
         this.candidateName = candidateName;
         this.gender = gender;
@@ -76,11 +80,11 @@ public class Candidate {
         this.qualifyingAddress = qualifyingAddress;
     }
 
-    public Long getAffiliationId() {
+    public String getAffiliationId() {
         return affiliationId;
     }
 
-    public void setAffiliationId(Long affiliationId) {
+    public void setAffiliationId(String affiliationId) {
         this.affiliationId = affiliationId;
     }
 

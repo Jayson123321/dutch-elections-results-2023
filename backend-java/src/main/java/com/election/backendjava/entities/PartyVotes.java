@@ -1,4 +1,4 @@
-package com.election.backendjava;
+package com.election.backendjava.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
