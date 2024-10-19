@@ -24,18 +24,18 @@ export default {
             this.users = response.data;
           })
           .catch(error => {
-            console.error('Er is een fout opgetreden bij het ophalen van de gebruikersgegevens:', error);
+            console.error('An error occurred while retrieving the user data:', error);
           });
     },
     deleteUser(userId) {
-      if (confirm('Weet je zeker dat je deze gebruiker wilt verwijderen?')) {
+      if (confirm('Are you sure you want to delete this user?')) {
         axios.delete(`http://localhost:8080/api/users/${userId}`)
             .then(() => {
-              alert('Gebruiker succesvol verwijderd.');
+              alert('User successfully deleted.');
               this.fetchUsers();
             })
             .catch(error => {
-              console.error('Er is een fout opgetreden bij het verwijderen van de gebruiker:', error);
+              console.error('An error occurred while deleting the user:', error);
             });
       }
     }
