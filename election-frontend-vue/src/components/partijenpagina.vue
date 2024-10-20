@@ -3,17 +3,17 @@
     <HeaderComponent />
     <h1>Partijen en Kandidaten</h1>
     <div class="party-grid">
-      <div v-for="affiliation in affiliations" :key="affiliation.id" class="party">
+      <div class="all-candidates box">
+        <router-link to="/allekandidatenpagina">
+          Alle kandidaten
+        </router-link>
+      </div>
+      <div v-for="affiliation in affiliations" :key="affiliation.id" class="party box">
         <h2>
           <router-link :to="{ name: 'kandidatenpagina', params: { id: affiliation.id }}">
             {{ affiliation.registeredName }}
           </router-link>
         </h2>
-      </div>
-      <div>
-        <router-link to="/allekandidatenpagina">
-          Alle kandidaten
-        </router-link>
       </div>
     </div>
     <FooterComponent />
@@ -54,22 +54,38 @@ export default {
 </script>
 
 <style>
-.party-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
-}
-.party {
-  padding: 10px;
+/* Algemene stijlen voor de boxen */
+.box {
+  padding: 15px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 8px;
   text-align: center;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
-.party a {
+
+.box:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.box a {
   text-decoration: none;
-  color: #000;
+  color: #000000;
+  font-weight: bold;
+  font-size: 16px; /* Zorg ervoor dat de tekstgrootte hetzelfde is */
 }
-.party a:hover {
+
+.box a:hover {
   text-decoration: underline;
+}
+
+/* Specifieke stijlen voor de party en all-candidates boxen */
+.party, .all-candidates {
+  composes: box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
