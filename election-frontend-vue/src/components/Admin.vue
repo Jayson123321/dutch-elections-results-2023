@@ -50,6 +50,7 @@ export default {
       <div v-if="users.length > 0">
         <div class="table-wrapper">
           <table>
+            <h2>Users</h2> <!--class and font change-->
             <tbody>
             <tr v-for="user in users" :key="user.id">
               <td>{{ user.username }}</td>
@@ -88,7 +89,7 @@ html, body {
 }
 
 .table-container {
-  background-color: #ffffff;
+  background-color: #1A1A1A;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
