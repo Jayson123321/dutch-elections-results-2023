@@ -26,7 +26,7 @@ const routes = [
     { path: '/forum', component: Forum },
     { path: '/uitslagen', component: Uitslagen },
     { path: '/choose-results', component: ChooseResults },
-    // { path: '/totalResults', component: TotalResults },
+    //{ path: '/totalResults', component: TotalResults },
     { path: '/allekandidatenpagina', component: allekandidatenpagina },
 ];
 
