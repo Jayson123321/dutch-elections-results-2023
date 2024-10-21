@@ -1,13 +1,13 @@
 <script>
-import FooterComponent from './FooterComponent.vue';
-import HeaderComponent from './HeaderComponent.vue';
+/*import FooterComponent from './FooterComponent.vue';
+import HeaderComponent from './HeaderComponent.vue';*/
 import axios from 'axios';
 
 export default {
   name: "Admin",
   components: {
-    FooterComponent,
-    HeaderComponent
+    /*FooterComponent,
+    HeaderComponent*/
   },
   data() {
     return {
