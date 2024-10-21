@@ -44,9 +44,9 @@ export default {
 </script>
 
 <template>
-  <div>
+  <div class="admin-page">
     <HeaderComponent />
-    <div class="admin-page">
+    <div class="table-container">
       <div v-if="users.length > 0">
         <table>
           <thead>
@@ -74,42 +74,60 @@ export default {
 </template>
 
 <style scoped>
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #111;
+  height: 100%;
+  overflow-x: hidden;
+}
+
 .admin-page {
+  background-color: #111;
+  min-height: 100vh;
   padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.table-container {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 }
 
 th, td {
+  padding: 12px 15px;
   text-align: left;
-  padding: 12px;
   border-bottom: 1px solid #ddd;
 }
 
 th {
   background-color: #f4f4f4;
   font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
-tbody tr:hover {
+tr:hover {
   background-color: #f9f9f9;
 }
 
 button {
+  padding: 8px 12px;
   background-color: #d9534f;
   color: white;
   border: none;
-  padding: 8px 12px;
-  cursor: pointer;
   border-radius: 4px;
+  cursor: pointer;
   transition: background-color 0.3s;
 }
 
