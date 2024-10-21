@@ -45,31 +45,27 @@ export default {
 
 <template>
   <div class="admin-page">
-    <HeaderComponent />
+    <HeaderComponent/>
     <div class="table-container">
       <div v-if="users.length > 0">
-        <table>
-          <thead>
-          <tr>
-            <th>Username</th>
-            <th>Actions</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="user in users" :key="user.id">
-            <td>{{ user.username }}</td>
-            <td>
-              <button @click="deleteUser(user.id)">Delete user</button>
-            </td>
-          </tr>
-          </tbody>
-        </table>
+        <div class="table-wrapper">
+          <table>
+            <tbody>
+            <tr v-for="user in users" :key="user.id">
+              <td>{{ user.username }}</td>
+              <td>
+                <button @click="deleteUser(user.id)">Delete user</button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div v-else>
         <p>No users found</p>
       </div>
     </div>
-    <FooterComponent />
+    <FooterComponent/>
   </div>
 </template>
 
@@ -100,10 +96,14 @@ html, body {
   width: 100%;
 }
 
+.table-wrapper {
+  max-height: 400px; /* hight table */
+  overflow-y: auto; /* Scroll */
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 20px;
 }
 
 th, td {
