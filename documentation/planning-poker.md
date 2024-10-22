@@ -8,43 +8,37 @@ This scale is based on the Knowledgebase (see https://knowledgebase.hbo-ict-hva.
 
 ## Weight per user-story
 These are the weights (time estimates) we assigned to each user story.
+## Sprint 2
 
-| User-story | Weight |
-|------------|--------|
-| #1         | 3      |
-| #2         | 4      |
-| #3         |        |
-| #4         |        |
-| #5         | 3      |
-| #6         | 3      |
-| #7         | 3      |
-| #8         | 5      |
-| #9         | 2      |
-| #10        | 3      |
-| #11        | 3      |
-| #12        | 3      |
-| #13        | 5      |
-| #14        | 3      |
-| #15        | 2      |
-| #16        | 2      |
-| #17        | 1      |
-| #18        | 3      |
-| #19        | 3      |
-| #20        | 3      |
+| **User Story** | **Weight** | **Assigned To  ** |
+|----------------|------------|-------------------|
+| #1             | 3          |                   |
+| #2             | 4          | Ruben             |
+| #3             |            |                   |
+| #4             |            | Daria             |
+| #5             | 3          |                   |
+| #6             | 3          | Daria             |
+| #7             | 3          |                   |
+| #8             | 5          |                   |
+| #9             | 2          |                   |
+| #10            | 3          |                   |
+| #11            | 3          | Ruben             |
 
 
-Verdeling:
-#4 - Daria
-#6 - Daria
+## Sprint 3
 
-#11 Ruben
-#18 Ruben 
-
-#22 Achraf
-
-#21 Kailin
-#
-
-#Userstorie nog maken - Kailin 
-#userstorie nog maken - Achraf
- 
+| **User Story** | **Weight** | **Assigned To** |
+|----------------|------------|-----------------|
+| #2             | 3          | Ruben           |
+| #11            | 4          | Ruben           |
+| #31            | 2          | Darya           |
+| #29            | 5          | Darya           |
+| #24            | 1          | Darya           |
+| #19            | 4          | Kaylin          |
+| #21            | 2          | Kaylin          |
+| #28            | 3          | Achraf          |
+| #25            | 3          | Achraf          |
+| #30            | 2          | Jayson          |
+| #20            | 5          | Jayson          |
+| #32            | 3          | Jayson          |
+| #33            | 1          | Achraf          |
