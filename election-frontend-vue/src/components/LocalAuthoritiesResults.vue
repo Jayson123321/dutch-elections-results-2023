@@ -31,155 +31,203 @@
   </div>
 </template>
 
-
 <style>
 #titel {
   text-align: center;
-  margin-top: 5%;
-  font-size: larger;
-  font-family: sans-serif;
+  margin-top: 6rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
 }
 
 label {
   margin-right: 10px;
   display: block;
-  margin-top: 20px;
+  margin-top: 9rem;
+  font-weight: bold;
+  color: #555;
 }
 
 select {
-  margin-bottom: 20px;
-  padding: 5px;
+  margin-bottom: 1.5rem;
+  padding: 0.5rem;
   display: block;
-  margin-top: 10px;
+  margin-top: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-family: 'Arial', sans-serif;
+  font-size: 1rem;
 }
 
 table {
+  width: 100%;
   border-collapse: collapse;
+  margin-top: 1rem;
 }
 
 th, td {
-  padding: 8px 12px;
-  display: block;
-  margin: 20px;
-  border: none;
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
 }
 
 thead {
-  background-color: #000000;
-  color: #ffffff;
+  background-color: #f4f4f4;
+  color: #333;
 }
 
-tbody tr {
-  background-color: white;
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+  background-color: #f1f1f1;
 }
 
 #StembureauName {
-  display: flex;
-  justify-content: flex-end;
+  margin-top: 2rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #333;
 }
 
 .party-vote-box {
-  border: 1px solid black;
-  padding: 10px;
-  margin: 5px;
-  background-color:white;
+  border: 1px solid #ddd;
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+  background-color: #fff;
+  border-radius: 5px;
 }
 
 .affiliation-name {
-  font-size: x-large;
-  font-family: sans-serif;
+  font-size: 1rem;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  color: #555;
 }
 
 #authority-select {
-  border-radius: 15px 15px 0 0;
-  font-family: sans-serif;
+  border-radius: 5px;
+  font-family: 'Arial', sans-serif;
+  font-size: 1rem;
 }
 
 .authority-select {
-  font-family: sans-serif;
+  font-family: 'Arial', sans-serif;
   font-weight: bold;
+  color: #555;
 }
 
 canvas {
-  max-height: 10%;
+  max-height: 400px;
+  margin-top: 2rem;
 }
 </style>
 
 <script>
-import { defineComponent } from 'vue';
-import { Pie } from 'vue-chartjs';
-import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js';
-import FooterComponent from "@/components/FooterComponent.vue";
-import HeaderComponent from "@/components/HeaderComponent.vue";
+  import { defineComponent } from 'vue';
+  import { Pie } from 'vue-chartjs';
+  import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js';
+  import FooterComponent from "@/components/FooterComponent.vue";
+  import HeaderComponent from "@/components/HeaderComponent.vue";
 
-ChartJS.register(Title, Tooltip, Legend, ArcElement);
+  ChartJS.register(Title, Tooltip, Legend, ArcElement);
 
-export default defineComponent({
+  export default defineComponent({
   name: 'LocalAuthoritiesResults',
   components: { FooterComponent, HeaderComponent, PieChart: Pie },
   data() {
-    return {
-      authorities: [],
-      selectedAuthorityId: null,
-      selectedAuthority: null,
-      partyVotes: [],
-      chartData: {
-        labels: [],
-        datasets: [{
-          data: [],
-          backgroundColor: []
-        }]
-      },
-      chartOptions: {
-        responsive: true,
-        maintainAspectRatio: false
-      }
-    };
-  },
+  return {
+  authorities: [],
+  selectedAuthorityId: null,
+  selectedAuthority: null,
+  partyVotes: [],
+  chartData: {
+  labels: [],
+  datasets: [{
+  data: [],
+  backgroundColor: []
+}]
+},
+  chartOptions: {
+  responsive: true,
+  maintainAspectRatio: false
+}
+};
+},
   mounted() {
-    this.fetchAuthorities();
-  },
+  this.fetchAuthorities();
+},
+  watch: {
+  selectedAuthorityId() {
+  console.log('selectedAuthorityId changed:', this.selectedAuthorityId);
+  this.showAllSelectedAuthorityVotes();
+}
+},
   methods: {
-    async fetchAuthorities() {
-      try {
-        const response = await fetch('http://localhost:8080/api/managing-authorities/getAllAuthorities');
-        if (!response.ok) {
-          throw new Error('Failed to fetch authorities');
-        }
-        this.authorities = await response.json();
-      } catch (error) {
-        console.error('Error fetching authorities:', error);
-      }
-    },
-    async showAllSelectedAuthorityVotes() {
-      this.selectedAuthority = this.authorities.find(authority => authority.id === this.selectedAuthorityId) || null;
+  async fetchAuthorities() {
+  try {
+  const response = await fetch('http://localhost:8080/api/managing-authorities/getAllAuthorities');
+  if (!response.ok) {
+  throw new Error('Failed to fetch authorities');
+}
+  this.authorities = await response.json();
+  console.log('Fetched authorities:', this.authorities);
+} catch (error) {
+  console.error('Error fetching authorities:', error);
+}
+},
+  async showAllSelectedAuthorityVotes() {
+  console.log('Fetching votes for authority ID:', this.selectedAuthorityId);
+  this.selectedAuthority = this.authorities.find(authority => authority.id === this.selectedAuthorityId) || null;
+  console.log('Selected authority:', this.selectedAuthority);
 
-      if (this.selectedAuthority) {
-        try {
-          const response = await fetch(`http://localhost:8080/api/managing-authorities/${this.selectedAuthority.authorityIdentifier}`);
-          if (!response.ok) {
-            throw new Error('Failed to fetch party votes');
-          }
-          this.partyVotes = await response.json();
-          this.updateChartData();
-        } catch (error) {
-          console.error('Error fetching party votes:', error);
-        }
-      }
-    },
-    updateChartData() {
-      const labels = this.partyVotes.map(vote => vote.affiliation.registeredName);
-      const data = this.partyVotes.map(vote => vote.validVotes);
-      const backgroundColor = this.partyVotes.map(() => `#${Math.floor(Math.random()*16777215).toString(16)}`);
+  // Reset partyVotes and chartData
+  this.partyVotes = [];
+  this.chartData = {
+  labels: [],
+  datasets: [{
+  data: [],
+  backgroundColor: []
+}]
+};
 
-      this.chartData = {
-        labels,
-        datasets: [{
-          data,
-          backgroundColor
-        }]
-      };
-    }
-  }
+  if (this.selectedAuthority) {
+  try {
+  const response = await fetch(`http://localhost:8080/api/managing-authorities/${this.selectedAuthority.authorityIdentifier}`);
+  if (!response.ok) {
+  throw new Error('Failed to fetch party votes');
+}
+  const allPartyVotes = await response.json();
+  this.partyVotes = allPartyVotes.slice(0, 25); // Limit to first 25 results
+  console.log('Fetched party votes:', this.partyVotes);
+  this.updateChartData();
+} catch (error) {
+  console.error('Error fetching party votes:', error);
+}
+}
+},
+  updateChartData() {
+  if (!this.chartData) {
+  this.chartData = {
+  labels: [],
+  datasets: [{
+  data: [],
+  backgroundColor: []
+}]
+};
+}
+
+  const labels = this.partyVotes.map(vote => vote.affiliation.registeredName);
+  const data = this.partyVotes.map(vote => vote.validVotes);
+  const backgroundColor = this.partyVotes.map(() => `#${Math.floor(Math.random() * 16777215).toString(16)}`);
+
+  this.chartData.labels = labels;
+  this.chartData.datasets[0].data = data;
+  this.chartData.datasets[0].backgroundColor = backgroundColor;
+
+  console.log('Updated chart data:', this.chartData);
+}
+}
 });
 </script>
