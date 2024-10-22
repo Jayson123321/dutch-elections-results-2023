@@ -19,16 +19,18 @@
         <h3>{{ selectedAuthority?.authorityName }}</h3>
         <table>
           <tbody>
-          <tr v-for="vote in partyVotes" :key="vote.id">
+          <tr v-for="vote in partyVotes" :key="vote.id" class="party-vote-box">
             <td><span class="affiliation-name">{{ vote.affiliation.registeredName }}</span></td>
             <td>{{ vote.validVotes }} stemmen</td>
           </tr>
           </tbody>
         </table>
       </div>
+      <PieChart :chartData="chartData" :options="chartOptions"/>
     </div>
   </div>
 </template>
+
 
 <style>
 #titel {
@@ -67,16 +69,20 @@ thead {
   color: #ffffff;
 }
 
-tbody tr:nth-child(even) {
-  background-color: #b1afaf;
+tbody tr {
+  background-color: white;
 }
 
 #StembureauName {
-  margin-left: 30%;
-  font-size: 1.2em;
-  font-weight: bold;
-  color: #000000;
-  font-family: sans-serif;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.party-vote-box {
+  border: 1px solid black;
+  padding: 10px;
+  margin: 5px;
+  background-color:white;
 }
 
 .affiliation-name {
@@ -89,45 +95,47 @@ tbody tr:nth-child(even) {
   font-family: sans-serif;
 }
 
-#reportingUnit-select {
-  border-radius: 15px 15px 0 0;
-  font-family: sans-serif;
-  width: 20%;
-}
-
 .authority-select {
   font-family: sans-serif;
   font-weight: bold;
 }
 
-.reportingUnit-select {
-  font-family: sans-serif;
-  font-weight: bold;
-
-}
-
 canvas {
   max-height: 10%;
-
 }
 </style>
 
 <script>
 import { defineComponent } from 'vue';
+import { Pie } from 'vue-chartjs';
+import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js';
 import FooterComponent from "@/components/FooterComponent.vue";
 import HeaderComponent from "@/components/HeaderComponent.vue";
 
+ChartJS.register(Title, Tooltip, Legend, ArcElement);
+
 export default defineComponent({
-  name: 'ManagingAuthorities',
+  name: 'LocalAuthoritiesResults',
+  components: { FooterComponent, HeaderComponent, PieChart: Pie },
   data() {
     return {
       authorities: [],
       selectedAuthorityId: null,
       selectedAuthority: null,
-      partyVotes: []
+      partyVotes: [],
+      chartData: {
+        labels: [],
+        datasets: [{
+          data: [],
+          backgroundColor: []
+        }]
+      },
+      chartOptions: {
+        responsive: true,
+        maintainAspectRatio: false
+      }
     };
   },
-
   mounted() {
     this.fetchAuthorities();
   },
@@ -153,12 +161,25 @@ export default defineComponent({
             throw new Error('Failed to fetch party votes');
           }
           this.partyVotes = await response.json();
+          this.updateChartData();
         } catch (error) {
           console.error('Error fetching party votes:', error);
         }
       }
+    },
+    updateChartData() {
+      const labels = this.partyVotes.map(vote => vote.affiliation.registeredName);
+      const data = this.partyVotes.map(vote => vote.validVotes);
+      const backgroundColor = this.partyVotes.map(() => `#${Math.floor(Math.random()*16777215).toString(16)}`);
+
+      this.chartData = {
+        labels,
+        datasets: [{
+          data,
+          backgroundColor
+        }]
+      };
     }
-  },
-  components: { FooterComponent, HeaderComponent }
+  }
 });
 </script>

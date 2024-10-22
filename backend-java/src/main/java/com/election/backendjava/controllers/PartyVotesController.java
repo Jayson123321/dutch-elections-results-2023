@@ -18,4 +18,10 @@ public class PartyVotesController {
     public List<PartyVotes> getPartyVotesByReportingUnit(@PathVariable String reportingUnitId) {
         return partyVotesRepository.findByReportingUnitId(reportingUnitId);
     }
+
+    @GetMapping("/managing-authority/{managingAuthorityNumber}")
+    public List<PartyVotes> getPartyVotesByManagingAuthority(@PathVariable String managingAuthorityNumber) {
+        return partyVotesRepository.findByManagingAuthorityNumber(managingAuthorityNumber);
+    }
+
 }
