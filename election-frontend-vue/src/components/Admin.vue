@@ -11,20 +11,32 @@ export default {
   },
   data() {
     return {
-      users: []
+      users: [],
+      userCount: 0
     };
   },
   mounted() {
     this.fetchUsers();
+    this.fetchUserCount();
   },
   methods: {
     fetchUsers() {
-      axios.get('http://localhost:8080/api/users/all', { responseType: 'json' })
+      axios.get('http://localhost:8080/api/users/all')
           .then(response => {
             this.users = response.data;
           })
           .catch(error => {
             console.error('An error occurred while retrieving the user data:', error);
+          });
+    },
+    fetchUserCount() {
+      axios.get('http://localhost:8080/api/users/count')
+          .then(response => {
+            console.log(response);
+            this.userCount = response.data;
+          })
+          .catch(error => {
+            console.error('An error occurred while retrieving the user count:', error);
           });
     },
     deleteUser(userId) {
@@ -33,6 +45,7 @@ export default {
             .then(() => {
               alert('User successfully deleted.');
               this.fetchUsers();
+              this.fetchUserCount();
             })
             .catch(error => {
               console.error('An error occurred while deleting the user:', error);
@@ -47,15 +60,18 @@ export default {
   <div class="admin-page">
     <HeaderComponent/>
     <div class="table-container">
+      <div class="count-container">
+        <p>Total number of users: {{ userCount }}</p>
+      </div>
       <div v-if="users.length > 0">
         <div class="table-wrapper">
+          <h2 class="users-title">Users</h2>
           <table>
-            <h2>Users</h2> <!--class and font change-->
             <tbody>
             <tr v-for="user in users" :key="user.id">
-              <td>{{ user.username }}</td>
-              <td>
-                <button @click="deleteUser(user.id)">Delete user</button>
+              <td class="user-row">
+                <span class="user-data">{{ user.username }}</span>
+                <button @click="deleteUser(user.id)" class="delete-button">Delete user</button>
               </td>
             </tr>
             </tbody>
@@ -71,16 +87,18 @@ export default {
 </template>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
 html, body {
   margin: 0;
   padding: 0;
-  background-color: #111;
-  height: 100%;
-  overflow-x: hidden;
+  background-color: #111111;
+  font-family: 'Poppins', sans-serif;
+  color: white;
 }
 
 .admin-page {
-  background-color: #111;
+  background-color: #111111;
   min-height: 100vh;
   padding: 20px;
   display: flex;
@@ -97,9 +115,20 @@ html, body {
   width: 100%;
 }
 
+.count-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.users-title {
+  color: white;
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
 .table-wrapper {
-  max-height: 400px; /* hight table */
-  overflow-y: auto; /* Scroll */
+  max-height: 400px;
+  overflow-y: auto;
 }
 
 table {
@@ -107,19 +136,22 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
+td {
   padding: 12px 15px;
   text-align: left;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #555;
+  color: white;
 }
 
-th {
-  background-color: #f4f4f4;
-  font-weight: bold;
+.user-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-tr:hover {
-  background-color: #f9f9f9;
+.user-data {
+  color: white;
+  margin-right: 20px;
 }
 
 button {
@@ -128,17 +160,15 @@ button {
   color: white;
   border: none;
   border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
 }
 
 button:hover {
-  background-color: #c9302c;
+  background-color: #d9534f;
 }
 
 p {
   text-align: center;
   font-size: 18px;
-  color: #888;
+  color: white;
 }
 </style>
