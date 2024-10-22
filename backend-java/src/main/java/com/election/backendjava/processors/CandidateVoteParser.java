@@ -20,18 +20,23 @@ public class CandidateVoteParser {
 
     public void parseAndSaveVotes(String filePath) {
         try {
+            // 1. Open de XML file en parse het document
             File xmlFile = new File(filePath);
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(xmlFile);
 
+            // 2. Normaliseer het XML-document
             document.getDocumentElement().normalize();
 
+            // 3. Haal alle "Selection" nodes op
             NodeList selectionNodes = document.getElementsByTagName("Selection");
 
+            // 4. Loop door elke "Selection" node
             for (int i = 0; i < selectionNodes.getLength(); i++) {
                 Element selectionElement = (Element) selectionNodes.item(i);
 
+                // 5. Haal de "CandidateIdentifier" en "ValidVotes" op
                 String candidateIdentifier = selectionElement
                         .getElementsByTagName("CandidateIdentifier")
                         .item(0)
@@ -44,14 +49,12 @@ public class CandidateVoteParser {
                         .item(0)
                         .getTextContent());
 
+                // 6. Maak het CandidateVotes object aan en sla de data op
                 CandidateVotes candidateVotes = new CandidateVotes();
                 candidateVotes.setCandidateIdentifier(candidateIdentifier);
-                candidateVotes.setCandidateVoteCount(validVotes);
-                // Set other fields as needed
-                candidateVotes.setAffiliationId("affiliation_id"); // Example
-                candidateVotes.setManagingAuthorityIdentifier("managing_authority_identifier"); // Example
-                candidateVotes.setReportingUnitId("reporting_unit_id"); // Example
+                candidateVotes.setValidVotes(validVotes);
 
+                // 7. Sla het object op via de service
                 candidateVotesService.saveCandidateVotes(candidateVotes);
             }
         } catch (Exception e) {
@@ -59,3 +62,4 @@ public class CandidateVoteParser {
         }
     }
 }
+

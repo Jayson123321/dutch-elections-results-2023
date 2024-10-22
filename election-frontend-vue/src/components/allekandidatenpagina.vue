@@ -85,7 +85,7 @@ h1{
   list-style: none;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Aangepast voor 4 boxen */
+  grid-template-columns: repeat(4, 1fr); /* Aangepast voor 4 boxen */
   gap: 20px;
   justify-content: center;
 }

@@ -1,22 +1,3 @@
-<template>
-  <div class="container">
-    <HeaderComponent />
-    <h1>Uitslagen voor {{ candidate.candidateName }}</h1>
-    <div v-if="results.length">
-      <ul>
-        <li v-for="result in results" :key="result.id">
-          <p>Partij: {{ result.partyName }}</p>
-          <p>Stemmen: {{ result.votes }}</p>
-        </li>
-      </ul>
-    </div>
-    <div v-else>
-      <p>Geen uitslagen gevonden voor deze kandidaat.</p>
-    </div>
-    <FooterComponent />
-  </div>
-</template>
-
 <script>
 import FooterComponent from './FooterComponent.vue';
 import HeaderComponent from './HeaderComponent.vue';
@@ -30,13 +11,13 @@ export default {
   data() {
     return {
       candidate: {},
-      results: []
+      votes: []
     };
   },
   async created() {
     const candidateId = this.$route.params.id;
     await this.fetchCandidate(candidateId);
-    await this.fetchResults(candidateId);
+    await this.fetchVotes(candidateId);
   },
   methods: {
     async fetchCandidate(id) {
@@ -50,15 +31,15 @@ export default {
         console.error('Error fetching candidate:', error);
       }
     },
-    async fetchResults(candidateId) {
+    async fetchVotes(candidateId) {
       try {
-        const response = await fetch(`http://localhost:8080/api/results/candidate/${candidateId}`);
+        const response = await fetch(`http://localhost:8080/api/candidate/all/${candidateId}`);
         if (!response.ok) {
           throw new Error('HTTP error! status: ' + response.status);
         }
-        this.results = await response.json();
+        this.votes = await response.json();
       } catch (error) {
-        console.error('Error fetching results:', error);
+        console.error('Error fetching votes:', error);
       }
     }
   }
@@ -66,6 +47,10 @@ export default {
 </script>
 
 <style scoped>
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -76,7 +61,7 @@ export default {
 h1 {
   text-align: center;
   color: #333;
-  margin-bottom: 20px;
+  margin-top: 100px;
 }
 
 ul {

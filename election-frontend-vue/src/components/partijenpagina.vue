@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <HeaderComponent />
     <h1>Partijen en Kandidaten</h1>
     <div class="party-grid">
@@ -54,6 +54,28 @@ export default {
 </script>
 
 <style>
+/* Algemene stijlen voor de container */
+.container {
+  max-width: 1200px;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  margin: 50px auto 100px auto;
+  background-color: #f0f2f5;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Zorgt ervoor dat de inhoud in het midden staat */
+}
+
+/* Stijlen voor de lijst */
+.party-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Aangepast voor 2 boxen */
+  gap: 20px;
+  justify-content: center;
+}
+
 /* Algemene stijlen voor de boxen */
 .box {
   padding: 15px;
@@ -63,6 +85,8 @@ export default {
   background-color: #f9f9f9;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
+  max-width: 300px;
+  align-items: center;
 }
 
 .box:hover {
@@ -87,5 +111,6 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  max-width: 600px;
 }
 </style>

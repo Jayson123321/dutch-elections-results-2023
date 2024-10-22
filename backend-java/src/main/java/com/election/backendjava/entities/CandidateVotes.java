@@ -10,39 +10,19 @@ public class CandidateVotes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "candidate_votecount", nullable = false)
-    private int candidateVoteCount;
-
     @Column(name = "candidate_identifier", nullable = false)
     private String candidateIdentifier;
 
-    @Column(name = "affiliation_id", nullable = false)
-    private String affiliationId;
+    @Column(name = "valid_votes", nullable = false)
+    private int validVotes;
 
-    @Column(name = "managing_authority_identifier", nullable = false)
-    private String managingAuthorityIdentifier;
-
-    @Column(name = "managing_authority_number", nullable = false)
-    private int managingAuthorityNumber;
-
-    @Column(name = "reporting_unit_id", nullable = false)
-    private String reportingUnitId;
-
-    // Getters and Setters
+    // Getters en Setters
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public int getCandidateVoteCount() {
-        return candidateVoteCount;
-    }
-
-    public void setCandidateVoteCount(int candidateVoteCount) {
-        this.candidateVoteCount = candidateVoteCount;
     }
 
     public String getCandidateIdentifier() {
@@ -53,35 +33,11 @@ public class CandidateVotes {
         this.candidateIdentifier = candidateIdentifier;
     }
 
-    public String getAffiliationId() {
-        return affiliationId;
+    public int getValidVotes() {
+        return validVotes;
     }
 
-    public void setAffiliationId(String affiliationId) {
-        this.affiliationId = affiliationId;
-    }
-
-    public String getManagingAuthorityIdentifier() {
-        return managingAuthorityIdentifier;
-    }
-
-    public void setManagingAuthorityIdentifier(String managingAuthorityIdentifier) {
-        this.managingAuthorityIdentifier = managingAuthorityIdentifier;
-    }
-
-    public int getManagingAuthorityNumber() {
-        return managingAuthorityNumber;
-    }
-
-    public void setManagingAuthorityNumber(int managingAuthorityNumber) {
-        this.managingAuthorityNumber = managingAuthorityNumber;
-    }
-
-    public String getReportingUnitId() {
-        return reportingUnitId;
-    }
-
-    public void setReportingUnitId(String reportingUnitId) {
-        this.reportingUnitId = reportingUnitId;
+    public void setValidVotes(int validVotes) {
+        this.validVotes = validVotes;
     }
 }
