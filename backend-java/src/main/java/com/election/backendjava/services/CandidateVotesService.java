@@ -16,6 +16,7 @@ public class CandidateVotesService {
     public CandidateVotes saveCandidateVotes(CandidateVotes candidateVotes) {
         return candidateVotesRepository.save(candidateVotes);
     }
+
     public List<CandidateVotes> findVotesByCandidateIdentifier(String candidateIdentifier) {
         return candidateVotesRepository.findByCandidateIdentifier(candidateIdentifier);
     }

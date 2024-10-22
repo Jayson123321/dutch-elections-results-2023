@@ -20,7 +20,7 @@ public class CandidateVoteParser {
     private CandidateVotesService candidateVotesService;
 
     // Pad naar het XML-bestand (pas dit aan naar de locatie van jouw bestand)
-    private String xmlFilePath = "C:\\Users\\ruben\\OneDrive\\Documenten\\hva\\Totaaltelling_TK2023.eml.xml";
+    private String xmlFilePath = "code path";
 
     @PostConstruct
     public void parseAndSaveVotes() {

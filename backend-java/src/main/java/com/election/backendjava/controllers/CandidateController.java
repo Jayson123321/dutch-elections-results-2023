@@ -54,4 +54,5 @@ public class CandidateController {
             return ResponseEntity.notFound().build();
         }
     }
+
 }
