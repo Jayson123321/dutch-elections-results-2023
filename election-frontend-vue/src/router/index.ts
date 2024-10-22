@@ -14,6 +14,7 @@ import kandidatenpagina from "@/components/kandidatenpagina.vue";
 import allekandidatenpagina from "@/components/allekandidatenpagina.vue";
 import TotalResults from "@/components/TotalVotes.vue";
 import Admin from '../components/Admin.vue';
+import kandidatenuitslag from "@/components/kandidatenuitslag.vue";
 const routes = [
     { path: '/', component: home },
     { path: '/home', component: Home },
@@ -27,7 +28,8 @@ const routes = [
     { path: '/choose-results', component: ChooseResults },
     { path: '/totalResults', component: TotalResults },
     { path: '/allekandidatenpagina', component: allekandidatenpagina },
-    { path: '/admin', component: Admin }
+    { path: '/admin', component: Admin },
+    { path: '/kandidatenuitslag/:id', name: 'kandidatenuitslag', component: kandidatenuitslag, props: true }
 
 ];
 
