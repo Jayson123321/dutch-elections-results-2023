@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "candidate")
+@SuppressWarnings("unused")
 public class Candidate {
 
     @Id
@@ -22,8 +23,8 @@ public class Candidate {
     @Column(name = "qualifying_address", nullable = false)
     private String qualifyingAddress;
 
-    @ManyToOne
-    @JoinColumn(name = "affiliation_id", nullable = false, insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "affiliation_id", insertable = false, updatable = false)
     private Affiliation affiliation;
 
     @Column(name = "affiliation_id", nullable = false)
