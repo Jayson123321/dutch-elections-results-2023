@@ -1,12 +1,10 @@
 package com.election.backendjava.controllers;
 
-import com.election.backendjava.PartyVotes;
+import com.election.backendjava.entities.PartyVotes;
 import com.election.backendjava.repositories.PartyVotesRepository;
-import org.hibernate.query.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 @RestController
