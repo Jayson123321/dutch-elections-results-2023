@@ -1,12 +1,17 @@
+// CandidateController.java
 package com.election.backendjava.controllers;
 
 import com.election.backendjava.entities.Candidate;
+import com.election.backendjava.entities.CandidateVotes;
 import com.election.backendjava.services.CandidateService;
+import com.election.backendjava.services.CandidateVotesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -16,16 +21,38 @@ public class CandidateController {
 
     @Autowired
     private CandidateService candidateService;
+    @Autowired
+    private CandidateVotesService candidateVotesService;
 
-    // Endpoint om kandidaten op basis van affiliationId op te halen
     @GetMapping
     public List<Candidate> getCandidatesByAffiliationId(@RequestParam String affiliationId) {
         return candidateService.getCandidatesByAffiliationId(affiliationId);
     }
 
-    // Endpoint om alle kandidaten op te halen
     @GetMapping("/all")
     public List<Candidate> getAllCandidates() {
         return candidateService.getAllCandidates();
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Candidate> getCandidateById(@PathVariable Long id) {
+        Candidate candidate = candidateService.findCandidateById(id);
+        if (candidate != null) {
+            return ResponseEntity.ok(candidate);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Pas deze methode aan om te zoeken naar candidateIdentifier (String)
+    @GetMapping("/votes/{identifier}")
+    public ResponseEntity<List<CandidateVotes>> getVotesByCandidateIdentifier(@PathVariable String identifier) {
+        List<CandidateVotes> votes = candidateVotesService.findVotesByCandidateIdentifier(identifier);
+        if (votes != null && !votes.isEmpty()) {
+            return ResponseEntity.ok(votes);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

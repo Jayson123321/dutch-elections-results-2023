@@ -1,7 +1,9 @@
 package com.election.backendjava.services;
 
 import com.election.backendjava.entities.Candidate;
+import com.election.backendjava.entities.CandidateVotes;
 import com.election.backendjava.repositories.CandidateRepository;
+import com.election.backendjava.repositories.CandidateVotesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,5 +23,12 @@ public class CandidateService {
     // Haal alle kandidaten op
     public List<Candidate> getAllCandidates() {
         return candidateRepository.findAll();
+    }
+
+    @Autowired
+    private CandidateVotesRepository candidateVotesRepository;
+
+    public Candidate findCandidateById(Long id) {
+        return candidateRepository.findById(id).orElse(null);
     }
 }

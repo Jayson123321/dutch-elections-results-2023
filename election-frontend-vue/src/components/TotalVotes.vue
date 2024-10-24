@@ -61,9 +61,9 @@ export default defineComponent({
 
       const ctx = this.$refs.electionResults.getContext('2d');
       const colors = [
-        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#FFCD56', '#4BC0C0', '#36A2EB', '#FF6384',
-        '#FF9F40', '#9966FF', '#FFCE56', '#4BC0C0', '#36A2EB', '#FF6384', '#FF9F40', '#9966FF', '#FFCE56', '#4BC0C0',
-        '#36A2EB', '#f83964', '#FF9F40', '#ff6691', '#FFCE56', '#4BC0C0'
+        '#C0392B', '#74E600', '#36A2EB', '#99198C', '#9966FF', '#FF9F40', 'pink', '#661100', '#117733', '#882255',
+        '#332288', '#44AA99', '#FF3D00', '#3D1F0A', '#454416', 'gray', 'red', '#black', '#A62800', '#9B59B6',
+        '#F1C40F', '#f83964', '#FF9F40', '#ff6691', '#7F8C8D', '#163BF5'
       ];
 
       const totalVotes = this.results.reduce((sum, result) => sum + result.totalVotes, 0);
