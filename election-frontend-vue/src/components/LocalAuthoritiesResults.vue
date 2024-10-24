@@ -5,7 +5,7 @@
     <span class="authority-select"><label for="authority-select">Selecteer een gemeente</label></span>
     <select id="authority-select" v-model="selectedAuthorityId" @change="showAllSelectedAuthorityVotes">
       <option value="" disabled>Selecteer een gemeente</option>
-      <option v-for="authority in localAuthorities" :key="authority.id" :value="authority.id">
+      <option v-for="authority in localAuthorities" >
         {{ authority.authorityName }}
       </option>
     </select>
@@ -22,7 +22,7 @@ canvas {
 </style>
 
 <script>
-import {defineComponent} from "vue";
+import {defineComponent, watch} from "vue";
 import HeaderComponent from "@/components/HeaderComponent.vue";
 
 export default defineComponent({
@@ -31,6 +31,7 @@ export default defineComponent({
   data() {
     return {
       localAuthorities: [],
+      selectedAuthorityId: null,
       chart: null
     }
   },
@@ -40,11 +41,11 @@ export default defineComponent({
   methods: {
     getAuthorities() {
       fetch('http://localhost:8080/api/managing-authorities/getAllAuthorities')
-        .then(response => response.json())
-        .then(data => {
-          this.localAuthorities = data;
-          this.createChart();
-        })
+          .then(response => response.json())
+          .then(data => {
+            this.localAuthorities = data;
+            this.createChart();
+          })
     },
     createChart() {
       const ctx = document.getElementById('local-authorities-chart').getContext('2d');
@@ -67,8 +68,11 @@ export default defineComponent({
         }
       })
     }
+  },
+  watch: {
+    selectedAuthorityId(newVal) {
+      console.log('Selected Authority ID:', newVal);
+    }
   }
 })
-
-
 </script>
