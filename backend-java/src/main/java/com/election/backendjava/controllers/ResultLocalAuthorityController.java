@@ -17,7 +17,7 @@ public class ResultLocalAuthorityController {
     @Autowired
     private ResultLocalAuthorityRepository resultLocalAuthorityRepository;
     // Get all the votes for a specific authority
-    @GetMapping("/authority/{authorityId}")
+    @GetMapping("{authorityId}")
     public List<AuthorityTotalVote> getAuthorityTotalVotes(@PathVariable String authorityId) {
         return resultLocalAuthorityRepository.findByAuthorityId(authorityId);
     }

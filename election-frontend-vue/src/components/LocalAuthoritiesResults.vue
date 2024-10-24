@@ -5,24 +5,51 @@
     <span class="authority-select"><label for="authority-select">Selecteer een gemeente</label></span>
     <select id="authority-select" v-model="selectedAuthorityId" @change="showAllSelectedAuthorityVotes">
       <option value="" disabled>Selecteer een gemeente</option>
-      <option v-for="authority in localAuthorities" >
+      <option v-for="authority in localAuthorities" :key="authority.id" :value="authority.id">
         {{ authority.authorityName }}
       </option>
     </select>
     <canvas id="local-authorities-chart"></canvas>
+    <table v-if="votes.length">
+      <thead>
+      <tr>
+        <th>Affiliation ID</th>
+        <th>Authority ID</th>
+        <th>Valid Votes</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="vote in votes" :key="vote.id">
+        <td>{{ vote.affiliationId }}</td>
+        <td>{{ vote.authorityId }}</td>
+        <td>{{ vote.validVotes }}</td>
+      </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
 <style>
-
 canvas {
   max-height: 400px;
   margin-top: 2rem;
 }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+}
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+th {
+  background-color: #f2f2f2;
+}
 </style>
 
 <script>
-import {defineComponent, watch} from "vue";
+import {defineComponent} from "vue";
 import HeaderComponent from "@/components/HeaderComponent.vue";
 
 export default defineComponent({
@@ -32,6 +59,7 @@ export default defineComponent({
     return {
       localAuthorities: [],
       selectedAuthorityId: null,
+      votes: [],
       chart: null
     }
   },
@@ -47,6 +75,34 @@ export default defineComponent({
             this.createChart();
           })
     },
+    async fetchAuthorityTotalVotes() {
+      const selectedAuthority = this.localAuthorities.find(authority => authority.id === this.selectedAuthorityId) || null;
+      if (!selectedAuthority) {
+        console.log('Geen gemeente geselecteerd');
+        return;
+      }
+      try {
+        const response = await fetch(`http://localhost:8080/api/result-local-authority/${selectedAuthority.authorityIdentifier}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch authority votes');
+        }
+        return await response.json();
+      } catch (error) {
+        console.error('Error fetching authority votes:', error);
+      }
+    },
+    async showAllSelectedAuthorityVotes() {
+      const selectedAuthority = this.localAuthorities.find(authority => authority.id === this.selectedAuthorityId) || null;
+      if (selectedAuthority) {
+        console.log(selectedAuthority.authorityIdentifier);
+        const votes = await this.fetchAuthorityTotalVotes();
+        this.votes = votes;
+        console.log(votes);
+      } else {
+        console.log('Geen gemeente geselecteerd');
+      }
+    },
+
     createChart() {
       const ctx = document.getElementById('local-authorities-chart').getContext('2d');
       this.chart = new Chart(ctx, {
@@ -67,11 +123,6 @@ export default defineComponent({
           }
         }
       })
-    }
-  },
-  watch: {
-    selectedAuthorityId(newVal) {
-      console.log('Selected Authority ID:', newVal);
     }
   }
 })
