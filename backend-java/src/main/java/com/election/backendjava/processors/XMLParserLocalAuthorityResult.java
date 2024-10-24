@@ -1,6 +1,6 @@
 package com.election.backendjava.processors;
 
-import com.election.backendjava.entities.ResultLocalAuthority;
+import com.election.backendjava.entities.AuthorityTotalVote;
 import com.election.backendjava.repositories.ResultLocalAuthorityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,15 +44,12 @@ public class XMLParserLocalAuthorityResult {
                                 String affiliationIdentifier = selectionElement.getElementsByTagName("AffiliationIdentifier").item(0).getAttributes().getNamedItem("Id").getNodeValue();
                                 int validVotes = Integer.parseInt(selectionElement.getElementsByTagName("ValidVotes").item(0).getTextContent());
                                 // Save to database
-                                ResultLocalAuthority result = new ResultLocalAuthority();
-                                // Value 'authorityIdentifier' set into electrionResult object
-                                result.setAuthorityIdentifier(authorityIdentifier);
-                                // Value 'affiliationIdentifier' set into electrionResult object
-                                result.setAffiliationIdentifier(affiliationIdentifier);
-                                // Value 'validVotes' set into electrionResult object
-                                result.setValidVotes(validVotes);
+                                AuthorityTotalVote authorityTotalVote = new AuthorityTotalVote();
+                                authorityTotalVote.setAuthorityIdentifier(authorityIdentifier);
+                                authorityTotalVote.setAffiliationIdentifier(affiliationIdentifier);
+                                authorityTotalVote.setValidVotes(validVotes);
+                                ResultLocalAuthorityRepository.save(authorityTotalVote);
 
-                                ResultLocalAuthorityRepository.save(result);
                             }
                         }
                     }

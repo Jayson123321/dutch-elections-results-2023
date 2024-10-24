@@ -48,4 +48,11 @@ public class AuthorityTotalVote {
     public Long getId() {
         return id;
     }
+
+    public void setAuthorityIdentifier(String authorityIdentifier) {
+
+    }
+
+    public void setAffiliationIdentifier(String affiliationIdentifier) {
+    }
 }
