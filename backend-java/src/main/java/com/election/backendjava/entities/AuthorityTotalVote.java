@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "authority_total_votes")
 public class AuthorityTotalVote {
+    @Id
+    private Long id;
     @Column(name = "affiliation_id")
     private Integer affiliationId;
 
@@ -14,8 +16,6 @@ public class AuthorityTotalVote {
 
     @Column(name = "valid_votes")
     private Integer validVotes;
-    @Id
-    private Long id;
 
     public Integer getAffiliationId() {
         return affiliationId;
