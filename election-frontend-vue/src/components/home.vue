@@ -1,6 +1,7 @@
 <script>
 import FooterComponent from './FooterComponent.vue'
 import HeaderComponent from './HeaderComponent.vue'
+import '/src/assets/base.css';
 export default {
   name: "Home",
   components: {
@@ -37,6 +38,12 @@ export default {
   </div>
 </template>
 <style>
+body {
+  background-color: var(--color-background);
+}
+h1 {
+  color: var(--color-H1-Title);
+}
 .homepage {
   margin-top: 100px;
   text-align: center;
@@ -47,6 +54,7 @@ export default {
   display: flex;
   justify-content: space-around;
   margin-top: 50px;
+  color: var(--vt-c-white);
 }
 
 .flexcontainer a {
@@ -63,16 +71,16 @@ export default {
   align-items: center;
   justify-content: center;
   padding: 20px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--box-border-color);
   border-radius: 8px;
   transition: background-color 0.3s ease;
   width: 600px;
   height: 600px;
   margin: 10px;
-
 }
 
 .flexbox:hover {
-  background-color: #f0f0f0;
+  background-color: var(--vt-c-white-soft);
+  color: var(--vt-c-black);
 }
 </style>

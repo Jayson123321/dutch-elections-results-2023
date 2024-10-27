@@ -35,16 +35,15 @@ canvas {
   margin-top: 2rem;
 }
 table {
-  width: 100%;
+  width: 50%;
   border-collapse: collapse;
   margin-top: 2rem;
 }
 th, td {
-  border: 1px solid #ddd;
   padding: 8px;
 }
 th {
-  background-color: #f2f2f2;
+  color: coral;
 }
 </style>
 
@@ -96,8 +95,8 @@ export default defineComponent({
       if (selectedAuthority) {
         console.log(selectedAuthority.authorityIdentifier);
         const votes = await this.fetchAuthorityTotalVotes();
-        this.votes = votes;
-        console.log(votes);
+        this.votes = votes.sort((a, b) => b.validVotes - a.validVotes);
+        console.log(this.votes);
       } else {
         console.log('Geen gemeente geselecteerd');
       }

@@ -20,6 +20,7 @@
   --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
   --vt-c-text-dark-1: var(--vt-c-white);
   --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
+  --table-border-color-orange: rgb(144, 48, 15);
 
 }
 
@@ -31,9 +32,21 @@
   --color-H1-Title:var(--vt-c-white);
   --color-box-border: var(--box-border-color);
   --color-text: var(--vt-c-white);
-  --color-border-hover: var(--vt-c-divider-light-1);
+  --color-border-hover-text: var(--vt-c-black);
   --color-heading: var(--vt-c-text-light-1);
+  --table-header-text-color: #ffffff;
+  --table-border-color: var(--box-border-color);
   --section-gap: 160px;
+  :root {
+    --table-header-bg-color: #000000;
+    --table-header-text-color: #ffffff;
+    --table-row-even-bg-color: #b1afaf;
+    --table-cell-padding: 8px 12px;
+    --table-font-family: sans-serif;
+    --table-font-size: 1em;
+    --table-header-font-size: 1.2em;
+    --table-header-font-weight: bold;
+  }
 }
 
 @media (prefers-color-scheme: dark) {

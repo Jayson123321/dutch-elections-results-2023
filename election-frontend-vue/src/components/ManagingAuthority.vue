@@ -29,8 +29,8 @@
         <h3>{{ selectedReportingUnitId ? reportingUnits.find(unit => unit.id === selectedReportingUnitId)?.name : '' }}</h3>
         <table>
           <tbody>
-          <tr v-for="vote in partyVotes" :key="vote.id">
-            <td><span class="affiliation-name">{{ vote.affiliation.registeredName }}</span></td>
+          <tr v-for="(vote, index) in partyVotes" :key="vote.id">
+            <td><span class="affiliation-name">{{ index + 1 }}. {{ vote.affiliation.registeredName }}</span></td>
             <td>{{ vote.validVotes }} stemmen</td>
           </tr>
           </tbody>
@@ -45,7 +45,6 @@
   text-align: center;
   margin-top: 5%;
   font-size: larger;
-  font-family: sans-serif;
 }
 
 label {
@@ -61,59 +60,46 @@ select {
   margin-top: 10px;
 }
 
-table {
-  border-collapse: collapse;
-}
-
 th, td {
   padding: 8px 12px;
+  border: none;
   display: block;
   margin: 20px;
-  border: none;
+  width: 50%;
+  border-color: white;
 }
-
-thead {
-  background-color: #000000;
-  color: #ffffff;
-}
-
-tbody tr:nth-child(even) {
-  background-color: #b1afaf;
+table {
+  border: white;
 }
 
 #StembureauName {
   margin-left: 30%;
   font-size: 1.2em;
   font-weight: bold;
-  color: #000000;
-  font-family: sans-serif;
+  border: none;
+  color: #cccccc;
 }
 
 .affiliation-name {
   font-size: x-large;
-  font-family: sans-serif;
+  color: white;
 }
 
 #authority-select {
   border-radius: 15px 15px 0 0;
-  font-family: sans-serif;
 }
 
 #reportingUnit-select {
   border-radius: 15px 15px 0 0;
-  font-family: sans-serif;
   width: 20%;
 }
 
 .authority-select {
-  font-family: sans-serif;
   font-weight: bold;
 }
 
 .reportingUnit-select {
-  font-family: sans-serif;
   font-weight: bold;
-
 }
 
 canvas {
