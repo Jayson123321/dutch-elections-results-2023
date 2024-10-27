@@ -2,14 +2,10 @@
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-section about">
-        <h3>Over Ons</h3>
-        <p>Wij zijn een toonaangevend bedrijf in de sector, toegewijd aan het leveren van de beste diensten aan onze klanten.</p>
       </div>
       <div class="footer-section links">
-        <h3>Navigatie</h3>
         <ul>
           <li><a href="#">Home</a></li>
-          <li><a href="#">Diensten</a></li>
           <li><a href="#">Over Ons</a></li>
           <li><a href="#">Contact</a></li>
         </ul>
