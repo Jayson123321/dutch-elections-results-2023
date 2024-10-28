@@ -14,17 +14,17 @@
         {{ authority.authorityName }}
       </option>
     </select>
-    <span class="reportingUnit-select"><label for="reportingUnit-select">Selecteer een stembureau</label></span>
     <v-autocomplete
+        v-if="selectedAuthorityId"
         v-model="selectedReportingUnitId"
         :items="reportingUnits"
         item-title="name"
         item-value="id"
         placeholder="Zoek een stembureau"
         persistent-placeholder
-        clearable
+        clearable>
     ></v-autocomplete>
-    <button @click="fetchPartyVotesByReportingUnitAndAuthorityNumber">Toon stemmen</button>
+    <button v-if="selectedAuthorityId && selectedReportingUnitId" @click="fetchPartyVotesByReportingUnitAndAuthorityNumber">Toon stemmen</button>
     <div v-if="partyVotes.length > 0">
       <div id="StembureauName">
         <h3>{{ selectedReportingUnitId ? reportingUnits.find(unit => unit.id === selectedReportingUnitId)?.name : '' }}</h3>
