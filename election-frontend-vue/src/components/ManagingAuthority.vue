@@ -14,15 +14,16 @@
         {{ authority.authorityName }}
       </option>
     </select>
-
     <span class="reportingUnit-select"><label for="reportingUnit-select">Selecteer een stembureau</label></span>
-    <select id="reportingUnit-select" v-model="selectedReportingUnitId"
-            @change="() => fetchPartyVotesByReportingUnitAndAuthorityNumber(selectedReportingUnitId, selectedAuthority.authorityIdentifier)">
-      <option value="" disabled>Selecteer een Stembureau</option>
-      <option v-for="reportingUnit in reportingUnits" :key="reportingUnit.id" :value="reportingUnit.id">
-        {{ reportingUnit.name }}
-      </option>
-    </select>
+    <v-autocomplete
+        v-model="selectedReportingUnitId"
+        :items="reportingUnits"
+        item-title="name"
+        item-text="name"
+        item-value="id"
+        label="Selecteer een stembureau"
+        outlined>
+    ></v-autocomplete>
 
     <div v-if="partyVotes.length > 0">
       <div id="StembureauName">
@@ -146,7 +147,6 @@ export default defineComponent({
       }
     },
     async showAllSelectedAuthorityVotes() {
-      // Vergelijkt de id van de geselecteerde gemeente (authority) met de id van de autoriteit in de list
       this.selectedAuthority = this.authorities.find(authority => authority.id === this.selectedAuthorityId) || null;
 
       if (this.selectedAuthority) {
@@ -200,7 +200,6 @@ export default defineComponent({
       }
     },
     renderChart() {
-      // Destroy the previous chart if it exists
       if (this.chart) {
         this.chart.destroy();
       }
@@ -227,12 +226,9 @@ export default defineComponent({
             }
           },
           plugins: {
-            // Tooltip nodig om stemmen en percentage te laten zien
             tooltip: {
               callbacks: {
-                // function =
                 label: function(context) {
-                  // Get the raw value of the data point
                   const value = context.raw;
                   const percentage = ((value / totalVotes) * 100).toFixed(2);
                   return `${value} stemmen (${percentage}%)`;
