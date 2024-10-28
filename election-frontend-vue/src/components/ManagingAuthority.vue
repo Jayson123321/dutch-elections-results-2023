@@ -19,12 +19,12 @@
         v-model="selectedReportingUnitId"
         :items="reportingUnits"
         item-title="name"
-        item-text="name"
         item-value="id"
-        label="Selecteer een stembureau"
-        outlined>
+        placeholder="Zoek een stembureau"
+        persistent-placeholder
+        clearable
     ></v-autocomplete>
-
+    <button @click="fetchPartyVotesByReportingUnitAndAuthorityNumber">Toon stemmen</button>
     <div v-if="partyVotes.length > 0">
       <div id="StembureauName">
         <h3>{{ selectedReportingUnitId ? reportingUnits.find(unit => unit.id === selectedReportingUnitId)?.name : '' }}</h3>
