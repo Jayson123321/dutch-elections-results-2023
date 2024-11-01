@@ -16,4 +16,6 @@ public class CandidateVotesController {
     public CandidateVotes saveCandidateVotes(@RequestBody CandidateVotes candidateVotes) {
         return candidateVotesService.saveCandidateVotes(candidateVotes);
     }
+
+
 }
