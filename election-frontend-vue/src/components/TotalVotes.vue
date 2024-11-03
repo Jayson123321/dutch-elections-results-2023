@@ -167,7 +167,7 @@ th {
 }
 
 tr:hover {
-  background-color: #ddd;
+  background-color: #7e7d7d;
   transform: scale(1.05);
   transition: transform 0.2s ease;
 }
