@@ -4,12 +4,15 @@
       <div class="logo">
       </div>
       <nav class="nav">
-        <ul>
-          <li><router-link to="/">Home</router-link></li>
-          <li><router-link to="/about">Over Ons</router-link></li>
-          <li><router-link to="/contact">Contact</router-link></li>
-        </ul>
+        <div class="header-section links">
+          <ul>
+            <li><router-link to="/">Home</router-link></li>
+            <li><router-link to="/about">Over Ons</router-link></li>
+            <li><router-link to="/contact">Contact</router-link></li>
+          </ul>
+        </div>
       </nav>
+
       <div class="search-container">
         <input type="text" class="search-input" placeholder="Zoeken...">
         <button class="search-button">
@@ -53,14 +56,11 @@ export default {
 
 <style>
 .header {
-  background-color: #333;
-  color: white;
   padding: 10px 0;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  position: fixed;
   top: 0;
   z-index: 1000;
 }
@@ -89,14 +89,10 @@ export default {
 }
 
 .nav ul li a {
-  color: white;
   text-decoration: none;
   font-size: 18px;
   transition: color 0.3s;
-}
 
-.nav ul li a:hover {
-  color: #78b178;
 }
 
 .search-container {
@@ -115,7 +111,6 @@ export default {
   background-color: transparent;
   border: none;
   cursor: pointer;
-  color: white;
   margin-left: 8px;
 }
 
@@ -126,7 +121,6 @@ export default {
 }
 
 .account a {
-  color: white;
   font-size: 24px;
   text-decoration: none;
 }
@@ -135,8 +129,4 @@ export default {
   cursor: pointer;
 }
 
-:root[data-theme='dark'] .toggle-dark-mode-image .c {
-  stroke: #ffffff;
-
-}
 </style>
