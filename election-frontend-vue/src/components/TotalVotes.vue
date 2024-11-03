@@ -166,10 +166,6 @@ th {
   text-align: left;
 }
 
-tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
 tr:hover {
   background-color: #ddd;
   transform: scale(1.05);
