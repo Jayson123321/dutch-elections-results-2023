@@ -126,7 +126,6 @@ export default defineComponent({
 .chartContainer {
   width: 35%;
   float: right;
-  background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   max-height: 600px;
