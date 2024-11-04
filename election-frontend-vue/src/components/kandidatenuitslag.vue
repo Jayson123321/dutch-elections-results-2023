@@ -93,7 +93,6 @@ h1 {
 
 h1 {
   text-align: center;
-  color: #333;
   margin-top: 100px;
 }
 

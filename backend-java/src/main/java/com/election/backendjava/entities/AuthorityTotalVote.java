@@ -7,8 +7,10 @@ import jakarta.persistence.*;
 public class AuthorityTotalVote {
     @Id
     private Long id;
-    @Column(name = "affiliation_id")
-    private Integer affiliationId;
+
+    @ManyToOne
+    @JoinColumn(name = "affiliation_id", referencedColumnName = "affiliation_id")
+    private Affiliation affiliation;
 
     @Lob
     @Column(name = "authority_id")
@@ -17,12 +19,20 @@ public class AuthorityTotalVote {
     @Column(name = "valid_votes")
     private Integer validVotes;
 
-    public Integer getAffiliationId() {
-        return affiliationId;
+    public Long getId() {
+        return id;
     }
 
-    public void setAffiliationId(Integer affiliationId) {
-        this.affiliationId = affiliationId;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Affiliation getAffiliation() {
+        return affiliation;
+    }
+
+    public void setAffiliation(Affiliation affiliation) {
+        this.affiliation = affiliation;
     }
 
     public String getAuthorityId() {
@@ -38,19 +48,10 @@ public class AuthorityTotalVote {
     }
 
     public void setValidVotes(Integer validVotes) {
-        this.validVotes = validVotes;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public void setAuthorityIdentifier(String authorityIdentifier) {
-
     }
 
     public void setAffiliationIdentifier(String affiliationIdentifier) {

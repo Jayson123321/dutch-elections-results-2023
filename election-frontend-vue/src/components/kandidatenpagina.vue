@@ -60,7 +60,6 @@ export default {
 
 h1 {
   text-align: center;
-  color: #333;
   margin-bottom: 20px;
 }
 

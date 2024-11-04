@@ -12,8 +12,7 @@
       </div>
       <div class="footer-section contact">
         <h3>Contact</h3>
-        <p>Email: info@bedrijf.com</p>
-        <p>Telefoon: 06-12345678</p>
+        <p>Email: info@democrazy.com</p>
       </div>
       <div class="footer-section social">
         <h3>Volg Ons</h3>
@@ -34,8 +33,6 @@ export default {
 
 <style>
 .footer {
-  background-color: #333;
-  color: white;
   padding: 40px 0;
   display: flex;
   justify-content: center;
@@ -63,13 +60,11 @@ export default {
 
 .footer-section p,
 .footer-section a {
-  color: white;
   text-decoration: none;
   margin: 5px 0;
 }
 
 .footer-section a:hover {
-  color: #78b178;
 }
 
 .footer-section ul {
@@ -82,7 +77,6 @@ export default {
 }
 
 .footer-section ul li a {
-  color: white;
   text-decoration: none;
 }
 

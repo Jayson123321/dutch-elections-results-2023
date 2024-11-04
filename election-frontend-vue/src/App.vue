@@ -1,4 +1,7 @@
 <script setup lang="ts">
+if (!localStorage.getItem('theme')) {
+  document.documentElement.setAttribute('data-theme', 'dark');
+}
 </script>
 
 <template>

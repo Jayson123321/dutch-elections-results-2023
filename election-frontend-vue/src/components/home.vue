@@ -41,20 +41,16 @@ export default {
 body {
   background-color: var(--color-background);
 }
-h1 {
-  color: var(--color-H1-Title);
-}
 .homepage {
   margin-top: 100px;
   text-align: center;
   align-items: center;
-  height: calc(100vh - 200px); /* hoogte van de pagina minus de header en footer */
+  height: calc(100vh - 200px);
 }
 .flexcontainer {
   display: flex;
   justify-content: space-around;
   margin-top: 50px;
-  color: var(--vt-c-white);
 }
 
 .flexcontainer a {

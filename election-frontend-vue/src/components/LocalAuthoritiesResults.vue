@@ -1,66 +1,135 @@
 <template>
   <div>
     <HeaderComponent/>
-    <h1>test</h1>
+    <div id="titel">
+      <h1>Score per stembureau</h1>
+      <h1>Verkiezingen 2023 gemeente {{ selectedAuthority?.authorityName }}</h1>
+    </div>
+    <canvas id="local-authorities-chart"></canvas>
     <span class="authority-select"><label for="authority-select">Selecteer een gemeente</label></span>
     <select id="authority-select" v-model="selectedAuthorityId" @change="showAllSelectedAuthorityVotes">
       <option value="" disabled>Selecteer een gemeente</option>
-      <option v-for="authority in localAuthorities" :key="authority.id" :value="authority.id">
+      <option class="authorityList" v-for="authority in localAuthorities" :key="authority.id" :value="authority.id">
         {{ authority.authorityName }}
       </option>
     </select>
-    <canvas id="local-authorities-chart"></canvas>
-    <table v-if="votes.length">
-      <thead>
-      <tr>
-        <th>Affiliation ID</th>
-        <th>Authority ID</th>
-        <th>Valid Votes</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="vote in votes" :key="vote.id">
-        <td>{{ vote.affiliationId }}</td>
-        <td>{{ vote.authorityId }}</td>
-        <td>{{ vote.validVotes }}</td>
-      </tr>
-      </tbody>
-    </table>
+    <button v-if="selectedReportingUnitId" @click="fetchPartyVotesByReportingUnitAndAuthorityNumber">Toon stemmen</button>
+    <div v-if="votes.length > 0">
+      <div id="StembureauName">
+        <h3>{{ selectedReportingUnitId ? reportingUnits.find(unit => unit.id === selectedReportingUnitId)?.name : '' }}</h3>
+        <table>
+          <tbody>
+          <tr v-for="(vote, index) in votes" :key="vote.id">
+            <td><span class="affiliation-name">{{ index + 1 }}. {{ vote.affiliation.registeredName }}</span></td>
+            <td>{{ vote.validVotes }} stemmen</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </template>
 
 <style>
-canvas {
-  max-height: 400px;
-  margin-top: 2rem;
+#titel {
+  text-align: center;
+  margin-top: 5%;
+  font-size: larger;
 }
-table {
-  width: 50%;
-  border-collapse: collapse;
-  margin-top: 2rem;
+
+label {
+  margin-right: 10px;
+  display: block;
+  margin-top: 20px;
+  color: var(--color-text);
 }
+
+select {
+  margin-bottom: 20px;
+  padding: 5px;
+  display: block;
+  margin-top: 10px;
+  background-color: var(--color-background-soft);
+  color: var(--color-text);
+}
+
 th, td {
-  padding: 8px;
+  padding: 8px 12px;
+  border: none;
+  display: block;
+  margin: 20px;
+  width: 50%;
+  border-color: var(--color-border);
+  color: var(--color-text);
 }
-th {
-  color: coral;
+
+table {
+  border: var(--color-border);
+}
+
+#StembureauName {
+  margin-left: 30%;
+  font-size: 1.2em;
+  font-weight: bold;
+  border: none;
+  color: var(--color-text);
+}
+
+.affiliation-name {
+  font-size: x-large;
+  color: var(--color-text);
+}
+
+#authority-select {
+  border-radius: 15px 15px 0 0;
+  border: var(--color-border);
+  background-color: var(--color-background-soft);
+  color: var(--color-text);
+}
+
+#reportingUnit-select {
+  border-radius: 15px 15px 0 0;
+  width: 20%;
+  background-color: var(--color-background-soft);
+  color: var(--color-text);
+}
+
+.authority-select {
+  font-weight: bold;
+  color: var(--color-text);
+  border-color: var(--color-border-hover);
+}
+
+.reportingUnit-select {
+  font-weight: bold;
+  color: var(--color-text);
+}
+
+canvas {
+  max-height: 10%;
 }
 </style>
 
 <script>
-import {defineComponent} from "vue";
+import { defineComponent } from 'vue';
 import HeaderComponent from "@/components/HeaderComponent.vue";
+import { Chart, PieController, ArcElement, Tooltip, Legend } from 'chart.js';
+
+Chart.register(PieController, ArcElement, Tooltip, Legend);
 
 export default defineComponent({
-  components: {HeaderComponent},
-  name : 'LocalAuthoritiesResults',
+  components: { HeaderComponent },
+  name: 'LocalAuthoritiesResults',
   data() {
     return {
       localAuthorities: [],
       selectedAuthorityId: null,
+      selectedAuthority: null,
+      selectedReportingUnitId: null,
       votes: [],
+      reportingUnits: [],
       chart: null
-    }
+    };
   },
   mounted() {
     this.getAuthorities();
@@ -71,8 +140,7 @@ export default defineComponent({
           .then(response => response.json())
           .then(data => {
             this.localAuthorities = data;
-            this.createChart();
-          })
+          });
     },
     async fetchAuthorityTotalVotes() {
       const selectedAuthority = this.localAuthorities.find(authority => authority.id === this.selectedAuthorityId) || null;
@@ -91,38 +159,75 @@ export default defineComponent({
       }
     },
     async showAllSelectedAuthorityVotes() {
-      const selectedAuthority = this.localAuthorities.find(authority => authority.id === this.selectedAuthorityId) || null;
-      if (selectedAuthority) {
-        console.log(selectedAuthority.authorityIdentifier);
+      this.selectedAuthority = this.localAuthorities.find(authority => authority.id === this.selectedAuthorityId) || null;
+      if (this.selectedAuthority) {
+        console.log(this.selectedAuthority.authorityIdentifier);
         const votes = await this.fetchAuthorityTotalVotes();
         this.votes = votes.sort((a, b) => b.validVotes - a.validVotes);
         console.log(this.votes);
+        this.$nextTick(() => {
+          this.renderPieChart();
+        });
       } else {
         console.log('Geen gemeente geselecteerd');
       }
     },
+    async fetchPartyVotesByReportingUnitAndAuthorityNumber() {
+      this.votes = [];
+      try {
+        let reportingUnit = this.reportingUnits.find(reportingUnit => reportingUnit.id === this.selectedReportingUnitId);
+        let authority = this.localAuthorities.find(authority => authority.id === this.selectedAuthorityId);
+        const response = await fetch(`http://localhost:8080/api/managing-authorities/${reportingUnit.managingAuthorityNumber}/party-votes/${authority.authorityIdentifier}`, {
+          method: 'GET'
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch party votes for reporting unit');
+        }
+        this.votes = await response.json();
+        this.votes.sort((a, b) => b.validVotes - a.validVotes);
+        console.log(this.votes);
+        this.$nextTick(() => {
+          this.renderPieChart();
+        });
+      } catch (error) {
+        console.error('Error fetching party votes for reporting unit:', error);
+      }
+    },
+    renderPieChart() {
+      if (this.chart) {
+        this.chart.destroy();
+      }
 
-    createChart() {
-      const ctx = document.getElementById('local-authorities-chart').getContext('2d');
-      this.chart = new Chart(ctx, {
-        type: 'bar',
+      const chart = document.getElementById('local-authorities-chart').getContext('2d');
+      const totalVotes = this.votes.reduce((sum, vote) => sum + vote.validVotes, 0);
+
+      this.chart = new Chart(chart, {
+        type: 'pie',
         data: {
-          labels: this.localAuthorities.map(authority => authority.name),
+          labels: this.votes.map(vote => vote.affiliation.registeredName),
           datasets: [{
-            label: 'Votes',
-            data: this.localAuthorities.map(authority => authority.votes),
-            backgroundColor: this.localAuthorities.map(() => '#' + (Math.random() * 0xFFFFFF << 0).toString(16))
+            label: 'Stemmen',
+            data: this.votes.map(vote => vote.validVotes),
+            backgroundColor: this.votes.map(() => `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.2)`),
+            borderColor: this.votes.map(() => `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 1)`),
+            borderWidth: 1
           }]
         },
         options: {
-          scales: {
-            y: {
-              beginAtZero: true
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const value = context.raw;
+                  const percentage = ((value / totalVotes) * 100).toFixed(2);
+                  return `${value} stemmen (${percentage}%)`;
+                }
+              }
             }
           }
         }
-      })
+      });
     }
   }
-})
+});
 </script>
