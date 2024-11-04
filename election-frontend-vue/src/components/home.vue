@@ -67,7 +67,6 @@ body {
   align-items: center;
   justify-content: center;
   padding: 20px;
-  border: 1px solid var(--box-border-color);
   border-radius: 8px;
   transition: background-color 0.3s ease;
   width: 600px;
