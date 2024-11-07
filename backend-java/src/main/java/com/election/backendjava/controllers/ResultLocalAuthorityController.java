@@ -21,5 +21,10 @@ public class ResultLocalAuthorityController {
     public List<AuthorityTotalVote> getAuthorityTotalVotes(@PathVariable String authorityId) {
         return resultLocalAuthorityRepository.findByAuthorityId(authorityId);
     }
+    // Get all the votes for a specific authority sorted by votes
+    @GetMapping("/sortedByVotes/{authorityId}")
+    public List<AuthorityTotalVote> getAuthorityTotalVotesSortedByVotes(@PathVariable String authorityId) {
+        return resultLocalAuthorityRepository.findByAuthorityIdOrderByValidVotesDesc(authorityId);
+    }
 }
 
