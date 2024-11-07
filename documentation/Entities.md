@@ -6,7 +6,7 @@
 - **Gegevensbeheer**:  Gestructureerde manier om de totale geldige stemmen per autoriteit te beheren.
 - **Relaties**: Het legt de relatie vast tussen een autoriteit en de stemmen die aan een bepaalde partij zijn toegekend.
 - 
-**Attributen**:
+**Attributen**:0.
 - `id`: Unieke identifier voor de autoriteit totale stemmen.
 - `affiliation`: De partij of groepering waartoe de stemmen behoren.
 - `authorityId`: De identifier van de autoriteit.

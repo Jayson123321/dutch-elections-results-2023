@@ -23,6 +23,13 @@ public class TotalVoteController {
         this.totalVoteRepository = totalVoteRepository;
     }
 
+    @GetMapping("/sortedByName")
+    public List<TotalVote> getAllVotesSortedByAffiliationName() {
+        return totalVoteRepository.findAll().stream()
+                .sorted((a, b) -> a.getAffiliationName().compareToIgnoreCase(b.getAffiliationName()))
+                .collect(Collectors.toList());
+    }
+
     @GetMapping
     public List<TotalVoteWithPercentageDTO> getAllTotalVotes() {
         List<TotalVote> totalVotes = totalVoteRepository.findAll();
@@ -39,6 +46,7 @@ public class TotalVoteController {
 
         return result;
     }
+
 }
 
 //    public List<TotalVote> getAllTotalVotes() {
