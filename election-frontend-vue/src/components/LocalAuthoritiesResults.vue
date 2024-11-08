@@ -19,8 +19,7 @@
         <h3>{{ selectedReportingUnitId ? reportingUnits.find(unit => unit.id === selectedReportingUnitId)?.name : '' }}</h3>
         <table>
           <h2 id="h2uitslag">Uitslag</h2>
-          <div class="sort">
-            <span class="sort"><label>Sorteer</label></span>
+          <div id="sort-bar">
             <select id="sort" v-model="sortOrder" @change="showAllSelectedAuthorityVotes">
               <option value="votes">Stemmen</option>
               <option value="name">Partij naam</option>
@@ -39,6 +38,19 @@
 </template>
 
 <style>
+#sort-bar {
+  float: right;
+}
+#sort {
+  appearance: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23ffffff' width='18px' height='18px'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E") no-repeat right center;
+  padding-right: 30px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background-color: var(--color-background-soft);
+  color: var(--color-text);
+  background-color: var(--color-background-soft);
+}
 #titel {
   text-align: center;
   margin-top: 5%;
@@ -108,9 +120,6 @@ canvas {
   max-height: 10%;
 }
 
-.sorting {
-  border: 1px solid;
-}
 </style>
 
 <script>
