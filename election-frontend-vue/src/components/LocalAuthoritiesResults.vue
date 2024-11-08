@@ -18,6 +18,14 @@
       <div id="StembureauName">
         <h3>{{ selectedReportingUnitId ? reportingUnits.find(unit => unit.id === selectedReportingUnitId)?.name : '' }}</h3>
         <table>
+          <h2 id="h2uitslag">Uitslag</h2>
+          <div class="sort">
+            <span class="sort"><label>Sorteer</label></span>
+            <select id="sort" v-model="sortOrder" @change="showAllSelectedAuthorityVotes">
+              <option value="votes">Stemmen</option>
+              <option value="name">Partij naam</option>
+            </select>
+          </div>
           <tbody>
           <tr v-for="(vote, index) in votes" :key="vote.id">
             <td><span class="affiliation-name">{{ index + 1 }}. {{ vote.affiliation.registeredName }}</span></td>
@@ -36,7 +44,9 @@
   margin-top: 5%;
   font-size: larger;
 }
-
+#h2uitslag {
+  border-bottom: 1px solid;
+}
 label {
   margin-right: 10px;
   display: block;
@@ -56,7 +66,7 @@ select {
 th, td {
   padding: 8px 12px;
   border: none;
-  display: block;
+  display: inline-block;
   margin: 20px;
   width: 50%;
   border-color: var(--color-border);
@@ -87,12 +97,6 @@ table {
   color: var(--color-text);
 }
 
-#reportingUnit-select {
-  border-radius: 15px 15px 0 0;
-  width: 20%;
-  background-color: var(--color-background-soft);
-  color: var(--color-text);
-}
 
 .authority-select {
   font-weight: bold;
@@ -100,13 +104,12 @@ table {
   border-color: var(--color-border-hover);
 }
 
-.reportingUnit-select {
-  font-weight: bold;
-  color: var(--color-text);
-}
-
 canvas {
   max-height: 10%;
+}
+
+.sorting {
+  border: 1px solid;
 }
 </style>
 
@@ -128,7 +131,8 @@ export default defineComponent({
       selectedReportingUnitId: null,
       votes: [],
       reportingUnits: [],
-      chart: null
+      chart: null,
+      sortOrder: 'votes'
     };
   },
   mounted() {
@@ -148,8 +152,12 @@ export default defineComponent({
         console.log('Geen gemeente geselecteerd');
         return;
       }
+      // Als sortOrder votes is, dan sorteer op Votes, anders op name
       try {
-        const response = await fetch(`http://localhost:8080/api/result-local-authority/${selectedAuthority.authorityIdentifier}`);
+        const ChooseEndpoint = this.sortOrder === 'votes'
+            ? `http://localhost:8080/api/result-local-authority/sortedByVotes/${selectedAuthority.authorityIdentifier}`
+            : `http://localhost:8080/api/result-local-authority/${selectedAuthority.authorityIdentifier}`;
+        const response = await fetch(ChooseEndpoint);
         if (!response.ok) {
           throw new Error('Failed to fetch authority votes');
         }
@@ -163,7 +171,9 @@ export default defineComponent({
       if (this.selectedAuthority) {
         console.log(this.selectedAuthority.authorityIdentifier);
         const votes = await this.fetchAuthorityTotalVotes();
-        this.votes = votes.sort((a, b) => b.validVotes - a.validVotes);
+        this.votes = this.sortOrder === 'name'
+            ? votes.sort((a, b) => a.affiliation.registeredName.localeCompare(b.affiliation.registeredName))
+            : votes.sort((a, b) => b.validVotes - a.validVotes);
         console.log(this.votes);
         this.$nextTick(() => {
           this.renderPieChart();
