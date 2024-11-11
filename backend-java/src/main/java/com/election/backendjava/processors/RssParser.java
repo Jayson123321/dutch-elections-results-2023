@@ -1,6 +1,6 @@
 package com.election.backendjava.processors;
 
-import com.election.backendjava.Article;
+import com.election.backendjava.entities.Article;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
