@@ -1,37 +1,50 @@
 <template>
-  <div id="map" style="height: 600px;"></div>
+  <div id="map" style="height: 1000px;"></div>
 </template>
 
-<script lang="ts">
-import { defineComponent, onMounted } from 'vue';
+<script>
+import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
-export default defineComponent({
-  name: 'Heatmap',
-  setup() {
-    onMounted(() => {
-      const map = L.map('map').setView([52.1326, 5.2913], 7);
+export default {
+  name: 'HeatMap',
+  mounted() {
+    const map = L.map('map').setView([52.3676, 4.9041], 7);
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
 
-      const heatmapData = [
-        [52.370216, 4.895168, 0.5], // Amsterdam
-      ];
-
-      L.heatLayer(heatmapData, {
-        radius: 25,
-        blur: 15,
-        maxZoom: 17,
-      }).addTo(map);
-    });
+    fetch('/src/assets/gemeenten.xml')
+        .then(response => response.text())
+        .then(str => new window.DOMParser().parseFromString(str, 'text/xml'))
+        .then(data => {
+          const gemeenten = data.getElementsByTagName('gemeente');
+          for (let i = 0; i < gemeenten.length; i++) {
+            const gemeente = gemeenten[i];
+            const name = gemeente.getElementsByTagName('name')[0].textContent;
+            const coordinates = gemeente.getElementsByTagName('coordinate');
+            const latLngs = [];
+            for (let j = 0; j < coordinates.length; j++) {
+              const [lng, lat] = coordinates[j].textContent.split(',').map(Number);
+              latLngs.push([lat, lng]);
+            }
+            const polygon = L.polygon(latLngs, {
+              color: 'blue',
+              weight: 2,
+              fillOpacity: 0.5
+            }).addTo(map);
+            polygon.bindPopup(name);
+          }
+        })
+        .catch(error => console.error('Error loading XML:', error));
   }
-});
+};
 </script>
 
 <style scoped>
 #map {
-  height: 600px;
+  width: 100%;
+  height: 100%;
 }
 </style>

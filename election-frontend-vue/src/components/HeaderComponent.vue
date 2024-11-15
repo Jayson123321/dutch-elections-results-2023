@@ -12,7 +12,6 @@
           </ul>
         </div>
       </nav>
-
       <div class="search-container">
         <input type="text" class="search-input" placeholder="Zoeken...">
         <button class="search-button">
@@ -34,11 +33,15 @@
 </template>
 
 <script>
+import PoliticalNews from "@/components/PoliticalNews.vue";
+
 export default {
   name: "HeaderComponent",
+  components: {PoliticalNews},
   data() {
     return {
-      isDarkMode: false
+      isDarkMode: false,
+      showPoliticalNews: false
     };
   },
   methods: {
@@ -49,17 +52,16 @@ export default {
       } else {
         document.documentElement.setAttribute('data-theme', 'light');
       }
+    },
+    togglePoliticalNews() {
+      this.showPoliticalNews = !this.showPoliticalNews;
     }
   }
 }
 </script>
-
 <style>
 .header {
   padding: 10px 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 100%;
   top: 0;
   z-index: 1000;
@@ -68,9 +70,9 @@ export default {
 .header-container {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  width: 80%;
-  max-width: 1200px;
+  width: 100%;
+  max-width: 100%;
+  flex-wrap: wrap;
 }
 
 .logo img {
@@ -92,12 +94,12 @@ export default {
   text-decoration: none;
   font-size: 18px;
   transition: color 0.3s;
-
 }
 
 .search-container {
   display: flex;
   align-items: center;
+  margin-top: 10px;
 }
 
 .search-input {
@@ -127,6 +129,30 @@ export default {
 
 .toggle-dark-mode-image {
   cursor: pointer;
+  margin-top: 10px;
 }
 
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nav ul {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nav ul li {
+    margin: 10px 0;
+  }
+
+  .search-container {
+    margin-top: 20px;
+  }
+
+  .toggle-dark-mode-image {
+    margin-top: 20px;
+  }
+}
 </style>

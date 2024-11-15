@@ -34,20 +34,26 @@
         </table>
       </div>
     </div>
+    <div class="politicalComponent">
+      <PoliticalNews/>
+    </div>
   </div>
 </template>
 
 <style>
+canvas {
+  max-height: 500px;
+  max-width: 100%;
+}
 #sort-bar {
   float: right;
 }
 #sort {
   appearance: none;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23ffffff' width='18px' height='18px'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E") no-repeat right center;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' width='18px' height='18px'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E") no-repeat right center;
   padding-right: 30px;
   border: 1px solid var(--color-border);
   border-radius: 4px;
-  background-color: var(--color-background-soft);
   color: var(--color-text);
   background-color: var(--color-background-soft);
 }
@@ -115,22 +121,18 @@ table {
   color: var(--color-text);
   border-color: var(--color-border-hover);
 }
-
-canvas {
-  max-height: 10%;
-}
-
 </style>
 
 <script>
 import { defineComponent } from 'vue';
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import { Chart, PieController, ArcElement, Tooltip, Legend } from 'chart.js';
+import PoliticalNews from "@/components/PoliticalNews.vue";
 
 Chart.register(PieController, ArcElement, Tooltip, Legend);
 
 export default defineComponent({
-  components: { HeaderComponent },
+  components: {PoliticalNews, HeaderComponent },
   name: 'LocalAuthoritiesResults',
   data() {
     return {

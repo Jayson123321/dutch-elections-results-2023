@@ -26,8 +26,9 @@ public class StartupRunner implements CommandLineRunner {
         String directoryPath = "C:\\Users\\Jayso\\IdeaProjects\\wiipuujaamee42";
 
         File folder = new File(directoryPath);
-
+        // Checkt of de folder bestaat en of het een directory is
         if (folder.exists() && folder.isDirectory()) {
+            // Filtert alle XML-bestanden uit de folder
             File[] files = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".xml"));
 
             if (files != null) {
@@ -44,8 +45,6 @@ public class StartupRunner implements CommandLineRunner {
             } else {
                 System.out.println("Geen XML-bestanden gevonden in de map.");
             }
-        } else {
-            System.out.println("Map niet gevonden of het is geen directory: " + directoryPath);
         }
     }
 }

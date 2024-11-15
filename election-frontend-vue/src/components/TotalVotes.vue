@@ -16,6 +16,9 @@
         </tbody>
       </table>
     </div>
+    <div class="politicalComponent">
+      <PoliticalNews/>
+    </div>
     <FooterComponent />
   </div>
 </template>
@@ -24,12 +27,14 @@
 import { defineComponent } from 'vue';
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import { Chart, DoughnutController, PieController, ArcElement, Tooltip, Legend } from "chart.js";
+import PoliticalNews from "@/components/PoliticalNews.vue";
 
 Chart.register(DoughnutController, ArcElement, PieController, Tooltip, Legend);
 
 export default defineComponent({
   name: "totalResults",
   components: {
+    PoliticalNews,
     HeaderComponent,
   },
   data() {

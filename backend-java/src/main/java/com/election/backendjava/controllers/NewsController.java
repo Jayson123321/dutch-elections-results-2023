@@ -17,4 +17,6 @@ public class NewsController {
     public List<Article> getPoliticalNews() {
         return rssService.getPoliticalNewsFromRSS();
     }
+
+
 }

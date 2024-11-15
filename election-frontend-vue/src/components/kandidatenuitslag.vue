@@ -2,14 +2,12 @@
   <div class="container">
     <HeaderComponent />
 
-    <!-- Kandidateninformatie -->
     <h1>Kandidaat Uitslag</h1>
     <div v-if="candidate">
       <h2>{{ candidate.name }}</h2>
       <p>Affiliatie: {{ candidate.affiliation }}</p>
     </div>
 
-    <!-- Stemmenlijst -->
     <h3>Stemmen</h3>
     <ul v-if="votes.length">
       <li v-for="(vote, index) in votes" :key="index">
@@ -17,7 +15,6 @@
       </li>
     </ul>
 
-    <!-- Error melding -->
     <div v-if="error" class="error">
       {{ error }}
     </div>
