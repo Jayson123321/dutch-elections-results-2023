@@ -12,7 +12,9 @@ export default {
   data() {
     return {
       users: [],
-      userCount: 0
+      userCount: 0,
+      showPopup: false,
+      selectedUserId: null
     };
   },
   mounted() {
@@ -51,6 +53,14 @@ export default {
               console.error('An error occurred while deleting the user:', error);
             });
       }
+    },
+    openPopup(userId) {
+      this.selectedUserId = userId;
+      this.showPopup = true;
+    },
+    closePopup() {
+      this.showPopup = false;
+      this.selectedUserId = null;
     }
   }
 }
@@ -72,7 +82,7 @@ export default {
               <td class="user-row">
                 <span class="user-data">{{ user.username }}</span>
                 <button @click="deleteUser(user.id)" class="delete-button">Delete user</button>
-                <button class="manage-button">Manage user</button>
+                <button @click="openPopup(user.id)" class="manage-button">Manage user</button>
               </td>
             </tr>
             </tbody>
@@ -84,6 +94,13 @@ export default {
       </div>
     </div>
     <FooterComponent/>
+
+    <div v-if="showPopup" class="popup-overlay">
+      <div class="popup">
+        <h3>Manage User Actions</h3>
+
+      </div>
+    </div>
   </div>
 </template>
 
@@ -178,6 +195,39 @@ button:hover {
 
 .manage-button:hover {
   background-color: #31b0d5;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup {
+  background: #1A1A1A;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.close-button {
+  padding: 10px 20px;
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  margin-top: 20px;
+}
+
+.close-button:hover {
+  background-color: #c9302c;
 }
 
 p {
