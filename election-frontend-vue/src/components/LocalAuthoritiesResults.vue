@@ -49,7 +49,6 @@
   border-radius: 4px;
   background-color: var(--color-background-soft);
   color: var(--color-text);
-  background-color: var(--color-background-soft);
 }
 #titel {
   text-align: center;
@@ -175,20 +174,50 @@ export default defineComponent({
         console.error('Error fetching authority votes:', error);
       }
     },
-    async showAllSelectedAuthorityVotes() {
-      this.selectedAuthority = this.localAuthorities.find(authority => authority.id === this.selectedAuthorityId) || null;
-      if (this.selectedAuthority) {
-        console.log(this.selectedAuthority.authorityIdentifier);
-        const votes = await this.fetchAuthorityTotalVotes();
-        this.votes = this.sortOrder === 'name'
-            ? votes.sort((a, b) => a.affiliation.registeredName.localeCompare(b.affiliation.registeredName))
-            : votes.sort((a, b) => b.validVotes - a.validVotes);
-        console.log(this.votes);
-        this.$nextTick(() => {
-          this.renderPieChart();
-        });
-      } else {
-        console.log('Geen gemeente geselecteerd');
+    methods: {
+      async showAllSelectedAuthorityVotes() {
+        this.selectedAuthority = this.authorities.find(authority => authority.id === this.selectedAuthorityId) || null;
+
+        if (this.selectedAuthority) {
+          console.log(this.selectedAuthority.authorityIdentifier);
+
+          // Fetch votes for the selected authority
+          try {
+            const response = await fetch(`http://localhost:8080/api/managing-authorities/${this.selectedAuthority.authorityIdentifier}`);
+            if (!response.ok) {
+              throw new Error('Failed to fetch party votes');
+            }
+            this.partyVotes = await response.json();
+            this.partyVotes = this.partyVotes.slice(0, 25); // Limit to first 25 results
+            console.log('Fetched party votes:', this.partyVotes);
+            this.updateChartData();
+          } catch (error) {
+            console.error('Error fetching party votes:', error);
+          }
+        } else {
+          console.log('No authority selected');
+        }
+      },
+      updateChartData() {
+        if (!this.chartData) {
+          this.chartData = {
+            labels: [],
+            datasets: [{
+              data: [],
+              backgroundColor: []
+            }]
+          };
+        }
+
+        const labels = this.partyVotes.map(vote => vote.affiliation.registeredName);
+        const data = this.partyVotes.map(vote => vote.validVotes);
+        const backgroundColor = this.partyVotes.map(() => `#${Math.floor(Math.random() * 16777215).toString(16)}`);
+
+        this.chartData.labels = labels;
+        this.chartData.datasets[0].data = data;
+        this.chartData.datasets[0].backgroundColor = backgroundColor;
+
+        console.log('Updated chart data:', this.chartData);
       }
     },
     async fetchPartyVotesByReportingUnitAndAuthorityNumber() {
