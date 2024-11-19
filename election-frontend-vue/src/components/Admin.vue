@@ -97,7 +97,13 @@ export default {
 
     <div v-if="showPopup" class="popup-overlay">
       <div class="popup">
-        <h3>Manage User Actions</h3>
+        
+        <button class="popup-button" style="padding: 10px 20px; margin: 10px; background-color: #5bc0de; color: white; border: none; border-radius: 4px;">Action 2</button>
+        <button class="popup-button" style="padding: 10px 20px; margin: 10px; background-color: #5bc0de; color: white; border: none; border-radius: 4px;">Action 3</button>
+        <button class="popup-button" style="padding: 10px 20px; margin: 10px; background-color: #5bc0de; color: white; border: none; border-radius: 4px;">Action 4</button>
+        <button class="popup-button" style="padding: 10px 20px; margin: 10px; background-color: #5bc0de; color: white; border: none; border-radius: 4px;">Action 5</button>
+        
+
         <button @click="closePopup" class="close-button">Close</button>
 
       </div>
