@@ -98,6 +98,7 @@ export default {
     <div v-if="showPopup" class="popup-overlay">
       <div class="popup">
         <h3>Manage User Actions</h3>
+        <button @click="closePopup" class="close-button">Close</button>
 
       </div>
     </div>
