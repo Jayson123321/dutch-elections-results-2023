@@ -18,6 +18,7 @@ public class APIconfig implements WebMvcConfigurer {
                         "http://localhost:5179",
                         "http://demo-crazy.com",
                         "https://demo-crazy.com",
+                        "https://wiipuujaamee42-frontend-v1-0.onrender.com",
                         "http://*.hva.nl"
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE");
