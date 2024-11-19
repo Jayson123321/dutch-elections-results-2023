@@ -72,6 +72,7 @@ export default {
               <td class="user-row">
                 <span class="user-data">{{ user.username }}</span>
                 <button @click="deleteUser(user.id)" class="delete-button">Delete user</button>
+                <button class="manage-button">Manage user</button>
               </td>
             </tr>
             </tbody>
@@ -164,6 +165,19 @@ button {
 
 button:hover {
   background-color: #d9534f;
+}
+
+.manage-button {
+  padding: 8px 12px;
+  background-color: #5bc0de;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  margin-left: 10px;
+}
+
+.manage-button:hover {
+  background-color: #31b0d5;
 }
 
 p {
