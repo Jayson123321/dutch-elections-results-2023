@@ -23,6 +23,8 @@ public class APIconfig implements WebMvcConfigurer {
                         "https://ewa-back-end-4lw7.onrender.com",
                         "http://*.hva.nl"
                 )
-                .allowedMethods("GET", "POST", "PUT", "DELETE");
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
 }
