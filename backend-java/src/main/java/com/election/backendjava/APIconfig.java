@@ -17,15 +17,12 @@ public class APIconfig implements WebMvcConfigurer {
                         "http://localhost:5178",
                         "http://localhost:5179",
                         "http://demo-crazy.com",
+                        "https://front-end-84n0.onrender.com",
                         "https://demo-crazy.com",
                         "https://wiipuujaamee42-frontend-v1-0.onrender.com",
-                        "https://front-end-84n0.onrender.com",
                         "https://ewa-back-end-4lw7.onrender.com",
                         "http://*.hva.nl"
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE");
     }
 }
-
-
-
