@@ -20,13 +20,11 @@ public class APIconfig implements WebMvcConfigurer {
                         "https://front-end-84n0.onrender.com",
                         "https://demo-crazy.com",
                         "https://wiipuujaamee42-frontend-v1-0.onrender.com",
-                        "https://front-end-84n0.onrender.com",
                         "https://ewa-back-end-4lw7.onrender.com",
                         "http://*.hva.nl"
                 )
-                .allowedMethods("GET", "POST", "PUT", "DELETE");
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
 }
-
-
-
