@@ -70,9 +70,6 @@ export default {
   <div class="admin-page">
     <HeaderComponent/>
     <div class="columns-container">
-      <div class="count-container">
-        <p>Total number of users: {{ userCount }}</p>
-      </div>
       <div class="table-column">
         <div v-if="users.length > 0" class="table-wrapper">
           <h2 class="users-title">Users</h2>
@@ -91,6 +88,9 @@ export default {
         <div v-else>
           <p>No users found</p>
         </div>
+      </div>
+      <div class="count-container">
+        <p>Total number of users: {{ userCount }}</p>
       </div>
     </div>
     <FooterComponent/>
@@ -135,12 +135,11 @@ html, body {
 }
 
 .table-column {
-  flex: 2;
+  flex: 3;
 }
 
 .count-container {
   text-align: center;
-  margin-bottom: 20px;
   flex: 1;
   background-color: #1A1A1A;
   padding: 20px;
