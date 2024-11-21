@@ -36,6 +36,7 @@ interface Vote {
   affiliationId: string;
   validVotes: number;
   postalCode: string;
+  reportingUnitIdentifier: string;
 }
 
 export default defineComponent({

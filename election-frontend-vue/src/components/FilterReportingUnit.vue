@@ -1,124 +1,13 @@
 <template>
   <div>
-    <HeaderComponent/>
-    <div id="titel">
-      <h1>Score per stembureau</h1>
-      <h1>Verkiezingen 2023 gemeente {{ selectedAuthority?.authorityName }}</h1>
-    </div>
-    <canvas id="partyVotesChart"></canvas>
-    <div class="filter">
-      <H2 id="h2filter">Filter</H2>
-      <span class="authority-select"><label for="authority-select">Selecteer een gemeente</label></span>
-      <select id="authority-select" v-model="selectedAuthorityId" @change="showAllSelectedAuthorityVotes">
-        <option value="" disabled>Selecteer een gemeente</option>
-        <option v-for="authority in authorities" :key="authority.id" :value="authority.id">
-          {{ authority.authorityName }}
-        </option>
-      </select>
-      <span class="reportingUnit-select"><label for="reportingUnit-select">Selecteer een stembureau</label></span>
-      <div class="autocomplete-container">
-        <v-autocomplete
-            v-model="selectedReportingUnitId"
-            :items="reportingUnits"
-            item-title="name"
-            item-value="id"
-            placeholder="Zoek een stembureau"
-            persistent-placeholder
-            clearable
-            transition="scale-transition"
-        ></v-autocomplete>
-      </div>
-      <button v-if="selectedReportingUnitId" @click="fetchPartyVotesByReportingUnitAndAuthorityNumber">Bekijk stemmen</button>
-    </div>
-    <div v-if="partyVotes.length > 0">
-      <div id="StembureauName">
-        <h3>{{ selectedReportingUnitId ? reportingUnits.find(unit => unit.id === selectedReportingUnitId)?.name : '' }}</h3>
-        <table>
-          <tbody>
-          <tr v-for="(vote, index) in partyVotes" :key="vote.id">
-            <td><span class="affiliation-name">{{ index + 1 }}. {{ vote.affiliation.registeredName }}</span></td>
-            <td>{{ vote.validVotes }} stemmen</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="politicalComponent">
-      <political-news/>
-    </div>
+    <input v-model="filterText" placeholder="Filter authorities" />
+    <ul>
+      <li v-for="authority in filteredAuthorities" :key="authority.id">
+        {{ authority.name }}
+      </li>
+    </ul>
   </div>
 </template>
-
-<style>
-#titel {
-  text-align: center;
-  margin-top: 5%;
-  font-size: larger;
-}
-
-#h2filter {
-  border-bottom: 1px solid;
-  width: 30%;
-}
-label {
-  margin-right: 10px;
-  display: block;
-  margin-top: 20px;
-}
-
-select {
-  margin-bottom: 20px;
-  padding: 5px;
-  display: block;
-  margin-top: 10px;
-}
-
-th, td {
-  padding: 8px 12px;
-  border: none;
-  display: block;
-  margin: 20px;
-  width: 50%;
-  border-color: white;
-}
-table {
-  border: white;
-}
-
-#StembureauName {
-  margin-left: 30%;
-  font-size: 1.2em;
-  font-weight: bold;
-  border: none;
-  color: #cccccc;
-}
-
-.affiliation-name {
-  font-size: x-large;
-  color: white;
-}
-
-#authority-select {
-  border-radius: 15px 15px 0 0;
-}
-
-.authority-select {
-  font-weight: bold;
-}
-
-.reportingUnit-select {
-  font-weight: bold;
-}
-
-canvas {
-  max-height: 10%;
-}
-
-.autocomplete-container {
-  width: auto;
-  max-width: 35%;
-}
-</style>
 
 <script>
 import { defineComponent } from 'vue';
@@ -140,12 +29,20 @@ export default defineComponent({
       partyVotes: [],
       reportingUnits: [],
       stemBureau: [],
-      chart: null
+      chart: null,
+      filterText: ''
     };
   },
 
   mounted() {
     this.fetchAuthorities();
+  },
+  computed: {
+    filteredAuthorities() {
+      return this.authorities.filter(authority =>
+          authority && authority.name.toLowerCase().includes(this.filterText.toLowerCase())
+      );
+    }
   },
   methods: {
     async fetchAuthorities() {
