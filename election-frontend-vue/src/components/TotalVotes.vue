@@ -53,7 +53,7 @@ export default defineComponent({
   methods: {
     async fetchResults() {
       try {
-        const response = await fetch('https://ewa-back-end-4lw7.onrender.com/api/results');
+        const response = await fetch('https://wiipuujaamee42-backend.onrender.com/api/results');
         if (!response.ok) {
           throw new Error('Failed to fetch results');
         }
