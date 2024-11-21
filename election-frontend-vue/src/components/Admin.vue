@@ -69,12 +69,12 @@ export default {
 <template>
   <div class="admin-page">
     <HeaderComponent/>
-    <div class="table-container">
+    <div class="columns-container">
       <div class="count-container">
         <p>Total number of users: {{ userCount }}</p>
       </div>
-      <div v-if="users.length > 0">
-        <div class="table-wrapper">
+      <div class="table-column">
+        <div v-if="users.length > 0" class="table-wrapper">
           <h2 class="users-title">Users</h2>
           <table>
             <tbody>
@@ -88,24 +88,21 @@ export default {
             </tbody>
           </table>
         </div>
-      </div>
-      <div v-else>
-        <p>No users found</p>
+        <div v-else>
+          <p>No users found</p>
+        </div>
       </div>
     </div>
     <FooterComponent/>
 
     <div v-if="showPopup" class="popup-overlay">
       <div class="popup">
-        
+        <h3>Manage User Actions</h3>
         <button class="popup-button" style="padding: 10px 20px; margin: 10px; background-color: #5bc0de; color: white; border: none; border-radius: 4px;">Action 2</button>
         <button class="popup-button" style="padding: 10px 20px; margin: 10px; background-color: #5bc0de; color: white; border: none; border-radius: 4px;">Action 3</button>
         <button class="popup-button" style="padding: 10px 20px; margin: 10px; background-color: #5bc0de; color: white; border: none; border-radius: 4px;">Action 4</button>
         <button class="popup-button" style="padding: 10px 20px; margin: 10px; background-color: #5bc0de; color: white; border: none; border-radius: 4px;">Action 5</button>
-        
-
         <button @click="closePopup" class="close-button">Close</button>
-
       </div>
     </div>
   </div>
@@ -131,18 +128,24 @@ html, body {
   align-items: center;
 }
 
-.table-container {
-  background-color: #1A1A1A;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
+.columns-container {
+  display: flex;
+  gap: 20px;
   width: 100%;
+}
+
+.table-column {
+  flex: 2;
 }
 
 .count-container {
   text-align: center;
   margin-bottom: 20px;
+  flex: 1;
+  background-color: #1A1A1A;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .users-title {
@@ -154,6 +157,10 @@ html, body {
 .table-wrapper {
   max-height: 400px;
   overflow-y: auto;
+  background-color: #1A1A1A;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 table {
