@@ -26,6 +26,7 @@ public class UserService {
     }
 
     public void updateUser(Long id, User user) {
+        System.out.println("Received PUT request to update user with ID: " + id); //debug
         Optional<User> existingUser = userRepository.findById(id);
         if (existingUser.isPresent()) {
             User userToUpdate = existingUser.get();
