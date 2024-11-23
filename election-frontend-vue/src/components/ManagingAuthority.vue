@@ -150,7 +150,7 @@ export default defineComponent({
   methods: {
     async fetchAuthorities() {
       try {
-        const response = await fetch('http://localhost:8080/api/managing-authorities/getAllAuthorities');
+        const response = await fetch('https://wiipuujaamee42-backend.onrender.com/api/managing-authorities/getAllAuthorities');
         if (!response.ok) {
           throw new Error('Failed to fetch authorities');
         }
@@ -164,7 +164,7 @@ export default defineComponent({
 
       if (this.selectedAuthority) {
         try {
-          const response = await fetch(`http://localhost:8080/api/managing-authorities/${this.selectedAuthority.authorityIdentifier}`);
+          const response = await fetch(`https://wiipuujaamee42-backend.onrender.com/api/managing-authorities/${this.selectedAuthority.authorityIdentifier}`);
           if (!response.ok) {
             throw new Error('Failed to fetch party votes');
           }
@@ -180,7 +180,7 @@ export default defineComponent({
     async fetchReportingUnit() {
       if (this.selectedAuthority) {
         try {
-          const response = await fetch(`http://localhost:8080/api/managing-authorities/${this.selectedAuthority.authorityIdentifier}/reporting-units`);
+          const response = await fetch(`https://wiipuujaamee42-backend.onrender.com/api/managing-authorities/${this.selectedAuthority.authorityIdentifier}/reporting-units`);
           if (!response.ok) {
             throw new Error('Failed to fetch reporting units');
           }
@@ -196,7 +196,7 @@ export default defineComponent({
       try {
         let reportingUnit = this.reportingUnits.find(reportingUnit => reportingUnit.id === this.selectedReportingUnitId);
         let authority = this.authorities.find(authority => authority.id === this.selectedAuthorityId);
-        const response = await fetch(`http://localhost:8080/api/managing-authorities/${reportingUnit.managingAuthorityNumber}/party-votes/${authority.authorityIdentifier}`, {
+        const response = await fetch(`https://wiipuujaamee42-backend.onrender.com/api/managing-authorities/${reportingUnit.managingAuthorityNumber}/party-votes/${authority.authorityIdentifier}`, {
           method: 'GET'
         });
         if (!response.ok) {

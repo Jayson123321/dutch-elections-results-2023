@@ -43,7 +43,7 @@ export default {
   methods: {
     async fetchAffiliations() {
       try {
-        const response = await fetch('http://localhost:8080/api/affiliations');
+        const response = await fetch('https://wiipuujaamee42-backend.onrender.com/api/affiliations');
         this.affiliations = await response.json();
       } catch (error) {
         console.error('Error fetching affiliations:', error);

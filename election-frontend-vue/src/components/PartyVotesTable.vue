@@ -55,7 +55,7 @@ export default defineComponent({
     async fetchPartyVotes() {
       this.loading = true;
       try {
-        const response = await fetch('https://my-spring-boot-app-nwi1.onrender.com/api/party-votes');
+        const response = await fetch('https://wiipuujaamee42-backend.onrender.com/api/party-votes');
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }

@@ -37,7 +37,7 @@ export default {
     async fetchCandidates() {
       try {
         console.log(`Fetching candidates for affiliationId: ${this.affiliationId}`);
-        const response = await fetch(`http://localhost:8080/api/candidate?affiliationId=${this.affiliationId}`);
+        const response = await fetch(`https://wiipuujaamee42-backend.onrender.com/api/candidate?affiliationId=${this.affiliationId}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

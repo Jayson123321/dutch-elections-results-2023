@@ -41,8 +41,8 @@ export default {
     async fetchData() {
       try {
         const [candidatesResponse, affiliationsResponse] = await Promise.all([
-          fetch(`http://localhost:8080/api/candidate/all`),
-          fetch(`http://localhost:8080/api/affiliations`)
+          fetch(`https://wiipuujaamee42-backend.onrender.com/api/candidate/all`),
+          fetch(`https://wiipuujaamee42-backend.onrender.com/api/affiliations`)
         ]);
 
         if (!candidatesResponse.ok || !affiliationsResponse.ok) {

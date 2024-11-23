@@ -49,7 +49,7 @@ export default {
     // Haal kandidaatgegevens op
     async fetchCandidate(id) {
       try {
-        const response = await fetch(`http://localhost:8080/api/candidate/${id}`);
+        const response = await fetch(`https://wiipuujaamee42-backend.onrender.com/api/candidate/${id}`);
         if (!response.ok) {
           throw new Error('HTTP error! status: ' + response.status);
         }
@@ -62,7 +62,7 @@ export default {
     // Haal stemgegevens op
     async fetchVotes(candidateIdentifier) {
       try {
-        const response = await fetch(`http://localhost:8080/api/candidate/votes/${candidateIdentifier}`);
+        const response = await fetch(`https://wiipuujaamee42-backend.onrender.com/api/candidate/votes/${candidateIdentifier}`);
         if (!response.ok) {
           throw new Error('HTTP error! status: ' + response.status);
         }
