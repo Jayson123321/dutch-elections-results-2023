@@ -25,7 +25,7 @@ public class APIconfig implements WebMvcConfigurer {
                         "http://*.hva.nl"
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders("Content-Type", "Origin")
+                .allowedHeaders("Content-Type", "X-Requested-With", "Accept", "Origin")
                 .exposedHeaders("Content-Type")
                 .allowCredentials(true);
     }
