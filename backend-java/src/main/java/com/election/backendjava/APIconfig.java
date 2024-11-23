@@ -13,6 +13,7 @@ public class APIconfig implements WebMvcConfigurer {
                 .allowedOrigins(
                         "https://wiipuujaamee42-frontend.onrender.com",
                         "http://wiipuujaamee42-frontend.onrender.com",
+                        "https://demo-crazy.com",
                         "http://localhost:5173",
                         "http://localhost:5175",
                         "http://localhost:5176",
