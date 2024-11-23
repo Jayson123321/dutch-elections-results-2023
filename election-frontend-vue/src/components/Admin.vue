@@ -14,7 +14,9 @@ export default {
       users: [],
       userCount: 0,
       showPopup: false,
-      selectedUserId: null
+      showUsernamePopup: false,
+      selectedUserId: null,
+      newUsername: ''
     };
   },
   mounted() {
@@ -61,6 +63,29 @@ export default {
     closePopup() {
       this.showPopup = false;
       this.selectedUserId = null;
+      this.newUsername = '';
+    },
+    openUsernamePopup() {
+      this.showUsernamePopup = true;
+    },
+    closeUsernamePopup() {
+      this.showUsernamePopup = false;
+      this.newUsername = '';
+    },
+    updateUsername() {
+      if (this.newUsername.trim() !== '') {
+        axios.put(`http://localhost:8080/api/users/${this.selectedUserId}`, { username: this.newUsername })
+            .then(() => {
+              alert('Username updated successfully.');
+              this.fetchUsers();
+              this.closeUsernamePopup();
+            })
+            .catch(error => {
+              console.error('An error occurred while updating the username:', error);
+            });
+      } else {
+        alert('Username cannot be empty.');
+      }
     }
   }
 }
@@ -98,11 +123,21 @@ export default {
     <div v-if="showPopup" class="popup-overlay">
       <div class="popup">
         <h3>Manage User Actions</h3>
+        <button @click="openUsernamePopup" class="popup-button" style="padding: 10px 20px; margin: 10px; background-color: #5bc0de; color: white; border: none; border-radius: 4px;">Change Username</button>
         <button class="popup-button" style="padding: 10px 20px; margin: 10px; background-color: #5bc0de; color: white; border: none; border-radius: 4px;">Action 2</button>
         <button class="popup-button" style="padding: 10px 20px; margin: 10px; background-color: #5bc0de; color: white; border: none; border-radius: 4px;">Action 3</button>
         <button class="popup-button" style="padding: 10px 20px; margin: 10px; background-color: #5bc0de; color: white; border: none; border-radius: 4px;">Action 4</button>
         <button class="popup-button" style="padding: 10px 20px; margin: 10px; background-color: #5bc0de; color: white; border: none; border-radius: 4px;">Action 5</button>
         <button @click="closePopup" class="close-button">Close</button>
+      </div>
+    </div>
+
+    <div v-if="showUsernamePopup" class="popup-overlay">
+      <div class="popup">
+        <h3>Change Username</h3>
+        <input v-model="newUsername" type="text" placeholder="Enter new username" class="username-input">
+        <button @click="updateUsername" class="popup-button" style="padding: 10px 20px; margin: 10px; background-color: #5bc0de; color: white; border: none; border-radius: 4px;">Save Username</button>
+        <button @click="closeUsernamePopup" class="close-button">Cancel</button>
       </div>
     </div>
   </div>
@@ -247,5 +282,13 @@ p {
   text-align: center;
   font-size: 18px;
   color: white;
+}
+
+.username-input {
+  padding: 10px;
+  margin: 10px;
+  border-radius: 4px;
+  border: none;
+  width: calc(100% - 40px);
 }
 </style>
