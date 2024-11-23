@@ -30,4 +30,9 @@ public class UserController {
         return userService.getUserCount();
     }
 
+    @PutMapping("/{id}")
+    public void updateUser(@PathVariable Long id, @RequestBody User user) {
+        userService.updateUser(id, user);
+    }
+
 }
