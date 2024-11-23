@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -24,4 +25,12 @@ public class UserService {
         return userRepository.count();
     }
 
+    public void updateUser(Long id, User user) {
+        Optional<User> existingUser = userRepository.findById(id);
+        if (existingUser.isPresent()) {
+            User userToUpdate = existingUser.get();
+            userToUpdate.setUsername(user.getUsername()); // this is for the username only
+            userRepository.save(userToUpdate);
+        }
+    }
 }
