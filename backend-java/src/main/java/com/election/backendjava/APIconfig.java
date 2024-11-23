@@ -14,15 +14,13 @@ public class APIconfig implements WebMvcConfigurer {
                         "https://wiipuujaamee42-frontend.onrender.com",
                         "http://wiipuujaamee42-frontend.onrender.com",
                         "https://demo-crazy.com",
+                        "http://demo-crazy.com",
                         "http://localhost:5173",
                         "http://localhost:5175",
                         "http://localhost:5176",
                         "http://localhost:5177",
                         "http://localhost:5178",
                         "http://localhost:5179",
-                        "https://wiipuujaamee42-frontend-v1-0.onrender.com",
-                        "https://ewa-back-end-4lw7.onrender.com",
-                        "https://wiipuujaamee42-backend.onrender.com",
                         "http://*.hva.nl"
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
