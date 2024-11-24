@@ -74,7 +74,7 @@ export default {
     },
     updateUsername() {
       if (this.newUsername.trim() !== '') {
-        axios.put(`http://localhost:8080/api/users/${this.selectedUserId}`, { username: this.newUsername })
+        axios.put(`http://localhost:8080/api/users/${this.selectedUserId}`, {username: this.newUsername})
             .then(() => {
               alert('Username updated successfully.');
               this.fetchUsers();
@@ -126,6 +126,10 @@ export default {
       <div class="popup">
         <h3>Manage User Actions</h3>
         <button @click="openUsernamePopup" class="popup-button">Change Username</button>
+        <button @click="closePopup" class="popup-button">Change Email</button>
+        <button class="popup-button">Action 3</button>
+        <button class="popup-button">Action 4</button>
+        <button class="popup-button">Action 5</button>
         <button @click="closePopup" class="close-button">Close</button>
       </div>
     </div>
