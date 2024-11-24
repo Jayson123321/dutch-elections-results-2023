@@ -94,28 +94,30 @@ export default {
 <template>
   <div class="admin-page">
     <HeaderComponent/>
-    <div class="columns-container">
-      <div class="table-column">
-        <div v-if="users.length > 0" class="table-wrapper">
-          <h2 class="users-title">Users</h2>
-          <table>
-            <tbody>
-            <tr v-for="user in users" :key="user.id">
-              <td class="user-row">
-                <span class="user-data">{{ user.username }}</span>
-                <button @click="deleteUser(user.id)" class="delete-button">Delete user</button>
-                <button @click="openPopup(user.id)" class="manage-button">Manage user</button>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-        <div v-else>
-          <p>No users found</p>
+    <div class="content-container">
+      <h2 class="page-title">Admin Dashboard</h2>
+      <div class="user-stats">
+        <p>Total Users: {{ userCount }}</p>
+      </div>
+      <div class="user-table-wrapper" v-if="users.length > 0">
+        <div class="user-table-container">
+          <div class="user-table-row header-row">
+            <div class="user-table-cell">Username</div>
+            <div class="user-table-cell">Email</div>
+            <div class="user-table-cell actions-header">Actions</div>
+          </div>
+          <div v-for="user in users" :key="user.id" class="user-table-row">
+            <div class="user-table-cell">{{ user.username }}</div>
+            <div class="user-table-cell">{{ user.email }}</div>
+            <div class="user-table-cell actions">
+              <button @click="deleteUser(user.id)" class="delete-button">Delete</button>
+              <button @click="openPopup(user.id)" class="manage-button">Manage</button>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="count-container">
-        <p>Total number of users: {{ userCount }}</p>
+      <div v-else class="no-users-message">
+        <p>No users found</p>
       </div>
     </div>
     <FooterComponent/>
@@ -123,11 +125,7 @@ export default {
     <div v-if="showPopup" class="popup-overlay">
       <div class="popup">
         <h3>Manage User Actions</h3>
-        <button @click="openUsernamePopup" class="popup-button" style="padding: 10px 20px; margin: 10px; background-color: #5bc0de; color: white; border: none; border-radius: 4px;">Change Username</button>
-        <button class="popup-button" style="padding: 10px 20px; margin: 10px; background-color: #5bc0de; color: white; border: none; border-radius: 4px;">Action 2</button>
-        <button class="popup-button" style="padding: 10px 20px; margin: 10px; background-color: #5bc0de; color: white; border: none; border-radius: 4px;">Action 3</button>
-        <button class="popup-button" style="padding: 10px 20px; margin: 10px; background-color: #5bc0de; color: white; border: none; border-radius: 4px;">Action 4</button>
-        <button class="popup-button" style="padding: 10px 20px; margin: 10px; background-color: #5bc0de; color: white; border: none; border-radius: 4px;">Action 5</button>
+        <button @click="openUsernamePopup" class="popup-button">Change Username</button>
         <button @click="closePopup" class="close-button">Close</button>
       </div>
     </div>
@@ -136,7 +134,7 @@ export default {
       <div class="popup">
         <h3>Change Username</h3>
         <input v-model="newUsername" type="text" placeholder="Enter new username" class="username-input">
-        <button @click="updateUsername" class="popup-button" style="padding: 10px 20px; margin: 10px; background-color: #5bc0de; color: white; border: none; border-radius: 4px;">Save Username</button>
+        <button @click="updateUsername" class="popup-button">Save Username</button>
         <button @click="closeUsernamePopup" class="close-button">Cancel</button>
       </div>
     </div>
@@ -157,88 +155,96 @@ html, body {
 .admin-page {
   background-color: #111111;
   min-height: 100vh;
-  padding: 20px;
+  padding: 40px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
 }
 
-.columns-container {
-  display: flex;
-  gap: 20px;
+.content-container {
   width: 100%;
+  max-width: 800px;
+  background-color: #1A1A1A;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.table-column {
-  flex: 3;
-}
-
-.count-container {
+.page-title {
   text-align: center;
-  flex: 1;
-  background-color: #1A1A1A;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.users-title {
-  color: white;
-  font-size: 32px;
+  font-size: 36px;
   margin-bottom: 20px;
+  color: #ffffff;
 }
 
-.table-wrapper {
-  max-height: 400px;
-  overflow-y: auto;
-  background-color: #1A1A1A;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.user-stats {
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 20px;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
+.user-table-wrapper {
+  overflow-x: auto;
 }
 
-td {
-  padding: 12px 15px;
-  text-align: left;
-  border-bottom: 1px solid #555;
-  color: white;
-}
-
-.user-row {
+.user-table-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
 }
 
-.user-data {
+.user-table-row {
+  display: flex;
+  padding: 15px;
+  border-bottom: 1px solid #555;
+}
+
+.header-row {
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.user-table-cell {
+  flex: 1;
   color: white;
-  margin-right: 20px;
+  padding: 5px 10px;
+}
+
+.actions-header {
+  text-align: right;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.no-users-message {
+  text-align: center;
+  font-size: 18px;
+  color: #888;
 }
 
 button {
-  padding: 8px 12px;
-  background-color: #d9534f;
+  padding: 10px 15px;
   color: white;
   border: none;
   border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-button:hover {
+.delete-button {
   background-color: #d9534f;
+}
+
+.delete-button:hover {
+  background-color: #c9302c;
 }
 
 .manage-button {
-  padding: 8px 12px;
   background-color: #5bc0de;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  margin-left: 10px;
 }
 
 .manage-button:hover {
@@ -278,17 +284,24 @@ button:hover {
   background-color: #c9302c;
 }
 
-p {
-  text-align: center;
-  font-size: 18px;
-  color: white;
-}
-
 .username-input {
   padding: 10px;
   margin: 10px;
   border-radius: 4px;
   border: none;
   width: calc(100% - 40px);
+}
+
+.popup-button {
+  padding: 10px 20px;
+  margin: 10px;
+  background-color: #5bc0de;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+.popup-button:hover {
+  background-color: #31b0d5;
 }
 </style>
