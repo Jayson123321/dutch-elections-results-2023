@@ -14,7 +14,7 @@ public class CandidateAffiliationVotes {
     private Long candidateIdentifierId;
 
     @Column(name = "affiliation_id", nullable = false)
-    private Long affiliationId;
+    private String affiliationId;
 
     @Column(name = "authority_identifier", nullable = false)
     private Long authorityIdentifier;
@@ -39,11 +39,11 @@ public class CandidateAffiliationVotes {
         this.candidateIdentifierId = candidateIdentifierId;
     }
 
-    public Long getAffiliationId() {
+    public String getAffiliationId() {
         return affiliationId;
     }
 
-    public void setAffiliationId(Long affiliationId) {
+    public void setAffiliationId(String affiliationId) {
         this.affiliationId = affiliationId;
     }
 

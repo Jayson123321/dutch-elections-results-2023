@@ -12,7 +12,6 @@ import jakarta.annotation.PostConstruct;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.FileNotFoundException;
 
 @Component
@@ -27,7 +26,7 @@ public class CandidateAffiliationVoteParser {
         File directory = new File(directoryPath);
 
         if (!directory.exists() || !directory.isDirectory()) {
-            System.err.println("Directory not found or is not a directory: " + directoryPath);
+            System.err.println("Directory not found or it is not a directory: " + directoryPath);
             return;
         }
 
@@ -106,11 +105,11 @@ public class CandidateAffiliationVoteParser {
 
                 // Parse Affiliation Identifier (mandatory)
                 NodeList affiliationNodes = selectionElement.getElementsByTagName("affiliationidentifier");
-                Long affiliationId = null;
+                String affiliationId = null;
                 if (affiliationNodes.getLength() > 0) {
                     String affiliationIdStr = affiliationNodes.item(0).getAttributes().getNamedItem("Id").getNodeValue();
                     if (!affiliationIdStr.isEmpty()) {
-                        affiliationId = Long.parseLong(affiliationIdStr);
+                        affiliationId = affiliationIdStr;
                     } else {
                         System.err.println("Affiliation Identifier is empty in Selection " + j);
                         continue;
@@ -143,8 +142,13 @@ public class CandidateAffiliationVoteParser {
                 votesRecord.setValidVotes(validVotes);
 
                 System.out.println("Saving record: " + votesRecord);
-                candidateAffiliationVotesRepository.save(votesRecord);
-                System.out.println("Saved record: " + votesRecord);
+                try {
+                    candidateAffiliationVotesRepository.save(votesRecord);
+                    System.out.println("Saved record: " + votesRecord);
+                } catch (Exception e) {
+                    System.err.println("Error saving record: " + e.getMessage());
+                    e.printStackTrace();
+                }
             }
         }
     }
