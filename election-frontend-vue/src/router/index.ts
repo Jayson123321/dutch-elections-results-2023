@@ -39,7 +39,8 @@ const routes = [
     { path: '/politicalNews', component: PoliticalNews },
     { path : '/login', component: LoginPage },
     { path: '/Heatmap', component: HeatMap },
-    { path: '/usersforum', component: forum }
+    { path: '/usersforum', component: forum },
+    { path: '/forum/:id?', component: Forum, props: true },
 ];
 
 const router = createRouter({

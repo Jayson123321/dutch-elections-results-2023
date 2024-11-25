@@ -257,7 +257,10 @@
 <template>
   <div>
     <HeaderComponent />
-    <div class="chat-container">
+    <div v-if="forumId" class="forum-detail-container">
+      <ForumDetail :id="forumId" />
+    </div>
+    <div v-else class="chat-container">
       <h1>Forum</h1>
       <p>Discussieer hier over de partijen.</p>
 
@@ -279,7 +282,7 @@
       <!-- Lijst van forums -->
       <div class="forum-list">
         <h2>Geposte Forums</h2>
-        <div v-for="forum in forums" :key="forum.forumId" class="forum-item">
+        <div v-for="forum in forums" :key="forum.forumId" class="forum-item" @click="goToForum(forum.forumId)">
           <h3>{{ forum.title }}</h3>
           <p>{{ forum.description }}</p>
         </div>
@@ -292,12 +295,20 @@
 <script>
 import HeaderComponent from './HeaderComponent.vue';
 import FooterComponent from './FooterComponent.vue';
+import ForumDetail from './ForumDetail.vue';
 
 export default {
   name: "Forum",
   components: {
     HeaderComponent,
     FooterComponent,
+    ForumDetail,
+  },
+  props: {
+    id: {
+      type: String,
+      default: null,
+    },
   },
   data() {
     return {
@@ -310,6 +321,11 @@ export default {
       },
       forums: [], // Lijst van bestaande forums
     };
+  },
+  computed: {
+    forumId() {
+      return this.id;
+    },
   },
   methods: {
     async fetchForums() {
@@ -358,6 +374,9 @@ export default {
         alert('Er is een fout opgetreden bij het versturen van het forum.');
       }
     },
+    goToForum(forumId) {
+      this.$router.push({ path: `/forum/${forumId}` });
+    }
   },
   mounted() {
     // Haal bestaande forums op wanneer de component wordt geladen
