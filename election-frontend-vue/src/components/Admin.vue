@@ -55,7 +55,7 @@ export default {
       const colors = ['#C0392B', '#74E600', '#36A2EB', '#99198C', '#9966FF', '#FF9F40', 'pink'];
 
       this.chart = new Chart(ctx, {
-        type: 'bar',
+        type: 'doughnut',
         data: {
           labels: this.users.map(user => user.username),
           datasets: [{
