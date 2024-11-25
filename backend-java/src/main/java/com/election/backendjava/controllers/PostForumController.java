@@ -22,16 +22,6 @@ public class PostForumController {
     }
 
     // Haal alle forums op
-//    @GetMapping
-//    public List<UserForum> getAllForums() {
-//        return postForumRepository.findAll();
-//    }
-//
-//    @PostMapping
-//    public UserForum createForum(@RequestBody UserForum userForum) {
-//        return forumService.createForum(userForum);
-//    }
-
     @GetMapping
     public List<UserForum> getAllForums() {
         return forumService.getAllForums();
