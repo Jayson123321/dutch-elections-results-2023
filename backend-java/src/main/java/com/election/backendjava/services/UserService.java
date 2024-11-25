@@ -34,4 +34,13 @@ public class UserService {
             userRepository.save(userToUpdate);
         }
     }
+    public void updateUserEmail(Long id, User user) {
+        Optional<User> existingUser = userRepository.findById(id);
+        if (existingUser.isPresent()) {
+            User userToUpdate = existingUser.get();
+            userToUpdate.setEmail(user.getEmail()); // update email
+            userRepository.save(userToUpdate);
+        }
+    }
+
 }
