@@ -21,6 +21,7 @@
 <script>
 import FooterComponent from './FooterComponent.vue';
 import HeaderComponent from './HeaderComponent.vue';
+import config from "@/config.ts";
 
 export default {
   name: "allekandidatenpagina",
@@ -41,8 +42,8 @@ export default {
     async fetchData() {
       try {
         const [candidatesResponse, affiliationsResponse] = await Promise.all([
-          fetch(`https://wiipuujaamee42-backend.onrender.com/api/candidate/all`),
-          fetch(`https://wiipuujaamee42-backend.onrender.com/api/affiliations`)
+          fetch(`${config.apiBaseUrl}/candidate/all`),
+          fetch(`${config.apiBaseUrl}/affiliations`)
         ]);
 
         if (!candidatesResponse.ok || !affiliationsResponse.ok) {

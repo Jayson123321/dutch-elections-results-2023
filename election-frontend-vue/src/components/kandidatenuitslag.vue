@@ -2,19 +2,23 @@
   <div class="container">
     <HeaderComponent />
 
-    <h1>Kandidaat Uitslag</h1>
+    <h1>Resultaat Kandidaat</h1>
+
+    <!-- Kandidateninformatie weergeven -->
     <div v-if="candidate">
-      <h2>{{ candidate.name }}</h2>
-      <p>Affiliatie: {{ candidate.affiliation }}</p>
+      <h2>Naam: {{ candidate.candidateName }}</h2>
     </div>
 
+    <!-- Stemmenoverzicht -->
     <h3>Stemmen</h3>
     <ul v-if="votes.length">
       <li v-for="(vote, index) in votes" :key="index">
-        <p>Stemmen: {{ vote.validVotes }}</p>
+        <p>Aantal stemmen: {{ vote.validVotes }}</p>
       </li>
     </ul>
 
+
+    <!-- Foutmelding indien aanwezig -->
     <div v-if="error" class="error">
       {{ error }}
     </div>
@@ -26,61 +30,68 @@
 <script>
 import FooterComponent from './FooterComponent.vue';
 import HeaderComponent from './HeaderComponent.vue';
+import config from "@/config.ts";
 
 export default {
-  name: "kandidatenuitslag",
+  name: "KandidaatResultaat",
   components: {
     FooterComponent,
     HeaderComponent
   },
+  props: ['id'], // Accepteert id als prop
   data() {
     return {
-      candidate: null,  // Laat het leeg in plaats van een object
+      candidate: null,
       votes: [],
-      error: null        // Voeg een error message toe
+      error: null
     };
   },
   async created() {
-    const candidateIdentifier = this.$route.params.id; // Gebruik de identifier
-    await this.fetchCandidate(candidateIdentifier);
-    await this.fetchVotes(candidateIdentifier); // Pas dit aan naar de juiste identifier
-  },
-  methods: {
-    // Haal kandidaatgegevens op
-    async fetchCandidate(id) {
+    if (this.id) {
       try {
-        const response = await fetch(`https://wiipuujaamee42-backend.onrender.com/api/candidate/${id}`);
-        if (!response.ok) {
-          throw new Error('HTTP error! status: ' + response.status);
-        }
+        await this.findCandidateVotesById();
+        console.log("Candidate data:", this.candidate);
+        await this.fetchVotes();
+        console.log("Votes data:", this.votes);
+      } catch (error) {
+        this.error = "Er is een probleem opgetreden bij het ophalen van de gegevens.";
+      }
+    } else {
+      this.error = "Geen kandidaat-ID opgegeven in de route.";
+    }
+  },
+
+  methods: {
+    async findCandidateVotesById() {
+      try {
+        const response = await fetch(`${config.apiBaseUrl}/candidate/${this.id}`);
+        if (!response.ok) throw new Error(`HTTP-fout! Status: ${response.status}`);
         this.candidate = await response.json();
       } catch (error) {
-        console.error('Error fetching candidate:', error);
-        this.error = "Kandidaatgegevens konden niet worden opgehaald.";
+        console.error("Fout bij het ophalen van de kandidaat:", error);
       }
     },
-    // Haal stemgegevens op
-    async fetchVotes(candidateIdentifier) {
+
+    async fetchVotes() {
       try {
-        const response = await fetch(`https://wiipuujaamee42-backend.onrender.com/api/candidate/votes/${candidateIdentifier}`);
-        if (!response.ok) {
-          throw new Error('HTTP error! status: ' + response.status);
-        }
-        this.votes = await response.json();
+        const response = await fetch(`${config.apiBaseUrl}/candidate-votes/votes/${this.id}`);
+        if (!response.ok) throw new Error(`HTTP-fout! Status: ${response.status}`);
+        const data = await response.json();
+
+        // Controleer of 'data' een array is
+        this.votes = Array.isArray(data) ? data : [data];
+        console.log("Gekregen stemmen:", this.votes); // controleer de output
+
       } catch (error) {
-        console.error('Error fetching votes:', error);
-        this.error = "Stemgegevens konden niet worden opgehaald.";
+        console.error("Fout bij het ophalen van stemmen:", error);
       }
     }
+
   }
-}
+};
 </script>
 
 <style scoped>
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
-}
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -90,7 +101,9 @@ h1 {
 
 h1 {
   text-align: center;
+  color: #333;
   margin-top: 100px;
+  margin-bottom: 20px;
 }
 
 ul {
