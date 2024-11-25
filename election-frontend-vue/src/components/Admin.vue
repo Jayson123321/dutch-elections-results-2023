@@ -1,14 +1,12 @@
 <script>
-/*import FooterComponent from './FooterComponent.vue';
-import HeaderComponent from './HeaderComponent.vue';*/
 import axios from 'axios';
+import { Chart, DoughnutController, PieController, ArcElement, Tooltip, Legend } from "chart.js";
+
+Chart.register(DoughnutController, ArcElement, PieController, Tooltip, Legend);
 
 export default {
   name: "Admin",
-  components: {
-    /*FooterComponent,
-    HeaderComponent*/
-  },
+  components: {},
   data() {
     return {
       users: [],
@@ -18,7 +16,8 @@ export default {
       showEmailPopup: false,
       selectedUserId: null,
       newUsername: '',
-      newEmail: ''
+      newEmail: '',
+      chart: null,
     };
   },
   mounted() {
@@ -30,6 +29,9 @@ export default {
       axios.get('http://localhost:8080/api/users/all')
           .then(response => {
             this.users = response.data;
+            this.$nextTick(() => {
+              this.renderChart();
+            });
           })
           .catch(error => {
             console.error('An error occurred while retrieving the user data:', error);
@@ -38,12 +40,49 @@ export default {
     fetchUserCount() {
       axios.get('http://localhost:8080/api/users/count')
           .then(response => {
-            console.log(response);
             this.userCount = response.data;
           })
           .catch(error => {
             console.error('An error occurred while retrieving the user count:', error);
           });
+    },
+    renderChart() {
+      if (this.chart) {
+        this.chart.destroy();
+      }
+
+      const ctx = this.$refs.userChart.getContext('2d');
+      const colors = ['#C0392B', '#74E600', '#36A2EB', '#99198C', '#9966FF', '#FF9F40', 'pink'];
+
+      this.chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: this.users.map(user => user.username),
+          datasets: [{
+            label: 'Users',
+            data: this.users.map(user => 1),
+            backgroundColor: colors,
+            borderColor: colors.map(color => color.replace('0.2', '1')),
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            tooltip: {
+              callbacks: {
+                label: function (context) {
+                  const username = context.chart.data.labels[context.dataIndex];
+                  return `${username}: 1 User`;
+                }
+              }
+            }
+          }
+        }
+      });
     },
     deleteUser(userId) {
       if (confirm('Are you sure you want to delete this user?')) {
@@ -77,7 +116,7 @@ export default {
     },
     updateUsername() {
       if (this.newUsername.trim() !== '') {
-        axios.put(`http://localhost:8080/api/users/${this.selectedUserId}`, { username: this.newUsername })
+        axios.put(`http://localhost:8080/api/users/${this.selectedUserId}`, {username: this.newUsername})
             .then(() => {
               alert('Username updated successfully.');
               this.fetchUsers();
@@ -99,7 +138,7 @@ export default {
     },
     updateEmail() {
       if (this.newEmail.trim() !== '') {
-        axios.put(`http://localhost:8080/api/users/${this.selectedUserId}/email`, { email: this.newEmail })
+        axios.put(`http://localhost:8080/api/users/${this.selectedUserId}/email`, {email: this.newEmail})
             .then(() => {
               alert('Email updated successfully.');
               this.fetchUsers();
@@ -123,6 +162,9 @@ export default {
       <h2 class="page-title">Admin Dashboard</h2>
       <div class="user-stats">
         <p>Total Users: {{ userCount }}</p>
+      </div>
+      <div class="chartContainer">
+        <canvas id="userChart" ref="userChart"></canvas>
       </div>
       <div class="user-table-wrapper" v-if="users.length > 0">
         <div class="user-table-container">
@@ -219,6 +261,25 @@ html, body {
   margin-bottom: 20px;
   text-align: center;
   font-size: 20px;
+}
+
+.chartContainer {
+  width: 35%;
+  float: right;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-height: 600px;
+  transition: transform 0.5s ease;
+  margin-left: 100px;
+}
+
+.chartContainer:hover {
+  transform: scale(1.05);
+}
+
+canvas {
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .user-table-wrapper {
