@@ -15,8 +15,10 @@ export default {
       userCount: 0,
       showPopup: false,
       showUsernamePopup: false,
+      showEmailPopup: false,
       selectedUserId: null,
-      newUsername: ''
+      newUsername: '',
+      newEmail: ''
     };
   },
   mounted() {
@@ -64,6 +66,7 @@ export default {
       this.showPopup = false;
       this.selectedUserId = null;
       this.newUsername = '';
+      this.newEmail = '';
     },
     openUsernamePopup() {
       this.showUsernamePopup = true;
@@ -74,7 +77,7 @@ export default {
     },
     updateUsername() {
       if (this.newUsername.trim() !== '') {
-        axios.put(`http://localhost:8080/api/users/${this.selectedUserId}`, {username: this.newUsername})
+        axios.put(`http://localhost:8080/api/users/${this.selectedUserId}`, { username: this.newUsername })
             .then(() => {
               alert('Username updated successfully.');
               this.fetchUsers();
@@ -85,6 +88,28 @@ export default {
             });
       } else {
         alert('Username cannot be empty.');
+      }
+    },
+    openEmailPopup() {
+      this.showEmailPopup = true;
+    },
+    closeEmailPopup() {
+      this.showEmailPopup = false;
+      this.newEmail = '';
+    },
+    updateEmail() {
+      if (this.newEmail.trim() !== '') {
+        axios.put(`http://localhost:8080/api/users/${this.selectedUserId}/email`, { email: this.newEmail })
+            .then(() => {
+              alert('Email updated successfully.');
+              this.fetchUsers();
+              this.closeEmailPopup();
+            })
+            .catch(error => {
+              console.error('An error occurred while updating the email:', error);
+            });
+      } else {
+        alert('Email cannot be empty.');
       }
     }
   }
@@ -126,7 +151,7 @@ export default {
       <div class="popup">
         <h3>Manage User Actions</h3>
         <button @click="openUsernamePopup" class="popup-button">Change Username</button>
-        <button @click="closePopup" class="popup-button">Change Email</button>
+        <button @click="openEmailPopup" class="popup-button">Change Email</button>
         <button class="popup-button">Action 3</button>
         <button class="popup-button">Action 4</button>
         <button class="popup-button">Action 5</button>
@@ -140,6 +165,15 @@ export default {
         <input v-model="newUsername" type="text" placeholder="Enter new username" class="username-input">
         <button @click="updateUsername" class="popup-button">Save Username</button>
         <button @click="closeUsernamePopup" class="close-button">Cancel</button>
+      </div>
+    </div>
+
+    <div v-if="showEmailPopup" class="popup-overlay">
+      <div class="popup">
+        <h3>Change Email</h3>
+        <input v-model="newEmail" type="text" placeholder="Enter new email" class="username-input">
+        <button @click="updateEmail" class="popup-button">Save Email</button>
+        <button @click="closeEmailPopup" class="close-button">Cancel</button>
       </div>
     </div>
   </div>
