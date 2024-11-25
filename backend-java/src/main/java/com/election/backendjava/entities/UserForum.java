@@ -1,5 +1,7 @@
 package com.election.backendjava.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -18,6 +20,7 @@ public class UserForum {
 
    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id" , nullable = false)
+   @JsonBackReference
    private User user;
 
    //getters and setters
