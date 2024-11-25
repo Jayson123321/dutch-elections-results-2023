@@ -5,6 +5,8 @@ import com.election.backendjava.repositories.PostForumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class ForumService {
@@ -15,4 +17,7 @@ public class ForumService {
         return  postForumRepository.save(form);
     }
 
+    public List<UserForum> getAllForums() {
+        return postForumRepository.findAll();
+    }
 }
