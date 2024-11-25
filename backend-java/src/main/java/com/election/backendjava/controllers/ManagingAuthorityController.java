@@ -44,6 +44,7 @@ public class ManagingAuthorityController {
         return partyVotesRepository.findByReportingUnitIdAndManagingAuthorityNumber(reportingUnitId, authorityIdentifier);
     }
 
+
 }
 
 

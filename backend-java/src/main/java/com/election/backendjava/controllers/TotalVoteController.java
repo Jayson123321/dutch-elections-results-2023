@@ -22,6 +22,20 @@ public class TotalVoteController {
     public TotalVoteController(TotalVoteRepository totalVoteRepository) {
         this.totalVoteRepository = totalVoteRepository;
     }
+    // Sorteer de resultaten op naam van de partij.
+    @GetMapping("/sortedByName")
+    public List<TotalVote> getAllVotesSortedByAffiliationName() {
+        return totalVoteRepository.findAll().stream()
+                .sorted((a, b) -> a.getAffiliationName().compareToIgnoreCase(b.getAffiliationName()))
+                .collect(Collectors.toList());
+    }
+    // Sorteer de resultaten op aantal stemmen.
+    @GetMapping("/sortedByVotes")
+    public List<TotalVote> getAllVotesSortedByTotalVotes() {
+        return totalVoteRepository.findAll().stream()
+                .sorted((a, b) -> b.getTotalVotes().compareTo(a.getTotalVotes()))
+                .collect(Collectors.toList());
+    }
 
     @GetMapping
     public List<TotalVoteWithPercentageDTO> getAllTotalVotes() {
@@ -39,6 +53,7 @@ public class TotalVoteController {
 
         return result;
     }
+
 }
 
 //    public List<TotalVote> getAllTotalVotes() {

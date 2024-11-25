@@ -15,6 +15,10 @@ import allekandidatenpagina from "@/components/allekandidatenpagina.vue";
 import TotalResults from "@/components/TotalVotes.vue";
 import Admin from '../components/Admin.vue';
 import kandidatenuitslag from "@/components/kandidatenuitslag.vue";
+import LocalAuthoritiesResults from "@/components/LocalAuthoritiesResults.vue";
+import PoliticalNews from "@/components/PoliticalNews.vue";
+import HeatMap from "@/components/HeatMap.vue";
+
 const routes = [
     { path: '/', component: home },
     { path: '/home', component: Home },
@@ -29,8 +33,11 @@ const routes = [
     { path: '/totalResults', component: TotalResults },
     { path: '/allekandidatenpagina', component: allekandidatenpagina },
     { path: '/admin', component: Admin },
-    { path: '/kandidatenuitslag/:id', name: 'kandidatenuitslag', component: kandidatenuitslag, props: true }
-
+    { path: '/kandidatenuitslag/:id', name: 'kandidatenuitslag', component: kandidatenuitslag, props: true },
+    { path: '/localAuthorityResults', component: LocalAuthoritiesResults },
+    { path: '/politicalNews', component: PoliticalNews },
+    { path : '/login', component: LoginPage },
+    { path: '/Heatmap', component: HeatMap },
 ];
 
 const router = createRouter({

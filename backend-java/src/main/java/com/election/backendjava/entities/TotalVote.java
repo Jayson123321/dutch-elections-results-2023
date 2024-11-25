@@ -7,16 +7,23 @@ import jakarta.persistence.*;
 public class TotalVote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer affiliationId;
 
     private String affiliationName;
 
     private Integer totalVotes;
 
-    private Integer affiliationId;
+    // Constructor
+    public TotalVote(String affiliationName, Integer totalVotes) {
+        this.affiliationName = affiliationName;
+        this.totalVotes = totalVotes;
+    }
 
+    // Default constructor
+    public TotalVote() {
+    }
 
-    //getters and setters
-
+    // Getters and setters
     public String getAffiliationName() {
         return affiliationName;
     }
@@ -40,5 +47,4 @@ public class TotalVote {
     public void setAffiliationId(Integer affiliationId) {
         this.affiliationId = affiliationId;
     }
-
 }

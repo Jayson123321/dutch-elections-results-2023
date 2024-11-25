@@ -60,7 +60,6 @@ export default {
   padding: 20px;
   font-family: Arial, sans-serif;
   margin: 50px auto 100px auto;
-  background-color: #f0f2f5;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;

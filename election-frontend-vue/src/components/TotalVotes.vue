@@ -16,6 +16,9 @@
         </tbody>
       </table>
     </div>
+    <div class="politicalComponent">
+      <PoliticalNews/>
+    </div>
     <FooterComponent />
   </div>
 </template>
@@ -24,12 +27,14 @@
 import { defineComponent } from 'vue';
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import { Chart, DoughnutController, PieController, ArcElement, Tooltip, Legend } from "chart.js";
+import PoliticalNews from "@/components/PoliticalNews.vue";
 
 Chart.register(DoughnutController, ArcElement, PieController, Tooltip, Legend);
 
 export default defineComponent({
   name: "totalResults",
   components: {
+    PoliticalNews,
     HeaderComponent,
   },
   data() {
@@ -126,7 +131,6 @@ export default defineComponent({
 .chartContainer {
   width: 35%;
   float: right;
-  background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   max-height: 600px;
@@ -166,12 +170,8 @@ th {
   text-align: left;
 }
 
-tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
 tr:hover {
-  background-color: #ddd;
+  background-color: #7e7d7d;
   transform: scale(1.05);
   transition: transform 0.2s ease;
 }

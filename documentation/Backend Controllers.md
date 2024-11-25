@@ -1,12 +1,12 @@
-package com.election.backendjava.controllers;
+### `PartyVotesController`
 
-import com.election.backendjava.entities.PartyVotes;
-import com.election.backendjava.repositories.PartyVotesRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+**Beschrijving**: Deze controller handelt de verzoeken af die te maken hebben met de stemmen per partij.
 
-import java.util.List;
+**Endpoints**:
+- `GET /api/party-votes/reporting-unit/{reportingUnitId}`: Haalt de stemmen per partij op voor een specifiek stembureau.
 
+**Code**:
+```java
 @RestController
 @RequestMapping("/api/party-votes")
 public class PartyVotesController {
@@ -18,6 +18,8 @@ public class PartyVotesController {
     public List<PartyVotes> getPartyVotesByReportingUnit(@PathVariable String reportingUnitId) {
         return partyVotesRepository.findByReportingUnitId(reportingUnitId);
     }
-
-
 }
+```
+**test Postman**:
+![img_5.png](img_5.png)
+
