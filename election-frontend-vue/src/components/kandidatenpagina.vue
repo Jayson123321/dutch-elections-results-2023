@@ -17,6 +17,7 @@
 <script>
 import FooterComponent from './FooterComponent.vue';
 import HeaderComponent from './HeaderComponent.vue';
+import config from "@/config.ts";
 
 export default {
   name: "KandidatenPagina",
@@ -37,7 +38,7 @@ export default {
     async fetchCandidates() {
       try {
         console.log(`Fetching candidates for affiliationId: ${this.affiliationId}`);
-        const response = await fetch(`http://localhost:8080/api/candidate?affiliationId=${this.affiliationId}`);
+        const response = await fetch(`${config.apiBaseUrl}/candidate?affiliationId=${this.affiliationId}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

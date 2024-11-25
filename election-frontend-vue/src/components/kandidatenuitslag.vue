@@ -30,6 +30,7 @@
 <script>
 import FooterComponent from './FooterComponent.vue';
 import HeaderComponent from './HeaderComponent.vue';
+import config from "@/config.ts";
 
 export default {
   name: "KandidaatResultaat",
@@ -63,7 +64,7 @@ export default {
   methods: {
     async findCandidateVotesById() {
       try {
-        const response = await fetch(`http://localhost:8080/api/candidate/${this.id}`);
+        const response = await fetch(`${config.apiBaseUrl}/candidate/${this.id}`);
         if (!response.ok) throw new Error(`HTTP-fout! Status: ${response.status}`);
         this.candidate = await response.json();
       } catch (error) {
@@ -73,7 +74,7 @@ export default {
 
     async fetchVotes() {
       try {
-        const response = await fetch(`http://localhost:8080/api/candidate-votes/votes/${this.id}`);
+        const response = await fetch(`${config.apiBaseUrl}/candidate-votes/votes/${this.id}`);
         if (!response.ok) throw new Error(`HTTP-fout! Status: ${response.status}`);
         const data = await response.json();
 

@@ -128,6 +128,7 @@ import { defineComponent } from 'vue';
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import { Chart, PieController, ArcElement, Tooltip, Legend } from 'chart.js';
 import PoliticalNews from "@/components/PoliticalNews.vue";
+import config from "@/config.ts";
 
 Chart.register(PieController, ArcElement, Tooltip, Legend);
 
@@ -166,8 +167,8 @@ export default defineComponent({
       // Als sortOrder votes is, dan sorteer op Votes, anders op name
       try {
         const ChooseEndpoint = this.sortOrder === 'votes'
-            ? `http://localhost:8080/api/result-local-authority/sortedByVotes/${selectedAuthority.authorityIdentifier}`
-            : `http://localhost:8080/api/result-local-authority/${selectedAuthority.authorityIdentifier}`;
+            ? `${config.apiBaseUrl}/result-local-authority/sortedByVotes/${selectedAuthority.authorityIdentifier}`
+            : `${config.apiBaseUrl}/result-local-authority/${selectedAuthority.authorityIdentifier}`;
         const response = await fetch(ChooseEndpoint);
         if (!response.ok) {
           throw new Error('Failed to fetch authority votes');
@@ -198,7 +199,7 @@ export default defineComponent({
       try {
         let reportingUnit = this.reportingUnits.find(reportingUnit => reportingUnit.id === this.selectedReportingUnitId);
         let authority = this.localAuthorities.find(authority => authority.id === this.selectedAuthorityId);
-        const response = await fetch(`http://localhost:8080/api/managing-authorities/${reportingUnit.managingAuthorityNumber}/party-votes/${authority.authorityIdentifier}`, {
+        const response = await fetch(`${config.apiBaseUrl}/managing-authorities/${reportingUnit.managingAuthorityNumber}/party-votes/${authority.authorityIdentifier}`, {
           method: 'GET'
         });
         if (!response.ok) {
