@@ -1,5 +1,6 @@
 package com.election.backendjava.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Collection;
@@ -55,6 +56,7 @@ public class User {
     }
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private Collection<UserForum> userForum;
 
     public Collection<UserForum> getUserForum() {
