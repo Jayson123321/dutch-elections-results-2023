@@ -1,3 +1,3 @@
 export default {
-    apiBaseUrl: 'http://localhost:8080/api'
+    apiBaseUrl: 'https://wiipuujaamee42-backend.onrender.com/api'
 }
