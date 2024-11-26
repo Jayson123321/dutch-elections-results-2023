@@ -196,7 +196,7 @@ export default {
         <h3>Manage User Actions</h3>
         <button @click="openUsernamePopup" class="popup-button">Change Username</button>
         <button @click="openEmailPopup" class="popup-button">Change Email</button>
-        <button class="popup-button">Action 3</button>
+        <button class="popup-button">Ban User</button>
         <button class="popup-button">Action 4</button>
         <button class="popup-button">Action 5</button>
         <button @click="closePopup" class="close-button">Close</button>
