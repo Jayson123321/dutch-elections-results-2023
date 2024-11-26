@@ -219,6 +219,7 @@ export default {
             <div class="user-table-cell actions">
               <button @click="deleteUser(user.id)" class="delete-button">Delete</button>
               <button @click="openPopup(user.id)" class="manage-button">Manage</button>
+              <button v-if="user.role === 'banned'" @click="openUnbanPopup(user.id)" class="unban-button">Unban</button>
             </div>
           </div>
         </div>
@@ -262,13 +263,23 @@ export default {
     <div v-if="showBanPopup" class="popup-overlay">
       <div class="popup">
         <h3>Ban User</h3>
-        <p>Are you sure you want to ban {{ users.find(user => user.id === selectedUserId).username }}?</p>
+        <p>Are you sure you want to ban {{ users.find(user => user.id === selectedUserId)?.username }}?</p>
         <button @click="banUser" class="popup-button">Yes, Ban User</button>
         <button @click="closeBanPopup" class="close-button">Cancel</button>
       </div>
     </div>
+
+    <div v-if="showUnbanPopup" class="popup-overlay">
+      <div class="popup">
+        <h3>Unban User</h3>
+        <p>Are you sure you want to unban {{ users.find(user => user.id === selectedUserId)?.username }}?</p>
+        <button @click="unbanUser" class="popup-button">Yes, Unban User</button>
+        <button @click="closeUnbanPopup" class="close-button">Cancel</button>
+      </div>
+    </div>
   </div>
 </template>
+
 
 
 
