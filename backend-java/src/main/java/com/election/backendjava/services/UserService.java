@@ -31,6 +31,7 @@ public class UserService {
         if (existingUser.isPresent()) {
             User userToUpdate = existingUser.get();
             userToUpdate.setUsername(user.getUsername()); // this is for the username only
+            userToUpdate.setRole(user.getRole()); //updating role
             userRepository.save(userToUpdate);
         }
     }
