@@ -53,5 +53,14 @@ public class UserService {
         }
     }
 
+    public void unbanUser(Long id) {
+        Optional<User> existingUser = userRepository.findById(id);
+        if (existingUser.isPresent()) {
+            User userToUnban = existingUser.get();
+            userToUnban.setRole("userr");
+            userRepository.save(userToUnban);
+        }
+    }
+
 
 }
