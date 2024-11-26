@@ -3,12 +3,17 @@
     <div class="header-container">
       <div class="logo">
       </div>
-      <nav class="nav">
+      <button class="hamburger" @click="toggleMenu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+      <nav class="nav" :class="{ 'is-active': isMenuOpen }">
         <div class="header-section links">
           <ul>
             <li><router-link to="/">Home</router-link></li>
-            <li><router-link to="/about">Over Ons</router-link></li>
-            <li><router-link to="/contact">Contact</router-link></li>
+            <li><router-link to="/choose-results">Uitslagen</router-link></li>
+            <li><router-link to="/partijenpagina">Partijen</router-link></li>
           </ul>
         </div>
       </nav>
@@ -23,12 +28,11 @@
       <div class="account">
         <router-link to="/account"><i class="fas fa-user"></i></router-link>
       </div>
+      <label class="switch">
+        <input type="checkbox" @change="toggleDarkMode" :checked="isDarkMode">
+        <span class="slider round"></span>
+      </label>
     </div>
-    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="17px" viewBox="0 0 48 48" id="b" @click="toggleDarkMode" class="toggle-dark-mode-image">
-      <defs>
-      </defs>
-      <path class="c" d="m32.8,29.3c-8.9-.8-16.2-7.8-17.5-16.6-.3-1.8-.3-3.7,0-5.4.2-1.4-1.4-2.3-2.5-1.6C6.3,9.7,2.1,16.9,2.5,25c.5,10.7,9,19.5,19.7,20.4,10.6.9,19.8-6,22.5-15.6.4-1.4-1-2.6-2.3-2-2.9,1.3-6.1,1.8-9.6,1.5Z"/>
-    </svg>
   </header>
 </template>
 
@@ -41,7 +45,8 @@ export default {
   data() {
     return {
       isDarkMode: false,
-      showPoliticalNews: false
+      showPoliticalNews: false,
+      isMenuOpen: false
     };
   },
   methods: {
@@ -53,12 +58,13 @@ export default {
         document.documentElement.setAttribute('data-theme', 'light');
       }
     },
-    togglePoliticalNews() {
-      this.showPoliticalNews = !this.showPoliticalNews;
+    toggleMenu() {
+      this.isMenuOpen = !this.isMenuOpen;
     }
   }
 }
 </script>
+
 <style>
 .header {
   padding: 10px 0;
@@ -77,6 +83,36 @@ export default {
 
 .logo img {
   height: 40px;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 21px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
+}
+
+.hamburger .bar {
+  width: 100%;
+  height: 3px;
+  background-color: #000;
+  border-radius: 10px;
+  transition: all 0.3s linear;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+}
+
+.nav.is-active {
+  display: block;
 }
 
 .nav ul {
@@ -99,27 +135,43 @@ export default {
 .search-container {
   display: flex;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 5px;
+  background-color: #f1f1f1;
+  border-radius: 20px;
+  padding: 3px 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .search-input {
-  padding: 8px 12px;
+  padding: 5px 10px;
   border: none;
-  border-radius: 4px;
+  border-radius: 20px;
   outline: none;
+  flex-grow: 1;
+  font-size: 14px;
+  background-color: transparent;
 }
 
 .search-button {
-  background-color: transparent;
+  background-color: #007bff;
   border: none;
+  border-radius: 50%;
   cursor: pointer;
-  margin-left: 8px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
 }
 
 .search-button svg {
-  fill: currentColor;
-  width: 24px;
-  height: 24px;
+  fill: #ffffff;
+  width: 20px;
+  height: 20px;
+}
+
+.search-button:hover {
+  background-color: #0056b3;
 }
 
 .account a {
@@ -127,15 +179,67 @@ export default {
   text-decoration: none;
 }
 
-.toggle-dark-mode-image {
-  cursor: pointer;
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
   margin-top: 10px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #e4e4e4;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: #ffffff;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #353535;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
 }
 
 @media (max-width: 768px) {
   .header-container {
     flex-direction: column;
     align-items: center;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .nav {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
   }
 
   .nav ul {
@@ -151,7 +255,7 @@ export default {
     margin-top: 20px;
   }
 
-  .toggle-dark-mode-image {
+  .switch {
     margin-top: 20px;
   }
 }

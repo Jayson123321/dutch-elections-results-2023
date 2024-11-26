@@ -2,19 +2,26 @@
   <div class="container">
     <HeaderComponent />
 
-    <h1>Kandidaat Uitslag</h1>
+    <h1>Resultaat Kandidaat</h1>
+
+    <!-- Kandidateninformatie weergeven -->
     <div v-if="candidate">
-      <h2>{{ candidate.name }}</h2>
-      <p>Affiliatie: {{ candidate.affiliation }}</p>
+      <h2>Naam: {{ candidate.candidateName }}</h2>
     </div>
 
+    <!-- Stemmenoverzicht -->
     <h3>Stemmen</h3>
-    <ul v-if="votes.length">
-      <li v-for="(vote, index) in votes" :key="index">
-        <p>Stemmen: {{ vote.validVotes }}</p>
+    <ul>
+      <li>
+        <p>Kandidaatstemmen: {{ candidateVotes }}</p>
       </li>
+
     </ul>
 
+    <!-- Cirkeldiagram -->
+    <canvas id="votesChart" width="400" height="400"></canvas>
+
+    <!-- Foutmelding indien aanwezig -->
     <div v-if="error" class="error">
       {{ error }}
     </div>
@@ -26,61 +33,97 @@
 <script>
 import FooterComponent from './FooterComponent.vue';
 import HeaderComponent from './HeaderComponent.vue';
+import { Chart, registerables } from 'chart.js';
+
+Chart.register(...registerables);
 
 export default {
-  name: "kandidatenuitslag",
+  name: "KandidaatResultaat",
   components: {
     FooterComponent,
-    HeaderComponent
+    HeaderComponent,
   },
+  props: ['id'], // Accepteert kandidaat-ID als prop
   data() {
     return {
-      candidate: null,  // Laat het leeg in plaats van een object
-      votes: [],
-      error: null        // Voeg een error message toe
+      candidate: null,
+      candidateVotes: 0,
+      totalVotes: 20865452, // Static total votes
+      error: null,
     };
   },
   async created() {
-    const candidateIdentifier = this.$route.params.id; // Gebruik de identifier
-    await this.fetchCandidate(candidateIdentifier);
-    await this.fetchVotes(candidateIdentifier); // Pas dit aan naar de juiste identifier
+    if (this.id) {
+      try {
+        await this.findCandidateVotesById();
+        console.log("Candidate data:", this.candidate);
+        await this.fetchCandidateData();
+        this.createChart();
+      } catch (error) {
+        this.error = "Er is een probleem opgetreden bij het ophalen van de gegevens.";
+      }
+    } else {
+      this.error = "Geen kandidaat-ID opgegeven in de route.";
+    }
   },
   methods: {
-    // Haal kandidaatgegevens op
-    async fetchCandidate(id) {
+    async fetchCandidateData() {
       try {
-        const response = await fetch(`http://localhost:8080/api/candidate/${id}`);
-        if (!response.ok) {
-          throw new Error('HTTP error! status: ' + response.status);
-        }
-        this.candidate = await response.json();
+        // Fetch candidate details and votes
+        const response = await fetch(`http://localhost:8080/api/candidate-votes/votes/${this.id}`);
+        if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+        const data = await response.json();
+
+        // this.candidate = data; // Assuming the response contains candidate details
+        this.candidateVotes = data.validVotes;
       } catch (error) {
-        console.error('Error fetching candidate:', error);
-        this.error = "Kandidaatgegevens konden niet worden opgehaald.";
+        console.error("Error fetching candidate data:", error);
+        this.error = "Failed to fetch candidate data.";
       }
     },
-    // Haal stemgegevens op
-    async fetchVotes(candidateIdentifier) {
+    async findCandidateVotesById() {
       try {
-        const response = await fetch(`http://localhost:8080/api/candidate/votes/${candidateIdentifier}`);
-        if (!response.ok) {
-          throw new Error('HTTP error! status: ' + response.status);
-        }
-        this.votes = await response.json();
+        const response = await fetch(`http://localhost:8080/api/candidate/${this.id}`);
+        if (!response.ok) throw new Error(`HTTP-fout! Status: ${response.status}`);
+        this.candidate = await response.json();
       } catch (error) {
-        console.error('Error fetching votes:', error);
-        this.error = "Stemgegevens konden niet worden opgehaald.";
+        console.error("Fout bij het ophalen van de kandidaat:", error);
       }
-    }
-  }
-}
+    },
+    createChart() {
+      const ctx = document.getElementById('votesChart').getContext('2d');
+      const otherVotes = this.totalVotes - this.candidateVotes;
+
+      new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ['Kandidaatstemmen', 'Overige stemmen'],
+          datasets: [
+            {
+              data: [this.candidateVotes, otherVotes],
+              backgroundColor: ['#36A2EB', '#FF6384'],
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            title: {
+              display: true,
+              text: 'Verdeling van geldige stemmen',
+            },
+          },
+        },
+      });
+    },
+  },
+};
 </script>
 
 <style scoped>
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
-}
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -90,7 +133,9 @@ h1 {
 
 h1 {
   text-align: center;
+  color: #333;
   margin-top: 100px;
+  margin-bottom: 20px;
 }
 
 ul {

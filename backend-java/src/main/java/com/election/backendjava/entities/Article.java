@@ -4,7 +4,7 @@ public class Article {
     private String title;
     private String link;
     private String pubDate;
-    private String imageUrl; // Add this field
+    private String imageUrl;
 
     public Article(String title, String link, String pubDate, String imageUrl) {
         this.title = title;
