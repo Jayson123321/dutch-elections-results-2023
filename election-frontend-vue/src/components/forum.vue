@@ -21,11 +21,24 @@
 
       <div class="forum-list">
         <h2>Geposte Forums</h2>
-        <div v-for="forum in forums" :key="forum.forumId" class="forum-item" @click="goToQuestionDetails(forum.forumId)">
-          <h3>{{ forum.title }}</h3>
+        <div v-for="forum in forums" :key="forum.forumId" class="forum-item">
+          <h3 @click="goToQuestionDetails(forum.forumId)">{{ forum.title }}</h3>
           <p>{{ forum.description }}</p>
+
+          <!-- Reply Form -->
           <form @submit.prevent="submitReply(forum.forumId)">
+            <textarea
+                v-model="newReply.replyText"
+                placeholder="Uw antwoord"
+                required
+            ></textarea>
+            <button type="submit">Antwoord Posten</button>
           </form>
+
+          <!-- Display Replies -->
+          <div v-for="reply in forum.replies" :key="reply.replyId" class="reply-item">
+            <p><strong>{{ reply.username }}:</strong> {{ reply.replyText }}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -112,8 +125,13 @@ export default {
         const response = await axios.post(`http://localhost:8080/api/usersforum/${forumId}/replies`, this.newReply);
         console.log('Reply succesvol toegevoegd:', response.data);
 
+        // Voeg de nieuwe reply toe aan de juiste forum
+        const forum = this.forums.find(f => f.forumId === forumId);
+        if (forum) {
+          forum.replies.push(response.data);
+        }
+
         // Reset het reply formulier
-        this.newReply.username = '';
         this.newReply.replyText = '';
       } catch (error) {
         console.error('Fout bij het versturen van reply:', error);
@@ -121,7 +139,7 @@ export default {
       }
     },
     goToQuestionDetails(forumId) {
-      this.$router.push({ name: 'questionDetails', params: { forumId } });
+      this.$router.push({ name: 'forum', params: { forumId } });
     }
   },
   mounted() {
@@ -130,54 +148,114 @@ export default {
   },
 };
 </script>
-
 <style>
-
 .chat-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 20px;
+background-color: #f8f9fa;
+font-family: Arial, sans-serif;
 }
 
 .forum-form {
-  width: 100%;
-  max-width: 600px;
-  margin-bottom: 20px;
+width: 100%;
+max-width: 800px;
+margin-bottom: 20px;
+background-color: #ffffff;
+padding: 20px;
+border: 1px solid #ddd;
+border-radius: 5px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .forum-form input,
 .forum-form textarea {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+width: 100%;
+padding: 10px;
+margin-bottom: 10px;
+border: 1px solid #ddd;
+border-radius: 5px;
+font-size: 16px;
 }
 
 .forum-form button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-}
-
-.forum-form button:hover {
-  background-color: #0056b3;
+padding: 10px 20px;
+border: none;
+border-radius: 5px;
+  background-color: #4e4e4e;
+color: white;
+cursor: pointer;
+font-size: 16px;
 }
 
 .forum-list {
-  width: 100%;
-  max-width: 600px;
+width: 100%;
+max-width: 800px;
 }
 
 .forum-item {
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 10px;
-  background-color: #f9f9f9;
+background-color: #ffffff;
+padding: 20px;
+margin-bottom: 20px;
+border: 1px solid #ddd;
+border-radius: 5px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.forum-item h3 {
+margin: 0 0 10px;
+  font-size:23px;
+cursor: pointer;
+color: #007bff;
+}
+
+.forum-item h3:hover {
+text-decoration: underline;
+}
+
+.forum-item p {
+margin: 0 0 10px;
+color: #333;
+}
+
+.reply-item {
+background-color: #f1f1f1;
+padding: 10px;
+margin-top: 10px;
+border-radius: 5px;
+}
+
+.reply-item p {
+margin: 0;
+}
+
+.reply-item strong {
+color: #007bff;
+}
+
+form {
+margin-top: 20px;
+}
+
+form textarea {
+width: 100%;
+padding: 10px;
+margin-bottom: 10px;
+border: 1px solid #ddd;
+border-radius: 5px;
+font-size: 16px;
+}
+
+form button {
+padding: 10px 20px;
+border: none;
+border-radius: 5px;
+background-color: #4e4e4e;
+color: white;
+cursor: pointer;
+font-size: 16px;
+}
+
+
 </style>
