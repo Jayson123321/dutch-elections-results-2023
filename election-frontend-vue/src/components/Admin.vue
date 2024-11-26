@@ -54,20 +54,25 @@ export default {
       }
 
       const ctx = this.$refs.userChart.getContext('2d');
-      const colors = ['#C0392B', '#74E600', '#36A2EB', '#99198C', '#9966FF', '#FF9F40', 'pink'];
+
+      // Bereken aantal gebruikers per rol
+      const userCount = this.users.filter(user => user.role !== 'banned').length;
+      const bannedCount = this.users.filter(user => user.role === 'banned').length;
+
+      const data = {
+        labels: ['Active Users', 'Banned Users'],
+        datasets: [{
+          label: 'User Roles',
+          data: [userCount, bannedCount],
+          backgroundColor: ['#36A2EB', '#FF6384'], // Blauw voor actieve gebruikers, rood voor gebande gebruikers
+          borderColor: ['#36A2EB', '#FF6384'],
+          borderWidth: 1
+        }]
+      };
 
       this.chart = new Chart(ctx, {
         type: 'doughnut',
-        data: {
-          labels: this.users.map(user => user.username),
-          datasets: [{
-            label: 'Users',
-            data: this.users.map(user => 1),
-            backgroundColor: colors,
-            borderColor: colors.map(color => color.replace('0.2', '1')),
-            borderWidth: 1
-          }]
-        },
+        data: data,
         options: {
           responsive: true,
           plugins: {
@@ -77,15 +82,17 @@ export default {
             tooltip: {
               callbacks: {
                 label: function (context) {
-                  const username = context.chart.data.labels[context.dataIndex];
-                  return `${username}: 1 User`;
+                  const label = context.chart.data.labels[context.dataIndex];
+                  const value = context.raw;
+                  return `${label}: ${value}`;
                 }
               }
             }
           }
         }
       });
-    },
+    }
+    ,
     deleteUser(userId) {
       if (confirm('Are you sure you want to delete this user?')) {
         axios.delete(`http://localhost:8080/api/users/${userId}`)
