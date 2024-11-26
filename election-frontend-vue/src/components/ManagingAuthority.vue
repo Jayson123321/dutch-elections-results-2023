@@ -50,9 +50,14 @@
 </template>
 
 <style>
+
+.v-field__input {
+  background-color: transparent;
+}
 #input-0 {
 background-color: transparent;
 }
+
 #titel {
   text-align: center;
   margin-top: 5%;
@@ -120,6 +125,7 @@ canvas {
 .autocomplete-container {
   width: auto;
   max-width: 35%;
+  border: 1px none ;
 
 }
 

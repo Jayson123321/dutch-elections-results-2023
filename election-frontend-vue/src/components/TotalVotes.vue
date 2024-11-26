@@ -29,12 +29,14 @@ import HeaderComponent from "@/components/HeaderComponent.vue";
 import { Chart, DoughnutController, PieController, ArcElement, Tooltip, Legend } from "chart.js";
 import PoliticalNews from "@/components/PoliticalNews.vue";
 import config from '@/config';
+import FooterComponent from "@/components/FooterComponent.vue";
 
 Chart.register(DoughnutController, ArcElement, PieController, Tooltip, Legend);
 
 export default defineComponent({
   name: "totalResults",
   components: {
+    FooterComponent,
     PoliticalNews,
     HeaderComponent,
   },
