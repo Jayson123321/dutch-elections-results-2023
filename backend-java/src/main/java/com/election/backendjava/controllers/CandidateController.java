@@ -44,15 +44,8 @@ public class CandidateController {
         }
     }
 
-    // Pas deze methode aan om te zoeken naar candidateIdentifier (String)
-    @GetMapping("/votes/{identifier}")
-    public ResponseEntity<List<CandidateVotes>> getVotesByCandidateIdentifier(@PathVariable String identifier) {
-        List<CandidateVotes> votes = candidateVotesService.findVotesByCandidateIdentifier(identifier);
-        if (votes != null && !votes.isEmpty()) {
-            return ResponseEntity.ok(votes);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+
+
+
 
 }
