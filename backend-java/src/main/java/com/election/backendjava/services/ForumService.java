@@ -33,7 +33,6 @@ public class ForumService {
     }
 
     public Reply saveReply(Reply reply) {
-        reply.setCreatedAt(LocalDateTime.now());
         return replyRepository.save(reply);
     }
 

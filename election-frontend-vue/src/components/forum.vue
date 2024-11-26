@@ -5,7 +5,6 @@
       <h1>Forum</h1>
       <p>Discussieer hier over de partijen.</p>
 
-      <!-- Forum formulier -->
       <div class="forum-form">
         <input
             v-model="newForum.title"
@@ -20,13 +19,26 @@
         <button @click="submitForum">Forum Posten</button>
       </div>
 
-       Lijst van forums
       <div class="forum-list">
         <h2>Geposte Forums</h2>
         <div v-for="forum in forums" :key="forum.forumId" class="forum-item">
-          <h3>{{ forum.title }}</h3>
+          <h3 @click="goToQuestionDetails(forum.forumId)">{{ forum.title }}</h3>
           <p>{{ forum.description }}</p>
-<!--          <p>{{ forum.user.username }}</p>-->
+
+          <!-- Reply Form -->
+          <form @submit.prevent="submitReply(forum.forumId)">
+            <textarea
+                v-model="newReply.replyText"
+                placeholder="Uw antwoord"
+                required
+            ></textarea>
+            <button type="submit">Antwoord Posten</button>
+          </form>
+
+          <!-- Display Replies -->
+          <div v-for="reply in forum.replies" :key="reply.replyId" class="reply-item">
+            <p><strong>{{ reply.username }}:</strong> {{ reply.replyText }}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -37,9 +49,10 @@
 <script>
 import HeaderComponent from './HeaderComponent.vue';
 import FooterComponent from './FooterComponent.vue';
+import axios from 'axios';
 
 export default {
-  name: "Forum",
+  name: "ForumComponent",
   components: {
     HeaderComponent,
     FooterComponent,
@@ -50,10 +63,14 @@ export default {
         title: '',
         description: '',
         user: {
-          id: 1, // Dummy user ID
+          id: '', // Dummy user ID
         },
       },
       forums: [], // Lijst van bestaande forums
+      newReply: {
+        username: '',
+        replyText: ''
+      }
     };
   },
   methods: {
@@ -66,6 +83,16 @@ export default {
         }
         this.forums = await response.json();
         console.log('Forums opgehaald:', this.forums); // Debugging
+
+        // Fetch replies for each forum
+        for (let forum of this.forums) {
+          const repliesResponse = await fetch(`http://localhost:8080/api/usersforum/${forum.forumId}/replies`);
+          if (repliesResponse.ok) {
+            forum.replies = await repliesResponse.json();
+          } else {
+            forum.replies = [];
+          }
+        }
       } catch (error) {
         console.error('Fout bij het ophalen van forums:', error);
       }
@@ -89,6 +116,8 @@ export default {
           );
         }
 
+
+
         const createdForum = await response.json();
         console.log('Forum succesvol toegevoegd:', createdForum);
 
@@ -103,6 +132,27 @@ export default {
         alert('Er is een fout opgetreden bij het versturen van het forum.');
       }
     },
+    async submitReply(forumId) {
+      try {
+        const response = await axios.post(`http://localhost:8080/api/usersforum/${forumId}/replies`, this.newReply);
+        console.log('Reply succesvol toegevoegd:', response.data);
+
+        // Voeg de nieuwe reply toe aan de juiste forum
+        const forum = this.forums.find(f => f.forumId === forumId);
+        if (forum) {
+          forum.replies.push(response.data);
+        }
+
+        // Reset het reply formulier
+        this.newReply.replyText = '';
+      } catch (error) {
+        console.error('Fout bij het versturen van reply:', error);
+        alert('Er is een fout opgetreden bij het versturen van de reply.');
+      }
+    },
+    goToQuestionDetails(forumId) {
+      this.$router.push({ name: 'forum', params: { forumId } });
+    }
   },
   mounted() {
     // Haal bestaande forums op wanneer de component wordt geladen
@@ -111,20 +161,38 @@ export default {
 };
 </script>
 
-
 <style>
+
+:root {
+  --background-color: #f0f0f0;
+  --text-color: #333333;
+  --card-background-color: #ffffff;
+  --input-background-color: #ffffff;
+  --button-text-color: #ffffff;
+  --reply-background-color: #f9f9f9;
+  --link-color: #ff4500;
+  --border-color: #cccccc;
+}
 
 .chat-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
+  background-color: var(--background-color);
+  font-family: Arial, sans-serif;
+  color: var(--text-color);
 }
 
 .forum-form {
   width: 100%;
-  max-width: 600px;
+  max-width: 800px;
   margin-bottom: 20px;
+  background-color: var(--card-background-color);
+  padding: 20px;
+  border: 2px solid #ff4500;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .forum-form input,
@@ -132,33 +200,94 @@ export default {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   border-radius: 5px;
+  font-size: 16px;
+  background-color: var(--input-background-color);
+  color: var(--text-color);
 }
 
 .forum-form button {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  background-color: #007bff;
-  color: white;
+  background-color: #ff4500; /* Reddit-like button color */
+  color: var(--button-text-color);
   cursor: pointer;
-}
-
-.forum-form button:hover {
-  background-color: #0056b3;
+  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .forum-list {
   width: 100%;
-  max-width: 600px;
+  max-width: 800px;
 }
 
 .forum-item {
-  border: 1px solid #ddd;
+  background-color: var(--card-background-color);
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border-color);
   border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.forum-item h3 {
+  margin: 0 0 10px;
+  font-size: 23px;
+  cursor: pointer;
+  color: var(--link-color);
+}
+
+.forum-item h3:hover {
+  text-decoration: underline;
+}
+
+.forum-item p {
+  margin: 0 0 10px;
+  color: var(--text-color);
+}
+
+.reply-item {
+  background-color: var(--reply-background-color);
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.reply-item p {
+  margin: 0;
+  color: var(--text-color);
+}
+
+.reply-item strong {
+  color: var(--link-color);
+}
+
+form {
+  margin-top: 20px;
+}
+
+form textarea {
+  width: 100%;
   padding: 10px;
   margin-bottom: 10px;
-  background-color: #f9f9f9;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: var(--input-background-color);
+  color: var(--text-color);
+}
+
+form button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #7a7a7a;
+  color: var(--button-text-color);
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 </style>
