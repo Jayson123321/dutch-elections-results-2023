@@ -52,7 +52,7 @@ import FooterComponent from './FooterComponent.vue';
 import axios from 'axios';
 
 export default {
-  name: "Forum",
+  name: "ForumComponent",
   components: {
     HeaderComponent,
     FooterComponent,
@@ -83,6 +83,16 @@ export default {
         }
         this.forums = await response.json();
         console.log('Forums opgehaald:', this.forums); // Debugging
+
+        // Fetch replies for each forum
+        for (let forum of this.forums) {
+          const repliesResponse = await fetch(`http://localhost:8080/api/usersforum/${forum.forumId}/replies`);
+          if (repliesResponse.ok) {
+            forum.replies = await repliesResponse.json();
+          } else {
+            forum.replies = [];
+          }
+        }
       } catch (error) {
         console.error('Fout bij het ophalen van forums:', error);
       }
@@ -105,6 +115,8 @@ export default {
               `Fout bij het versturen van forum: ${response.statusText} - ${errorText}`
           );
         }
+
+
 
         const createdForum = await response.json();
         console.log('Forum succesvol toegevoegd:', createdForum);
@@ -148,114 +160,122 @@ export default {
   },
 };
 </script>
+
 <style>
 .chat-container {
-display: flex;
-flex-direction: column;
-align-items: center;
-padding: 20px;
-background-color: #f8f9fa;
-font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: var(--background-color);
+  font-family: Arial, sans-serif;
+  color: var(--text-color);
 }
 
 .forum-form {
-width: 100%;
-max-width: 800px;
-margin-bottom: 20px;
-background-color: #ffffff;
-padding: 20px;
-border: 1px solid #ddd;
-border-radius: 5px;
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 20px;
+  background-color: var(--card-background-color);
+  padding: 20px;
+  border: 2px solid #ff4500; /* Reddit-like border color */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .forum-form input,
 .forum-form textarea {
-width: 100%;
-padding: 10px;
-margin-bottom: 10px;
-border: 1px solid #ddd;
-border-radius: 5px;
-font-size: 16px;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: var(--input-background-color);
+  color: var(--text-color);
 }
 
 .forum-form button {
-padding: 10px 20px;
-border: none;
-border-radius: 5px;
-  background-color: #4e4e4e;
-color: white;
-cursor: pointer;
-font-size: 16px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #ff4500; /* Reddit-like button color */
+  color: var(--button-text-color);
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .forum-list {
-width: 100%;
-max-width: 800px;
+  width: 100%;
+  max-width: 800px;
 }
 
 .forum-item {
-background-color: #ffffff;
-padding: 20px;
-margin-bottom: 20px;
-border: 1px solid #ddd;
-border-radius: 5px;
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: var(--card-background-color);
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .forum-item h3 {
-margin: 0 0 10px;
-  font-size:23px;
-cursor: pointer;
-color: #007bff;
+  margin: 0 0 10px;
+  font-size: 23px;
+  cursor: pointer;
+  color: var(--link-color);
 }
 
 .forum-item h3:hover {
-text-decoration: underline;
+  text-decoration: underline;
 }
 
 .forum-item p {
-margin: 0 0 10px;
-color: #333;
+  margin: 0 0 10px;
+  color: var(--text-color);
 }
 
 .reply-item {
-background-color: #f1f1f1;
-padding: 10px;
-margin-top: 10px;
-border-radius: 5px;
+  background-color: var(--reply-background-color);
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .reply-item p {
-margin: 0;
+  margin: 0;
+  color: var(--text-color);
 }
 
 .reply-item strong {
-color: #007bff;
+  color: var(--link-color);
 }
 
 form {
-margin-top: 20px;
+  margin-top: 20px;
 }
 
 form textarea {
-width: 100%;
-padding: 10px;
-margin-bottom: 10px;
-border: 1px solid #ddd;
-border-radius: 5px;
-font-size: 16px;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: var(--input-background-color);
+  color: var(--text-color);
 }
 
 form button {
-padding: 10px 20px;
-border: none;
-border-radius: 5px;
-background-color: #4e4e4e;
-color: white;
-cursor: pointer;
-font-size: 16px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #7a7a7a;
+  color: var(--button-text-color);
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
-
-
 </style>
