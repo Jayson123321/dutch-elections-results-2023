@@ -244,13 +244,14 @@ export default {
     <div v-if="showBanPopup" class="popup-overlay">
       <div class="popup">
         <h3>Ban User</h3>
-        <p>Are you sure you want to ban this user?</p>
+        <p>Are you sure you want to ban {{ users.find(user => user.id === selectedUserId).username }}?</p>
         <button @click="banUser" class="popup-button">Yes, Ban User</button>
         <button @click="closeBanPopup" class="close-button">Cancel</button>
       </div>
     </div>
   </div>
 </template>
+
 
 
 <style scoped>
