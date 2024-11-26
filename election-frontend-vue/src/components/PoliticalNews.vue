@@ -100,6 +100,7 @@ ul {
 
 <script>
 import axios from 'axios';
+import config from "@/config.ts";
 
 export default {
   name: "PoliticalNews",
@@ -115,7 +116,7 @@ export default {
   methods: {
     async fetchNews() {
       try {
-        const response = await axios.get("https://wiipuujaamee42-backend.onrender.com/api/political-news");
+        const response = await axios.get(`${config.apiBaseUrl}/political-news`);
         this.news = response.data;
       } catch (error) {
         console.error("Error fetching news:", error);
