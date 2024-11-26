@@ -18,7 +18,7 @@ import kandidatenuitslag from "@/components/kandidatenuitslag.vue";
 import LocalAuthoritiesResults from "@/components/LocalAuthoritiesResults.vue";
 import PoliticalNews from "@/components/PoliticalNews.vue";
 import HeatMap from "@/components/HeatMap.vue";
-import forum from "@/components/forum.vue";
+import questionDetails from "@/components/QuestionDetails.vue";
 
 const routes = [
     { path: '/', component: home },
@@ -39,8 +39,7 @@ const routes = [
     { path: '/politicalNews', component: PoliticalNews },
     { path : '/login', component: LoginPage },
     { path: '/Heatmap', component: HeatMap },
-    { path: '/usersforum', component: forum },
-    { path: '/forum/:id?', component: Forum, props: true },
+    { path: '/questionDetails', name: 'questionDetails', component: questionDetails, props: true },
 ];
 
 const router = createRouter({
