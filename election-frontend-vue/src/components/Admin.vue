@@ -235,13 +235,18 @@ export default {
           <div v-for="user in users" :key="user.id" class="user-table-row">
             <div class="user-table-cell">{{ user.username }}</div>
             <div class="user-table-cell">{{ user.email }}</div>
-            <div class="user-table-cell">{{ user.role }}</div>
+            <div
+                class="user-table-cell"
+                :class="{ 'banned-role': user.role === 'banned' }">
+              {{ user.role }}
+            </div>
             <div class="user-table-cell actions">
               <button @click="deleteUser(user.id)" class="delete-button">Delete</button>
               <button @click="openPopup(user.id)" class="manage-button">Manage</button>
               <button v-if="user.role === 'banned'" @click="openUnbanPopup(user.id)" class="unban-button">Unban</button>
             </div>
           </div>
+
         </div>
       </div>
       <div v-else class="no-users-message">
@@ -489,4 +494,5 @@ button {
 .popup-button:hover {
   background-color: #31b0d5;
 }
+
 </style>
