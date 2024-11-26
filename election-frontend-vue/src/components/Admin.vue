@@ -118,15 +118,24 @@ export default {
     },
     updateUsername() {
       if (this.newUsername.trim() !== '') {
-        axios.put(`http://localhost:8080/api/users/${this.selectedUserId}`, {username: this.newUsername})
-            .then(() => {
-              alert('Username updated successfully.');
-              this.fetchUsers();
-              this.closeUsernamePopup();
-            })
-            .catch(error => {
-              console.error('An error occurred while updating the username:', error);
-            });
+        const userToUpdate = this.users.find(user => user.id === this.selectedUserId);
+
+        if (userToUpdate) {
+          const updatedUser = {
+            ...userToUpdate,
+            username: this.newUsername
+          };
+
+          axios.put(`http://localhost:8080/api/users/${this.selectedUserId}`, updatedUser)
+              .then(() => {
+                alert('Username updated successfully.');
+                this.fetchUsers();
+                this.closeUsernamePopup();
+              })
+              .catch(error => {
+                console.error('An error occurred while updating the username:', error);
+              });
+        }
       } else {
         alert('Username cannot be empty.');
       }
