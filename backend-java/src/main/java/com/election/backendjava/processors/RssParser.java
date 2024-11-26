@@ -25,7 +25,6 @@ public class RssParser {
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(feedSource.openStream());
 
-            // Retrieve items from RSS feed
             NodeList items = document.getElementsByTagName("item");
 
             for (int i = 0; i < items.getLength(); i++) {
@@ -42,7 +41,6 @@ public class RssParser {
                     imageUrl = enclosureElement.getAttribute("url");
                 }
 
-                // Create a new Article object with image URL
                 Article article = new Article(title, link, pubDate, imageUrl);
                 newsList.add(article);
             }

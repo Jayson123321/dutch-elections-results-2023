@@ -15,9 +15,7 @@
       <li>
         <p>Kandidaatstemmen: {{ candidateVotes }}</p>
       </li>
-      <li>
-        <p>Totaal stemmen: {{ totalVotes }}</p>
-      </li>
+
     </ul>
 
     <!-- Cirkeldiagram -->
