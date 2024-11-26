@@ -15,6 +15,7 @@ export default {
       showUsernamePopup: false,
       showEmailPopup: false,
       showBanPopup: false,
+      showUnbanPopup: false,
       selectedUserId: null,
       newUsername: '',
       newEmail: '',
@@ -159,21 +160,38 @@ export default {
       this.showBanPopup = false;
     },
     banUser() {
-      if (confirm('Are you sure you want to ban this user?')) {
-        axios.put(`http://localhost:8080/api/users/${this.selectedUserId}/ban`)
-            .then(() => {
-              alert('User successfully banned.');
-              this.fetchUsers();
-              this.closeBanPopup();
-            })
-            .catch(error => {
-              console.error('An error occurred while banning the user:', error);
-            });
-      }
+      axios.put(`http://localhost:8080/api/users/${this.selectedUserId}`, {role: 'banned'})
+          .then(() => {
+            alert('User successfully banned.');
+            this.fetchUsers();
+            this.closeBanPopup();
+          })
+          .catch(error => {
+            console.error('An error occurred while banning the user:', error);
+          });
+    },
+    openUnbanPopup(userId) {
+      this.selectedUserId = userId;
+      this.showUnbanPopup = true;
+    },
+    closeUnbanPopup() {
+      this.showUnbanPopup = false;
+    },
+    unbanUser() {
+      axios.put(`http://localhost:8080/api/users/${this.selectedUserId}`, {role: 'user'})
+          .then(() => {
+            alert('User successfully unbanned.');
+            this.fetchUsers();
+            this.closeUnbanPopup();
+          })
+          .catch(error => {
+            console.error('An error occurred while unbanning the user:', error);
+          });
     }
   }
 }
 </script>
+
 
 <template>
   <div class="admin-page">
