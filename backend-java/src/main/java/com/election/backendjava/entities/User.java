@@ -2,9 +2,7 @@ package com.election.backendjava.entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-
 import java.util.Collection;
-
 
 @Entity
 @Table(name = "users")
