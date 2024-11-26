@@ -152,7 +152,7 @@ export default defineComponent({
   },
   methods: {
     getAuthorities() {
-      fetch('http://localhost:8080/api/managing-authorities/getAllAuthorities')
+      fetch(`${config.apiBaseUrl}/managing-authorities/getAllAuthorities`)
           .then(response => response.json())
           .then(data => {
             this.localAuthorities = data;

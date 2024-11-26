@@ -1,6 +1,7 @@
 <script>
 import axios from 'axios';
 import { Chart, DoughnutController, PieController, ArcElement, Tooltip, Legend } from "chart.js";
+import config from "@/config.ts";
 
 Chart.register(DoughnutController, ArcElement, PieController, Tooltip, Legend);
 
@@ -28,7 +29,7 @@ export default {
   },
   methods: {
     fetchUsers() {
-      axios.get('http://localhost:8080/api/users/all')
+      axios.get(`${config.apiBaseUrl}/users/all`)
           .then(response => {
             this.users = response.data;
             this.$nextTick(() => {
@@ -40,7 +41,7 @@ export default {
           });
     },
     fetchUserCount() {
-      axios.get('http://localhost:8080/api/users/count')
+      axios.get(`${config.apiBaseUrl}/users/count`)
           .then(response => {
             this.userCount = response.data;
           })
@@ -95,7 +96,7 @@ export default {
     ,
     deleteUser(userId) {
       if (confirm('Are you sure you want to delete this user?')) {
-        axios.delete(`http://localhost:8080/api/users/${userId}`)
+        axios.delete(`${config.apiBaseUrl}/users/${userId}`)
             .then(() => {
               alert('User successfully deleted.');
               this.fetchUsers();
@@ -133,7 +134,7 @@ export default {
             username: this.newUsername
           };
 
-          axios.put(`http://localhost:8080/api/users/${this.selectedUserId}`, updatedUser)
+          axios.put(`${config.apiBaseUrl}/users/${this.selectedUserId}`, updatedUser)
               .then(() => {
                 alert('Username updated successfully.');
                 this.fetchUsers();
@@ -156,7 +157,7 @@ export default {
     },
     updateEmail() {
       if (this.newEmail.trim() !== '') {
-        axios.put(`http://localhost:8080/api/users/${this.selectedUserId}/email`, {email: this.newEmail})
+        axios.put(`${config.apiBaseUrl}/users/${this.selectedUserId}/email`, {email: this.newEmail})
             .then(() => {
               alert('Email updated successfully.');
               this.fetchUsers();
@@ -176,7 +177,7 @@ export default {
       this.showBanPopup = false;
     },
     banUser() {
-      axios.put(`http://localhost:8080/api/users/${this.selectedUserId}/ban`)
+      axios.put(`${config.apiBaseUrl}/users/${this.selectedUserId}/ban`)
           .then(() => {
             alert('User successfully banned.');
             this.fetchUsers();
@@ -194,7 +195,7 @@ export default {
       this.showUnbanPopup = false;
     },
     unbanUser() {
-      axios.put(`http://localhost:8080/api/users/${this.selectedUserId}/unban`)
+      axios.put(`${config.apiBaseUrl}/users/${this.selectedUserId}/unban`)
           .then(() => {
             alert('User successfully unbanned.');
             this.fetchUsers();

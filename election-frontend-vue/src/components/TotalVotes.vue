@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref, onMounted } from 'vue';
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import { Chart, DoughnutController, PieController, ArcElement, Tooltip, Legend } from "chart.js";
 import PoliticalNews from "@/components/PoliticalNews.vue";
@@ -32,6 +32,13 @@ import config from '@/config';
 import FooterComponent from "@/components/FooterComponent.vue";
 
 Chart.register(DoughnutController, ArcElement, PieController, Tooltip, Legend);
+
+interface Result {
+  id: number;
+  affiliationName: string;
+  totalVotes: number;
+  percentage?: number;
+}
 
 export default defineComponent({
   name: "totalResults",
@@ -42,8 +49,8 @@ export default defineComponent({
   },
   data() {
     return {
-      results: [],
-      chart: null,
+      results: [] as Result[],
+      chart: null as Chart | null,
     };
   },
   methods: {
@@ -53,8 +60,8 @@ export default defineComponent({
         if (!response.ok) {
           throw new Error('Failed to fetch results');
         }
-        this.results = await response.json();
-        this.results.sort((a, b) => b.totalVotes - a.totalVotes);
+        const data: Result[] = await response.json();
+        this.results = data.sort((a, b) => b.totalVotes - a.totalVotes);
         this.$nextTick(() => {
           this.renderChart();
         });
@@ -67,7 +74,12 @@ export default defineComponent({
         this.chart.destroy();
       }
 
-      const ctx = this.$refs.electionResults.getContext('2d');
+      const ctx = (this.$refs.electionResults as HTMLCanvasElement).getContext('2d');
+      if (!ctx) {
+        console.error('Failed to get canvas context');
+        return;
+      }
+
       const colors = [
         '#C0392B', '#74E600', '#36A2EB', '#99198C', '#9966FF', '#FF9F40', 'pink', '#661100', '#117733', '#882255',
         '#332288', '#44AA99', '#FF3D00', '#3D1F0A', '#454416', 'gray', 'red', '#black', '#A62800', '#9B59B6',
@@ -82,7 +94,7 @@ export default defineComponent({
           labels: this.results.map(result => result.affiliationName),
           datasets: [{
             label: 'Valid Votes',
-            data: this.results.map(result => result.totalVotes) ,
+            data: this.results.map(result => result.totalVotes),
             backgroundColor: colors,
             borderColor: colors.map(color => color.replace('0.2', '1')),
             borderWidth: 1
@@ -96,16 +108,14 @@ export default defineComponent({
             },
             tooltip: {
               callbacks: {
-                label: function(context) {
-                  const result = context.chart.data.labels[context.dataIndex];
-                  const totalVotesForResult = context.raw;
+                label: (context) => {
+                  const result = context.chart.data.labels?.[context.dataIndex] as string;
+                  const totalVotesForResult = context.raw as number;
                   const percentage = ((totalVotesForResult / totalVotes) * 100).toFixed(2);
                   return `${result}: ${percentage}% (${totalVotesForResult}) Stemmen`;
-                  // return '';
                 }
               }
             },
-
           }
         }
       });

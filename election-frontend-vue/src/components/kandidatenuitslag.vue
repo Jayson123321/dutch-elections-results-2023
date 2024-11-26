@@ -34,6 +34,7 @@
 import FooterComponent from './FooterComponent.vue';
 import HeaderComponent from './HeaderComponent.vue';
 import { Chart, registerables } from 'chart.js';
+import config from "@/config.ts";
 
 Chart.register(...registerables);
 
@@ -70,7 +71,7 @@ export default {
     async fetchCandidateData() {
       try {
         // Fetch candidate details and votes
-        const response = await fetch(`http://localhost:8080/api/candidate-votes/votes/${this.id}`);
+        const response = await fetch(`${config.apiBaseUrl}/candidate-votes/votes/${this.id}`);
         if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
         const data = await response.json();
 
@@ -83,7 +84,7 @@ export default {
     },
     async findCandidateVotesById() {
       try {
-        const response = await fetch(`http://localhost:8080/api/candidate/${this.id}`);
+        const response = await fetch(`${config.apiBaseUrl}/candidate/${this.id}`);
         if (!response.ok) throw new Error(`HTTP-fout! Status: ${response.status}`);
         this.candidate = await response.json();
       } catch (error) {

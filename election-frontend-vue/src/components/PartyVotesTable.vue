@@ -29,6 +29,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import config from "@/config";
 
 interface Vote {
   id: number;
@@ -55,7 +56,7 @@ export default defineComponent({
     async fetchPartyVotes() {
       this.loading = true;
       try {
-        const response = await fetch('https://wiipuujaamee42-backend.onrender.com/api/party-votes');
+        const response = await fetch(`${config.apiBaseUrl}/party-votes`);
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
