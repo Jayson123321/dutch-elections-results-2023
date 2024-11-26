@@ -25,13 +25,12 @@
           <h3 @click="goToQuestionDetails(forum.forumId)">{{ forum.title }}</h3>
           <p>{{ forum.description }}</p>
 
-          <!-- Reply Form -->
           <form @submit.prevent="submitReply(forum.forumId)">
-            <textarea
-                v-model="newReply.replyText"
-                placeholder="Uw antwoord"
-                required
-            ></textarea>
+  <textarea
+      v-model="forum.newReply.replyText"
+      placeholder="Uw antwoord"
+      required
+  ></textarea>
             <button type="submit">Antwoord Posten</button>
           </form>
 
@@ -84,7 +83,7 @@ export default {
         this.forums = await response.json();
         console.log('Forums opgehaald:', this.forums); // Debugging
 
-        // Fetch replies for each forum
+        // Fetch replies for each forum and initialize newReply for each forum
         for (let forum of this.forums) {
           const repliesResponse = await fetch(`http://localhost:8080/api/usersforum/${forum.forumId}/replies`);
           if (repliesResponse.ok) {
@@ -92,6 +91,7 @@ export default {
           } else {
             forum.replies = [];
           }
+          forum.newReply = { replyText: '' }; // Initialize newReply for each forum
         }
       } catch (error) {
         console.error('Fout bij het ophalen van forums:', error);
@@ -134,17 +134,17 @@ export default {
     },
     async submitReply(forumId) {
       try {
-        const response = await axios.post(`http://localhost:8080/api/usersforum/${forumId}/replies`, this.newReply);
+        const forum = this.forums.find(f => f.forumId === forumId);
+        const response = await axios.post(`http://localhost:8080/api/usersforum/${forumId}/replies`, forum.newReply);
         console.log('Reply succesvol toegevoegd:', response.data);
 
         // Voeg de nieuwe reply toe aan de juiste forum
-        const forum = this.forums.find(f => f.forumId === forumId);
         if (forum) {
           forum.replies.push(response.data);
         }
 
         // Reset het reply formulier
-        this.newReply.replyText = '';
+        forum.newReply.replyText = '';
       } catch (error) {
         console.error('Fout bij het versturen van reply:', error);
         alert('Er is een fout opgetreden bij het versturen van de reply.');
