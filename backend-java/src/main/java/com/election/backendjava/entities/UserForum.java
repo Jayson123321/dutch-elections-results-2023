@@ -21,34 +21,35 @@ public class UserForum {
    @JsonBackReference
    private User user;
 
-   //getters and setters
-   public Long getForumId() {
-       return forumId;
-   }
-   public void setForumId(Long forumId) {
-       this.forumId = forumId;
-   }
+    //getters and setters
+    public Long getForumId() {
+        return forumId;
+    }
+    public void setForumId(Long forumId) {
+        this.forumId = forumId;
+    }
 
     public User getUser() {
-       return user;
+        return user;
     }
 
     public void setUser(User user) {
         this.user = user;
     }
 
-   public String getTitle() {
-       return title;
-   }
-   public void setTitle(String title) {
-       this.title = title;
-   }
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-   public String getDescription() {
-       return description;
-   }
-   public void setDescription(String description) {
-       this.description = description;
-   }
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
 }
+

@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -33,7 +32,6 @@ public class ForumService {
     }
 
     public Reply saveReply(Reply reply) {
-        reply.setCreatedAt(LocalDateTime.now());
         return replyRepository.save(reply);
     }
 

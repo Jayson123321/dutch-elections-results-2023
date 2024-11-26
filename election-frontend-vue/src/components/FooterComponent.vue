@@ -4,6 +4,7 @@
       <div class="footer-section about">
       </div>
       <div class="footer-section links">
+        <h3>Links</h3>
         <ul>
           <li><a href="#">Home</a></li>
           <li><a href="#">Over Ons</a></li>
@@ -16,10 +17,10 @@
       </div>
       <div class="footer-section social">
         <h3>Volg Ons</h3>
-        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
         <a href="#"><i class="fab fa-twitter"></i></a>
         <a href="#"><i class="fab fa-instagram"></i></a>
-        <a href="#"><i class="fab fa-linkedin"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
       </div>
     </div>
   </footer>
@@ -43,28 +44,26 @@ export default {
 }
 
 .footer-container {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
   width: 80%;
   max-width: 1200px;
 }
 
 .footer-section {
-  flex: 1;
   padding: 0 20px;
 }
 
 .footer-section h3 {
   margin-bottom: 20px;
+  font-size: 1.5em;
 }
 
 .footer-section p,
 .footer-section a {
   text-decoration: none;
   margin: 5px 0;
-}
-
-.footer-section a:hover {
 }
 
 .footer-section ul {
@@ -80,17 +79,10 @@ export default {
   text-decoration: none;
 }
 
-.footer-section ul li a:hover {
-  color: #78b178;
-}
-
 .footer-section .social a {
   font-size: 24px;
   margin: 0 10px;
   text-decoration: none;
 }
 
-.footer-section .social a:hover {
-  color: #78b178;
-}
 </style>
