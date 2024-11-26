@@ -197,13 +197,13 @@ export default {
 <template>
   <div class="admin-page">
     <HeaderComponent/>
+    <div class="chart-container">
+      <canvas id="userChart" ref="userChart"></canvas>
+    </div>
     <div class="content-container">
       <h2 class="page-title">Admin Dashboard</h2>
       <div class="user-stats">
         <p>Total Users: {{ userCount }}</p>
-      </div>
-      <div class="chartContainer">
-        <canvas id="userChart" ref="userChart"></canvas>
       </div>
       <div class="user-table-wrapper" v-if="users.length > 0">
         <div class="user-table-container">
@@ -280,6 +280,7 @@ export default {
     </div>
   </div>
 </template>
+
 
 
 
