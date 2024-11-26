@@ -215,6 +215,7 @@ export default {
     <HeaderComponent/>
     <div class="chart-container">
       <div class="chart-wrapper">
+        <h2 class="page-title">User Analytics</h2>
         <canvas id="userChart" ref="userChart"></canvas>
       </div>
     </div>
