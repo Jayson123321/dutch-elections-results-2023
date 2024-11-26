@@ -11,12 +11,17 @@
 
     <!-- Stemmenoverzicht -->
     <h3>Stemmen</h3>
-    <ul v-if="votes.length">
-      <li v-for="(vote, index) in votes" :key="index">
-        <p>Aantal stemmen: {{ vote.validVotes }}</p>
+    <ul>
+      <li>
+        <p>Kandidaatstemmen: {{ candidateVotes }}</p>
+      </li>
+      <li>
+        <p>Totaal stemmen: {{ totalVotes }}</p>
       </li>
     </ul>
 
+    <!-- Cirkeldiagram -->
+    <canvas id="votesChart" width="400" height="400"></canvas>
 
     <!-- Foutmelding indien aanwezig -->
     <div v-if="error" class="error">
@@ -30,19 +35,23 @@
 <script>
 import FooterComponent from './FooterComponent.vue';
 import HeaderComponent from './HeaderComponent.vue';
+import { Chart, registerables } from 'chart.js';
+
+Chart.register(...registerables);
 
 export default {
   name: "KandidaatResultaat",
   components: {
     FooterComponent,
-    HeaderComponent
+    HeaderComponent,
   },
-  props: ['id'], // Accepteert id als prop
+  props: ['id'], // Accepteert kandidaat-ID als prop
   data() {
     return {
       candidate: null,
-      votes: [],
-      error: null
+      candidateVotes: 0,
+      totalVotes: 20865452, // Static total votes
+      error: null,
     };
   },
   async created() {
@@ -50,8 +59,8 @@ export default {
       try {
         await this.findCandidateVotesById();
         console.log("Candidate data:", this.candidate);
-        await this.fetchVotes();
-        console.log("Votes data:", this.votes);
+        await this.fetchCandidateData();
+        this.createChart();
       } catch (error) {
         this.error = "Er is een probleem opgetreden bij het ophalen van de gegevens.";
       }
@@ -59,8 +68,21 @@ export default {
       this.error = "Geen kandidaat-ID opgegeven in de route.";
     }
   },
-
   methods: {
+    async fetchCandidateData() {
+      try {
+        // Fetch candidate details and votes
+        const response = await fetch(`http://localhost:8080/api/candidate-votes/votes/${this.id}`);
+        if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+        const data = await response.json();
+
+        // this.candidate = data; // Assuming the response contains candidate details
+        this.candidateVotes = data.validVotes;
+      } catch (error) {
+        console.error("Error fetching candidate data:", error);
+        this.error = "Failed to fetch candidate data.";
+      }
+    },
     async findCandidateVotesById() {
       try {
         const response = await fetch(`http://localhost:8080/api/candidate/${this.id}`);
@@ -70,23 +92,36 @@ export default {
         console.error("Fout bij het ophalen van de kandidaat:", error);
       }
     },
+    createChart() {
+      const ctx = document.getElementById('votesChart').getContext('2d');
+      const otherVotes = this.totalVotes - this.candidateVotes;
 
-    async fetchVotes() {
-      try {
-        const response = await fetch(`http://localhost:8080/api/candidate-votes/votes/${this.id}`);
-        if (!response.ok) throw new Error(`HTTP-fout! Status: ${response.status}`);
-        const data = await response.json();
-
-        // Controleer of 'data' een array is
-        this.votes = Array.isArray(data) ? data : [data];
-        console.log("Gekregen stemmen:", this.votes); // controleer de output
-
-      } catch (error) {
-        console.error("Fout bij het ophalen van stemmen:", error);
-      }
-    }
-
-  }
+      new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ['Kandidaatstemmen', 'Overige stemmen'],
+          datasets: [
+            {
+              data: [this.candidateVotes, otherVotes],
+              backgroundColor: ['#36A2EB', '#FF6384'],
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            title: {
+              display: true,
+              text: 'Verdeling van geldige stemmen',
+            },
+          },
+        },
+      });
+    },
+  },
 };
 </script>
 

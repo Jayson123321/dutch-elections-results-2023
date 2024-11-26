@@ -11,3 +11,4 @@ import java.util.Optional;
 public interface CandidateVotesRepository extends JpaRepository<CandidateVotes, Long> {
     Optional<CandidateVotes> findById(Long id);
 }
+
