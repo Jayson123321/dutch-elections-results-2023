@@ -12,8 +12,8 @@
         <div class="header-section links">
           <ul>
             <li><router-link to="/">Home</router-link></li>
-            <li><router-link to="/about">Over Ons</router-link></li>
-            <li><router-link to="/contact">Contact</router-link></li>
+            <li><router-link to="/choose-results">Uitslagen</router-link></li>
+            <li><router-link to="/partijenpagina">Partijen</router-link></li>
           </ul>
         </div>
       </nav>
@@ -135,27 +135,43 @@ export default {
 .search-container {
   display: flex;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 5px;
+  background-color: #f1f1f1;
+  border-radius: 20px;
+  padding: 3px 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .search-input {
-  padding: 8px 12px;
+  padding: 5px 10px;
   border: none;
-  border-radius: 4px;
+  border-radius: 20px;
   outline: none;
+  flex-grow: 1;
+  font-size: 14px;
+  background-color: transparent;
 }
 
 .search-button {
-  background-color: transparent;
+  background-color: #007bff;
   border: none;
+  border-radius: 50%;
   cursor: pointer;
-  margin-left: 8px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
 }
 
 .search-button svg {
-  fill: currentColor;
-  width: 24px;
-  height: 24px;
+  fill: #ffffff;
+  width: 20px;
+  height: 20px;
+}
+
+.search-button:hover {
+  background-color: #0056b3;
 }
 
 .account a {

@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
+@CrossOrigin // toegevoegd door mij (achraf) om te kijken of het mijn probleem oplost
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -30,4 +30,22 @@ public class UserController {
         return userService.getUserCount();
     }
 
+    @PutMapping("/{id}")
+    public void updateUser(@PathVariable Long id, @RequestBody User user) {
+        userService.updateUser(id, user);
+    }
+
+    @PutMapping("/{id}/email")
+    public void updateUserEmail(@PathVariable Long id, @RequestBody User user) {
+        userService.updateUserEmail(id, user);
+    }
+
+    @PutMapping("/{id}/ban")
+    public void banUser(@PathVariable Long id) {
+        userService.banUser(id);
+    }
+    @PutMapping("/{id}/unban")
+    public void unbanUser(@PathVariable Long id) {
+        userService.unbanUser(id);
+    }
 }
