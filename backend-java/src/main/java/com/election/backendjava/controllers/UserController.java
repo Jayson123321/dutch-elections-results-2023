@@ -44,4 +44,8 @@ public class UserController {
     public void banUser(@PathVariable Long id) {
         userService.banUser(id);
     }
+    @PutMapping("/{id}/unban")
+    public void unbanUser(@PathVariable Long id) {
+        userService.unbanUser(id);
+    }
 }
