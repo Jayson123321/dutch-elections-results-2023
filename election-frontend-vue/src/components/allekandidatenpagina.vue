@@ -1,6 +1,7 @@
 <template>
+  <HeaderComponent />
+
   <div class="container">
-    <HeaderComponent />
     <h1>Alle Kandidaten</h1>
     <ul class="candidate-list">
       <li v-for="candidate in candidates" :key="candidate.id" class="candidate-item">

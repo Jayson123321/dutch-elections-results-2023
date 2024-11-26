@@ -1,6 +1,6 @@
 <template>
+  <HeaderComponent />
   <div class="container">
-    <HeaderComponent />
     <h1>Partijen en Kandidaten</h1>
     <div class="party-grid">
       <div class="all-candidates box">
