@@ -57,7 +57,7 @@ public class UserService {
         Optional<User> existingUser = userRepository.findById(id);
         if (existingUser.isPresent()) {
             User userToUnban = existingUser.get();
-            userToUnban.setRole("userr");
+            userToUnban.setRole("user");
             userRepository.save(userToUnban);
         }
     }
