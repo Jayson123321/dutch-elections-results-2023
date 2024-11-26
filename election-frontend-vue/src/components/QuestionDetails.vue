@@ -14,10 +14,6 @@
     <h2>Add a Reply</h2>
     <form @submit.prevent="submitReply">
       <div>
-        <label for="username">Username:</label>
-        <input type="text" v-model="newReply.username" required />
-      </div>
-      <div>
         <label for="replyText">Reply:</label>
         <textarea v-model="newReply.replyText" required></textarea>
       </div>
@@ -35,7 +31,7 @@ export default {
       question: {},
       replies: [],
       newReply: {
-        username: '',
+        username: null,
         replyText: ''
       }
     };
@@ -63,7 +59,6 @@ export default {
       axios.post(`/api/usersforum/${forumId}/replies`, this.newReply)
           .then(response => {
             this.replies.push(response.data);
-            this.newReply.username = '';
             this.newReply.replyText = '';
           });
     }
