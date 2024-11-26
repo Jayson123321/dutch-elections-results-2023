@@ -65,3 +65,42 @@ export default {
   }
 };
 </script>
+
+<style>
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.forum-form {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 20px;
+}
+
+.forum-form input,
+.forum-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.forum-form button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.forum-form button:hover {
+  background-color: #0056b3;
+}
+
+</style>

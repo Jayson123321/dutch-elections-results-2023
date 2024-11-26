@@ -19,22 +19,12 @@
         <button @click="submitForum">Forum Posten</button>
       </div>
 
-      <!-- Lijst van forums -->
       <div class="forum-list">
         <h2>Geposte Forums</h2>
-        <div v-for="forum in forums" :key="forum.forumId" class="forum-item">
+        <div v-for="forum in forums" :key="forum.forumId" class="forum-item" @click="goToQuestionDetails(forum.forumId)">
           <h3>{{ forum.title }}</h3>
           <p>{{ forum.description }}</p>
           <form @submit.prevent="submitReply(forum.forumId)">
-            <div>
-              <label for="username">Username:</label>
-              <input type="text" v-model="newReply.username" required />
-            </div>
-            <div>
-              <label for="replyText">Reply:</label>
-              <textarea v-model="newReply.replyText" required></textarea>
-            </div>
-            <button type="submit">Submit Reply</button>
           </form>
         </div>
       </div>
@@ -49,7 +39,6 @@ import FooterComponent from './FooterComponent.vue';
 import axios from 'axios';
 
 export default {
-  // eslint-disable-next-line vue/multi-word-component-names
   name: "Forum",
   components: {
     HeaderComponent,
@@ -130,6 +119,9 @@ export default {
         console.error('Fout bij het versturen van reply:', error);
         alert('Er is een fout opgetreden bij het versturen van de reply.');
       }
+    },
+    goToQuestionDetails(forumId) {
+      this.$router.push({ name: 'questionDetails', params: { forumId } });
     }
   },
   mounted() {
@@ -140,6 +132,7 @@ export default {
 </script>
 
 <style>
+
 .chat-container {
   display: flex;
   flex-direction: column;
