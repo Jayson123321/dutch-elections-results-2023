@@ -344,8 +344,11 @@ html, body {
 .chart-container {
   width: 100%;
   max-width: 800px;
-  margin-bottom: 40px;
+  margin: 40px auto;
+  display: flex;
+  justify-content: center;
 }
+
 
 .chart-wrapper {
   background-color: #1A1A1A;
