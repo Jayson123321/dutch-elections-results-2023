@@ -494,5 +494,9 @@ button {
 .popup-button:hover {
   background-color: #31b0d5;
 }
+.banned-role {
+  color: red;
+  font-weight: bold;
+}
 
 </style>
