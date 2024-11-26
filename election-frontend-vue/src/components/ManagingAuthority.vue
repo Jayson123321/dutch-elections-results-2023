@@ -26,7 +26,6 @@
             persistent-placeholder
             clearable
             transition="scale-transition"
-
         ></v-autocomplete>
       </div>
       <button v-if="selectedReportingUnitId" @click="fetchPartyVotesByReportingUnitAndAuthorityNumber">Bekijk stemmen</button>
@@ -51,6 +50,9 @@
 </template>
 
 <style>
+#input-0 {
+background-color: transparent;
+}
 #titel {
   text-align: center;
   margin-top: 5%;
@@ -118,7 +120,9 @@ canvas {
 .autocomplete-container {
   width: auto;
   max-width: 35%;
+
 }
+
 </style>
 
 <script>
