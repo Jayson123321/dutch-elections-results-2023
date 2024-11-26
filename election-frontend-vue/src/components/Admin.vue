@@ -14,6 +14,7 @@ export default {
       showPopup: false,
       showUsernamePopup: false,
       showEmailPopup: false,
+      showBanPopup: false,
       selectedUserId: null,
       newUsername: '',
       newEmail: '',
@@ -150,6 +151,25 @@ export default {
       } else {
         alert('Email cannot be empty.');
       }
+    },
+    openBanPopup() {
+      this.showBanPopup = true;
+    },
+    closeBanPopup() {
+      this.showBanPopup = false;
+    },
+    banUser() {
+      if (confirm('Are you sure you want to ban this user?')) {
+        axios.put(`http://localhost:8080/api/users/${this.selectedUserId}/ban`)
+            .then(() => {
+              alert('User successfully banned.');
+              this.fetchUsers();
+              this.closeBanPopup();
+            })
+            .catch(error => {
+              console.error('An error occurred while banning the user:', error);
+            });
+      }
     }
   }
 }
@@ -196,7 +216,7 @@ export default {
         <h3>Manage User Actions</h3>
         <button @click="openUsernamePopup" class="popup-button">Change Username</button>
         <button @click="openEmailPopup" class="popup-button">Change Email</button>
-        <button class="popup-button">Ban User</button>
+        <button @click="openBanPopup" class="popup-button">Ban User</button>
         <button class="popup-button">Action 4</button>
         <button class="popup-button">Action 5</button>
         <button @click="closePopup" class="close-button">Close</button>
@@ -220,8 +240,18 @@ export default {
         <button @click="closeEmailPopup" class="close-button">Cancel</button>
       </div>
     </div>
+
+    <div v-if="showBanPopup" class="popup-overlay">
+      <div class="popup">
+        <h3>Ban User</h3>
+        <p>Are you sure you want to ban this user?</p>
+        <button @click="banUser" class="popup-button">Yes, Ban User</button>
+        <button @click="closeBanPopup" class="close-button">Cancel</button>
+      </div>
+    </div>
   </div>
 </template>
+
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
