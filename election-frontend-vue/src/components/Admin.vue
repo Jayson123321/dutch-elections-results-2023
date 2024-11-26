@@ -171,11 +171,13 @@ export default {
           <div class="user-table-row header-row">
             <div class="user-table-cell">Username</div>
             <div class="user-table-cell">Email</div>
+            <div class="user-table-cell">Role</div>
             <div class="user-table-cell actions-header">Actions</div>
           </div>
           <div v-for="user in users" :key="user.id" class="user-table-row">
             <div class="user-table-cell">{{ user.username }}</div>
             <div class="user-table-cell">{{ user.email }}</div>
+            <div class="user-table-cell">{{ user.role }}</div>
             <div class="user-table-cell actions">
               <button @click="deleteUser(user.id)" class="delete-button">Delete</button>
               <button @click="openPopup(user.id)" class="manage-button">Manage</button>
@@ -220,6 +222,7 @@ export default {
     </div>
   </div>
 </template>
+
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
