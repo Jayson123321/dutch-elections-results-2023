@@ -160,7 +160,7 @@ export default {
       this.showBanPopup = false;
     },
     banUser() {
-      axios.put(`http://localhost:8080/api/users/${this.selectedUserId}`, {role: 'banned'})
+      axios.put(`http://localhost:8080/api/users/${this.selectedUserId}/ban`)
           .then(() => {
             alert('User successfully banned.');
             this.fetchUsers();
@@ -178,7 +178,7 @@ export default {
       this.showUnbanPopup = false;
     },
     unbanUser() {
-      axios.put(`http://localhost:8080/api/users/${this.selectedUserId}`, {role: 'user'})
+      axios.put(`http://localhost:8080/api/users/${this.selectedUserId}/unban`)
           .then(() => {
             alert('User successfully unbanned.');
             this.fetchUsers();
@@ -191,6 +191,7 @@ export default {
   }
 }
 </script>
+
 
 
 <template>
