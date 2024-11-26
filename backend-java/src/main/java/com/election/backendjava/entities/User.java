@@ -52,16 +52,4 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    @OneToMany(mappedBy = "user")
-    @JsonManagedReference
-    private Collection<UserForum> userForum;
-
-    public Collection<UserForum> getUserForum() {
-        return userForum;
-    }
-
-    public void setUserForum(Collection<UserForum> userForum) {
-        this.userForum = userForum;
-    }
 }
