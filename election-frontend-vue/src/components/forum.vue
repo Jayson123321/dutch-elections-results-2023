@@ -26,18 +26,18 @@
           <p>{{ forum.description }}</p>
 
           <form @submit.prevent="submitReply(forum.forumId)">
+            <div v-for="reply in forum.replies" :key="reply.replyId" class="reply-item">
+              <p><strong>{{ reply.username }}:</strong> {{ reply.replyText }}</p>
+            </div>
+            <br>
   <textarea
       v-model="forum.newReply.replyText"
-      placeholder="Uw antwoord"
+      placeholder="Beantwoord dit vraag"
       required
   ></textarea>
             <button type="submit">Antwoord Posten</button>
           </form>
 
-          <!-- Display Replies -->
-          <div v-for="reply in forum.replies" :key="reply.replyId" class="reply-item">
-            <p><strong>{{ reply.username }}:</strong> {{ reply.replyText }}</p>
-          </div>
         </div>
       </div>
     </div>
@@ -115,8 +115,6 @@ export default {
               `Fout bij het versturen van forum: ${response.statusText} - ${errorText}`
           );
         }
-
-
 
         const createdForum = await response.json();
         console.log('Forum succesvol toegevoegd:', createdForum);
