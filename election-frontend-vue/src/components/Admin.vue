@@ -214,7 +214,9 @@ export default {
   <div class="admin-page">
     <HeaderComponent/>
     <div class="chart-container">
-      <canvas id="userChart" ref="userChart"></canvas>
+      <div class="chart-wrapper">
+        <canvas id="userChart" ref="userChart"></canvas>
+      </div>
     </div>
     <div class="content-container">
       <h2 class="page-title">Admin Dashboard</h2>
@@ -297,10 +299,6 @@ export default {
   </div>
 </template>
 
-
-
-
-
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
@@ -343,17 +341,21 @@ html, body {
   font-size: 20px;
 }
 
-.chartContainer {
-  width: 35%;
-  float: right;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  max-height: 600px;
-  transition: transform 0.5s ease;
-  margin-left: 100px;
+.chart-container {
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 40px;
 }
 
-.chartContainer:hover {
+.chart-wrapper {
+  background-color: #1A1A1A;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.5s ease;
+}
+
+.chart-wrapper:hover {
   transform: scale(1.05);
 }
 
