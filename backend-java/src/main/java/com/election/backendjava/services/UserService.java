@@ -44,4 +44,14 @@ public class UserService {
         }
     }
 
+    public void banUser(Long id) {
+        Optional<User> existingUser = userRepository.findById(id);
+        if (existingUser.isPresent()) {
+            User userToBan = existingUser.get();
+            userToBan.setRole("banned");
+            userRepository.save(userToBan);
+        }
+    }
+
+
 }
