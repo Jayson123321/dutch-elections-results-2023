@@ -60,18 +60,18 @@ Achraf user story maken: Een user een time-out kunnen geven. 5
 
 ## Sprint 4
 | **User Story** | **Weight** | **Assigned To** |
-|----------------|------|-----------------|
-| #40            | 3    | Ruben           |
-| #35            | 4    | Ruben           |
-| #37            | 4    | Jayson          |
-| #39            | 3    | Jayson          |
-| #13            | 3    | Jayson          |
-|             | 3    | Achraf          |
-|             | 1    | Achraf          |
-|             | 5    | Achraf          |
-|             |      | Darya           |
-|             |      | Darya           |
-|             |      | Darya           |
-|             |      | Kaylin          |
-|             |      | Kaylin          |
-|             |      | Kaylin          |
+|----------------|------------|-----------------|
+| #40            | 3          | Ruben           |
+| #35            | 4          | Ruben           |
+| #37            | 4          | Jayson          |
+| #39            | 3          | Jayson          |
+| #13            | 3          | Jayson          |
+| #41            | 3          | Achraf          |
+| #42            | 1          | Achraf          |
+| #43            | 5          | Achraf          |
+| #6             |            | Darya           |
+|                |            | Darya           |
+|                |            | Darya           |
+| #27            | 1          | Kaylin          |
+| #7             | 3          | Kaylin          |
+| #5             | 4          | Kaylin & Daria  |
