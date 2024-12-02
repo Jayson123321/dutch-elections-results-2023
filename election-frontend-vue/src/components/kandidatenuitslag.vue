@@ -48,7 +48,7 @@ export default {
     return {
       candidate: null,
       candidateVotes: 0,
-      totalVotes: 20865452, // Static total votes
+      totalVotes: 10475203 , // Static total votes
       error: null,
     };
   },
