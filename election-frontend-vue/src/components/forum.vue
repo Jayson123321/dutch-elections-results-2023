@@ -69,7 +69,7 @@ export default {
         title: '',
         description: '',
         user: {
-          id: '', // Dummy user ID
+          id: '1', // Dummy user ID
         },
       },
       forums: [],
