@@ -6,25 +6,31 @@
       <h1>Verkiezingen 2023 gemeente {{ selectedAuthority?.authorityName }}</h1>
     </div>
     <canvas id="partyVotesChart"></canvas>
+    <div class="filter">
+      <H2 id="h2filter">Filter</H2>
+      <span class="authority-select"><label for="authority-select">Selecteer een gemeente</label></span>
+      <select id="authority-select" v-model="selectedAuthorityId" @change="showAllSelectedAuthorityVotes">
+        <option value="" disabled>Selecteer een gemeente</option>
+        <option v-for="authority in authorities" :key="authority.id" :value="authority.id">
+          {{ authority.authorityName }}
+        </option>
+      </select>
+      <span class="reportingUnit-select"><label for="reportingUnit-select">Selecteer een stembureau</label></span>
+      <div class="autocomplete-container">
+        <v-autocomplete
+            v-model="selectedReportingUnitId"
+            :items="reportingUnits"
+            item-title="name"
+            item-value="id"
+            placeholder="Zoek een stembureau"
+            persistent-placeholder
+            clearable
+            transition="scale-transition"
 
-    <span class="authority-select"><label for="authority-select">Selecteer een gemeente</label></span>
-    <select id="authority-select" v-model="selectedAuthorityId" @change="showAllSelectedAuthorityVotes">
-      <option value="" disabled>Selecteer een gemeente</option>
-      <option v-for="authority in authorities" :key="authority.id" :value="authority.id">
-        {{ authority.authorityName }}
-      </option>
-    </select>
-    <span class="reportingUnit-select"><label for="reportingUnit-select">Selecteer een stembureau</label></span>
-    <v-autocomplete
-        v-model="selectedReportingUnitId"
-        :items="reportingUnits"
-        item-title="name"
-        item-value="id"
-        placeholder="Zoek een stembureau"
-        persistent-placeholder
-        clearable
-    ></v-autocomplete>
-    <button v-if="selectedReportingUnitId"  @click="fetchPartyVotesByReportingUnitAndAuthorityNumber">Toon stemmen</button>
+        ></v-autocomplete>
+      </div>
+      <button v-if="selectedReportingUnitId" @click="fetchPartyVotesByReportingUnitAndAuthorityNumber">Bekijk stemmen</button>
+    </div>
     <div v-if="partyVotes.length > 0">
       <div id="StembureauName">
         <h3>{{ selectedReportingUnitId ? reportingUnits.find(unit => unit.id === selectedReportingUnitId)?.name : '' }}</h3>
@@ -38,6 +44,9 @@
         </table>
       </div>
     </div>
+    <div class="politicalComponent">
+      <political-news/>
+    </div>
   </div>
 </template>
 
@@ -48,6 +57,10 @@
   font-size: larger;
 }
 
+#h2filter {
+  border-bottom: 1px solid;
+  width: 30%;
+}
 label {
   margin-right: 10px;
   display: block;
@@ -90,11 +103,6 @@ table {
   border-radius: 15px 15px 0 0;
 }
 
-#reportingUnit-select {
-  border-radius: 15px 15px 0 0;
-  width: 20%;
-}
-
 .authority-select {
   font-weight: bold;
 }
@@ -105,14 +113,21 @@ table {
 
 canvas {
   max-height: 10%;
+}
 
+.autocomplete-container {
+  width: auto;
+  max-width: 35%;
 }
 </style>
+
 <script>
 import { defineComponent } from 'vue';
 import FooterComponent from "@/components/FooterComponent.vue";
 import HeaderComponent from "@/components/HeaderComponent.vue";
+import PoliticalNews from "@/components/PoliticalNews.vue";
 import { Chart, BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend } from 'chart.js';
+import config from "@/config.ts";
 
 Chart.register(BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
 
@@ -151,7 +166,7 @@ export default defineComponent({
 
       if (this.selectedAuthority) {
         try {
-          const response = await fetch(`http://localhost:8080/api/managing-authorities/${this.selectedAuthority.authorityIdentifier}`);
+          const response = await fetch(`${config.apiBaseUrl}/managing-authorities/${this.selectedAuthority.authorityIdentifier}`);
           if (!response.ok) {
             throw new Error('Failed to fetch party votes');
           }
@@ -167,7 +182,7 @@ export default defineComponent({
     async fetchReportingUnit() {
       if (this.selectedAuthority) {
         try {
-          const response = await fetch(`http://localhost:8080/api/managing-authorities/${this.selectedAuthority.authorityIdentifier}/reporting-units`);
+          const response = await fetch(`${config.apiBaseUrl}/managing-authorities/${this.selectedAuthority.authorityIdentifier}/reporting-units`);
           if (!response.ok) {
             throw new Error('Failed to fetch reporting units');
           }
@@ -183,7 +198,7 @@ export default defineComponent({
       try {
         let reportingUnit = this.reportingUnits.find(reportingUnit => reportingUnit.id === this.selectedReportingUnitId);
         let authority = this.authorities.find(authority => authority.id === this.selectedAuthorityId);
-        const response = await fetch(`http://localhost:8080/api/managing-authorities/${reportingUnit.managingAuthorityNumber}/party-votes/${authority.authorityIdentifier}`, {
+        const response = await fetch(`${config.apiBaseUrl}/managing-authorities/${reportingUnit.managingAuthorityNumber}/party-votes/${authority.authorityIdentifier}`, {
           method: 'GET'
         });
         if (!response.ok) {
@@ -236,10 +251,10 @@ export default defineComponent({
               }
             }
           }
-        }
+        },
       });
     }
   },
-  components: { FooterComponent, HeaderComponent }
+  components: {PoliticalNews, FooterComponent, HeaderComponent }
 });
 </script>

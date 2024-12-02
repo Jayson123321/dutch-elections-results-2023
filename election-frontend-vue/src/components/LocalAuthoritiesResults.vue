@@ -34,20 +34,26 @@
         </table>
       </div>
     </div>
+    <div class="politicalComponent">
+      <PoliticalNews/>
+    </div>
   </div>
 </template>
 
 <style>
+canvas {
+  max-height: 500px;
+  max-width: 100%;
+}
 #sort-bar {
   float: right;
 }
 #sort {
   appearance: none;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23ffffff' width='18px' height='18px'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E") no-repeat right center;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' width='18px' height='18px'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E") no-repeat right center;
   padding-right: 30px;
   border: 1px solid var(--color-border);
   border-radius: 4px;
-  background-color: var(--color-background-soft);
   color: var(--color-text);
 }
 #titel {
@@ -114,22 +120,19 @@ table {
   color: var(--color-text);
   border-color: var(--color-border-hover);
 }
-
-canvas {
-  max-height: 10%;
-}
-
 </style>
 
 <script>
 import { defineComponent } from 'vue';
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import { Chart, PieController, ArcElement, Tooltip, Legend } from 'chart.js';
+import PoliticalNews from "@/components/PoliticalNews.vue";
+import config from "@/config.ts";
 
 Chart.register(PieController, ArcElement, Tooltip, Legend);
 
 export default defineComponent({
-  components: { HeaderComponent },
+  components: {PoliticalNews, HeaderComponent },
   name: 'LocalAuthoritiesResults',
   data() {
     return {
@@ -163,8 +166,8 @@ export default defineComponent({
       // Als sortOrder votes is, dan sorteer op Votes, anders op name
       try {
         const ChooseEndpoint = this.sortOrder === 'votes'
-            ? `http://localhost:8080/api/result-local-authority/sortedByVotes/${selectedAuthority.authorityIdentifier}`
-            : `http://localhost:8080/api/result-local-authority/${selectedAuthority.authorityIdentifier}`;
+            ? `${config.apiBaseUrl}/result-local-authority/sortedByVotes/${selectedAuthority.authorityIdentifier}`
+            : `${config.apiBaseUrl}/result-local-authority/${selectedAuthority.authorityIdentifier}`;
         const response = await fetch(ChooseEndpoint);
         if (!response.ok) {
           throw new Error('Failed to fetch authority votes');
@@ -225,7 +228,7 @@ export default defineComponent({
       try {
         let reportingUnit = this.reportingUnits.find(reportingUnit => reportingUnit.id === this.selectedReportingUnitId);
         let authority = this.localAuthorities.find(authority => authority.id === this.selectedAuthorityId);
-        const response = await fetch(`http://localhost:8080/api/managing-authorities/${reportingUnit.managingAuthorityNumber}/party-votes/${authority.authorityIdentifier}`, {
+        const response = await fetch(`${config.apiBaseUrl}/managing-authorities/${reportingUnit.managingAuthorityNumber}/party-votes/${authority.authorityIdentifier}`, {
           method: 'GET'
         });
         if (!response.ok) {

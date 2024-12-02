@@ -37,8 +37,6 @@ public class TotalVoteController {
                 .collect(Collectors.toList());
     }
 
-
-
     @GetMapping
     public List<TotalVoteWithPercentageDTO> getAllTotalVotes() {
         List<TotalVote> totalVotes = totalVoteRepository.findAll();
