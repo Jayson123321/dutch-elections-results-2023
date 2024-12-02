@@ -1,25 +1,34 @@
 package com.election.backendjava.processors;
 
+import com.election.backendjava.entities.CandidateAuthorityVotes;
+import com.election.backendjava.repositories.CandidateAuthorityVotesRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+@Component
 public class ElectionVoteParser {
-    public static void main(String[] args) {
+
+    @Autowired
+    private CandidateAuthorityVotesRepository candidateAuthorityVotesRepository;
+
+    public void parseAndSaveVotes(String filePath) {
         try {
-            // Setup StAX reader
             XMLInputFactory factory = XMLInputFactory.newInstance();
-            FileInputStream fileInputStream = new FileInputStream("C:\\Users\\Jayso\\IdeaProjects\\wiipuujaamee42\\backend-java\\src\\main\\resources\\data\\Telling_TK2023_gemeente_Ameland.eml.xml"); // Update with the file path
+            FileInputStream fileInputStream = new FileInputStream(filePath);
             XMLStreamReader reader = factory.createXMLStreamReader(fileInputStream);
 
+            String currentAuthorityId = null;
             boolean insideTotalVotes = false;
             String currentAffiliationId = null;
             String candidateId = null;
             String validVotes = null;
 
-            // Iterate through XML elements
             while (reader.hasNext()) {
                 int event = reader.next();
 
@@ -27,7 +36,12 @@ public class ElectionVoteParser {
                     case XMLStreamReader.START_ELEMENT:
                         String elementName = reader.getLocalName();
 
-                        // Check if we enter TotalVotes
+                        // Parse ManagingAuthority -> AuthorityIdentifier
+                        if (!insideTotalVotes && elementName.equals("AuthorityIdentifier")) {
+                            currentAuthorityId = reader.getAttributeValue(null, "Id");
+                        }
+
+                        // Enter TotalVotes section
                         if (elementName.equals("TotalVotes")) {
                             insideTotalVotes = true;
                         }
@@ -37,21 +51,36 @@ public class ElectionVoteParser {
                             currentAffiliationId = reader.getAttributeValue(null, "Id");
                         }
 
+                        // Parse CandidateIdentifier Id
+                        if (insideTotalVotes && elementName.equals("CandidateIdentifier")) {
+                            candidateId = reader.getAttributeValue(null, "Id");
+                        }
+
+                        // Parse ValidVotes
+                        if (insideTotalVotes && elementName.equals("ValidVotes")) {
+                            validVotes = reader.getElementText();
+                        }
                         break;
 
                     case XMLStreamReader.END_ELEMENT:
                         elementName = reader.getLocalName();
 
                         if (insideTotalVotes && elementName.equals("Selection")) {
-                            System.out.println("AffiliationId: " + (currentAffiliationId != null ? currentAffiliationId : "N/A"));
-                            System.out.println("---");
+                            if (currentAuthorityId != null && currentAffiliationId != null && candidateId != null && validVotes != null) {
+                                // Save CandidateAuthorityVotes
+                                CandidateAuthorityVotes votes = new CandidateAuthorityVotes();
+                                votes.setAuthorityIdentifier(currentAuthorityId);
+                                votes.setAffiliationIdentifier(currentAffiliationId);
+                                votes.setCandidateIdentifier(candidateId);
+                                votes.setValidVotes(Integer.parseInt(validVotes));
+                                candidateAuthorityVotesRepository.save(votes);
+                            }
 
-                            // Reset candidate and votes after printing
+                            // Reset candidate and votes
                             candidateId = null;
                             validVotes = null;
                         }
 
-                        // Check if we exit TotalVotes
                         if (elementName.equals("TotalVotes")) {
                             insideTotalVotes = false;
                             currentAffiliationId = null;
@@ -61,9 +90,7 @@ public class ElectionVoteParser {
             }
 
             reader.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (XMLStreamException e) {
+        } catch (FileNotFoundException | XMLStreamException e) {
             e.printStackTrace();
         }
     }
