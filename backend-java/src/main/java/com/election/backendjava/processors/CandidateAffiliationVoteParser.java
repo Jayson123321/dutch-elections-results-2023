@@ -72,11 +72,18 @@ public class CandidateAffiliationVoteParser {
                 continue;
             }
 
+
+
+            Element totalVotesElement = (Element) contestElement.getElementsByTagName("TotalVotes").item(0);
+
+
             Long authorityIdentifier = Long.parseLong(authorityIdentifierStr);
             System.out.println("Authority Identifier: " + authorityIdentifier);
 
+            Long affiliationId = null;
+            String registeredName = null;
             // Verwerk de Selections
-            NodeList selectionNodes = contestElement.getElementsByTagName("Selection");
+            NodeList selectionNodes = totalVotesElement.getElementsByTagName("Selection");
             for (int j = 0; j < selectionNodes.getLength(); j++) {
                 Element selectionElement = (Element) selectionNodes.item(j);
 
@@ -93,12 +100,11 @@ public class CandidateAffiliationVoteParser {
                     }
                 } else {
                     System.err.println("No CandidateIdentifier found in Selection " + j);
-                    continue;
+//                    continue;
                 }
 
                 // Verkrijg Affiliation Identifier (indien aanwezig)
-                Long affiliationId = null;
-                String registeredName = null;
+
                 NodeList affiliationNodes = selectionElement.getElementsByTagName("AffiliationIdentifier");
                 if (affiliationNodes.getLength() > 0) {
                     Element affiliationElement = (Element) affiliationNodes.item(0);
