@@ -22,8 +22,4 @@ public class CandidateAuthorityVotesController {
         return candidateAuthorityVotesRepository.findByAuthorityIdentifier(authorityIdentifier);
     }
 
-    @GetMapping("/all")
-    public List<CandidateAuthorityVotes> getAllVotes() {
-        return candidateAuthorityVotesRepository.findAll();
-    }
 }
