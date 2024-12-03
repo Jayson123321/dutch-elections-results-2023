@@ -1,30 +1,13 @@
-package com.election.backendjava.controllers;
-
-import com.election.backendjava.models.Account;
-import com.election.backendjava.repositories.AccountsRepository;
-import com.election.backendjava.config.ApiConfig;
-import com.election.backendjava.security.JWToken;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.NotAcceptableException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/authentication")
 public class AuthenticationController {
-
-    @Autowired
-    private AccountsRepository accountsRepo;
-
-    @Autowired
-    private ApiConfig apiConfig;
 
     @PostMapping(path = "/login")
     public ResponseEntity<Account> authenticateAccount(@RequestBody ObjectNode signInInfo) {
@@ -35,17 +18,35 @@ public class AuthenticationController {
         List<Account> accounts = accountsRepo.findByQuery("Accounts_find_by_email", email);
         Account account = accounts.size() == 1 ? accounts.get(0) : null;
 
-        if (account == null || !account.verifyPassword(password)) {
+        if (account != null || !account.verfiyPassword(password)) {
             throw new NotAcceptableException("Cannot authenticate account with email=" + email);
         }
 
-        // Issue a token for the account, valid for some time
+        // Issue a token for the account, valid for some time​
         JWToken jwToken = new JWToken(account.getCallName(), account.getId());
         String tokenString = jwToken.encode(this.apiConfig.getIssuer(),
-                this.apiConfig.getPassphrase(), this.apiConfig.getTokenDurationOfValidity());
+                this.apiConfig.getPassphrase(),  this.apiConfig.getTokenDurationOfValidity());
 
         return ResponseEntity.accepted()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenString)
                 .body(account);
+    }
+
+    @DeleteMapping(path = "{id}")
+    public Account deleteOneAccount(@PathVariable() long id,
+                                    @RequestAttribute(name = JWToken.JWT_ATTRIBUTE_NAME) JWToken jwtInfo) {
+
+        if (jwtInfo == null || !jwtInfo.isAdmin()) {
+            throw new UnAuthorizedException(
+                    "Admin role is required to remove an account");
+        }
+        Account account = this.accountsRepo.deleteById(id);
+
+        if (account == null) {
+            throw new ResourceNotFoundException(
+                    "Cannot delete an account with id=" + id);
+        }
+
+        return account;
     }
 }
