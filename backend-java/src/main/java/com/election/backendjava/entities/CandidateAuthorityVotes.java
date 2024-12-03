@@ -17,18 +17,20 @@ public class CandidateAuthorityVotes {
     private ManagingAuthority managingAuthority;
 
     @ManyToOne
-    @JoinColumn(name = "affiliation_identifier", nullable = false)
-    private Affiliation affiliation;
+    @JoinColumns({
+            @JoinColumn(name = "candidate_identifier", referencedColumnName = "candidate_identifier", nullable = false, insertable = false, updatable = false),
+            @JoinColumn(name = "affiliation_identifier", referencedColumnName = "affiliation_id", nullable = false, insertable = false, updatable = false)
+    })
+    private Candidate candidate;
 
     @ManyToOne
-    @JoinColumn(name = "candidate_identifier", nullable = false)
-    private Candidate candidate;
+    @JoinColumn(name = "affiliation_identifier", nullable = false)
+    private Affiliation affiliation;
 
     @Column(name = "valid_votes", nullable = false)
     private int validVotes;
 
     // Getters and Setters
-
 
     public void setId(Long id) {
         this.id = id;
@@ -73,5 +75,4 @@ public class CandidateAuthorityVotes {
     public void setAffiliationIdentifier(String currentAffiliationId) {
         this.affiliation.setId(Long.valueOf(currentAffiliationId));
     }
-
 }
