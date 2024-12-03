@@ -22,6 +22,9 @@ public class CandidateAffiliationVotes {
     @Column(name = "valid_votes", nullable = false)
     private int validVotesAffiliation;
 
+    @Column (name = "RegisteredName", nullable = false)
+    private String RegisteredName;
+
     // Getters and Setters
     public Long getId() {
         return id;
@@ -61,5 +64,12 @@ public class CandidateAffiliationVotes {
 
     public void setValidVotes(int validVotes) {
         this.validVotesAffiliation = validVotes;
+    }
+
+    public String getRegisteredName() {
+        return RegisteredName;
+    }
+    public void setRegisteredName(String RegisteredName) {
+        this.RegisteredName = RegisteredName;
     }
 }
