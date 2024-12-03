@@ -437,6 +437,10 @@ button {
   background-color: #5bc0de;
 }
 
+.unban-button {
+  background-color: #0024ff;
+}
+
 .manage-button:hover {
   background-color: #31b0d5;
 }
