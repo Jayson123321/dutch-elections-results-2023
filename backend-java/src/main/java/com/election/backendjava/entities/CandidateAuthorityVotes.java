@@ -9,52 +9,49 @@ public class CandidateAuthorityVotes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "authority_identifier", nullable = false)
+    private String authorityIdentifier;
+
     @ManyToOne
-    @JoinColumn(name = "authority_identifier", nullable = false)
-    private ManagingAuthority authorityIdentifier;
+    @JoinColumn(name = "authority_identifier", referencedColumnName = "authority_identifier", nullable = false, insertable = false, updatable = false)
+    private ManagingAuthority managingAuthority;
 
     @ManyToOne
     @JoinColumn(name = "affiliation_identifier", nullable = false)
-    private Affiliation affiliationIdentifier;
+    private Affiliation affiliation;
 
     @ManyToOne
     @JoinColumn(name = "candidate_identifier", nullable = false)
-    private Candidate candidateIdentifier;
+    private Candidate candidate;
 
     @Column(name = "valid_votes", nullable = false)
     private int validVotes;
 
     // Getters and Setters
-    public Long getId() {
-        return id;
-    }
+
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public ManagingAuthority getAuthorityIdentifier() {
-        return authorityIdentifier;
-    }
-
-    public void setAuthorityIdentifier(ManagingAuthority authorityIdentifier) {
+    public void setAuthorityIdentifier(String authorityIdentifier) {
         this.authorityIdentifier = authorityIdentifier;
     }
 
-    public Affiliation getAffiliationIdentifier() {
-        return affiliationIdentifier;
+    public void setManagingAuthority(ManagingAuthority managingAuthority) {
+        this.managingAuthority = managingAuthority;
     }
 
-    public void setAffiliationIdentifier(Affiliation affiliationIdentifier) {
-        this.affiliationIdentifier = affiliationIdentifier;
+    public String getAuthorityName() {
+        return managingAuthority.getAuthorityName();
     }
 
-    public Candidate getCandidateIdentifier() {
-        return candidateIdentifier;
+    public String getRegisteredName() {
+        return affiliation.getRegisteredName();
     }
 
-    public void setCandidateIdentifier(Candidate candidateIdentifier) {
-        this.candidateIdentifier = candidateIdentifier;
+    public void setAffiliation(Affiliation affiliation) {
+        this.affiliation = affiliation;
     }
 
     public int getValidVotes() {
@@ -64,4 +61,17 @@ public class CandidateAuthorityVotes {
     public void setValidVotes(int validVotes) {
         this.validVotes = validVotes;
     }
+
+    public String getCandidateName() {
+        return candidate.getCandidateName();
+    }
+
+    public void setCandidateIdentifier(String candidateIdentifier) {
+        this.candidate.setId(Long.valueOf(candidateIdentifier));
+    }
+
+    public void setAffiliationIdentifier(String currentAffiliationId) {
+        this.affiliation.setId(Long.valueOf(currentAffiliationId));
+    }
+
 }
