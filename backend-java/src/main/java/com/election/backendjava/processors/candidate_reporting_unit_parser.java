@@ -49,6 +49,7 @@ public class candidate_reporting_unit_parser {
 
     private void parseFile(File xmlFile) throws Exception {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        dbFactory.setNamespaceAware(true); // Zorg dat namespaces worden ondersteund
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document doc = dBuilder.parse(xmlFile);
         doc.getDocumentElement().normalize();
@@ -59,7 +60,11 @@ public class candidate_reporting_unit_parser {
             return;
         }
 
+        // Zoek naar alle ReportingUnitVotes buiten TotalVotes
         NodeList reportingUnits = doc.getElementsByTagName("ReportingUnitVotes");
+
+        String lastAffiliationId = null;
+        String lastAffiliationName = null;
 
         for (int i = 0; i < reportingUnits.getLength(); i++) {
             Element reportingUnit = (Element) reportingUnits.item(i);
@@ -68,34 +73,62 @@ public class candidate_reporting_unit_parser {
             String reportingUnitId = reportingUnitIdentifier.getAttribute("Id");
             String reportingUnitName = reportingUnitIdentifier.getTextContent();
 
+            // Zoek naar de selections die onder de ReportingUnitVotes vallen
             NodeList selections = reportingUnit.getElementsByTagName("Selection");
             for (int j = 0; j < selections.getLength(); j++) {
                 Element selection = (Element) selections.item(j);
 
-                Long candidateId = getCandidateId(selection);
-                String affiliationName = getAffiliationName(selection);
+                // Controleer of er een AffiliationIdentifier aanwezig is
                 String affiliationId = getAffiliationId(selection);
-                int validVotes = getValidVotes(selection);
+                String affiliationName = getAffiliationName(selection);
 
-                if (candidateId == null) {
-                    System.err.println("Candidate ID not found for selection in Reporting Unit: " + reportingUnitId);
-                    continue;
+                // Als er een AffiliationIdentifier is, sla deze dan op
+                if (affiliationId != null && affiliationName != null) {
+                    lastAffiliationId = affiliationId;
+                    lastAffiliationName = affiliationName;
+                    System.out.println("New Affiliation ID: " + affiliationId + ", Name: " + affiliationName);
+                } else {
+                    // Anders gebruiken we de laatste bekende affiliationId en affiliationName
+                    affiliationId = lastAffiliationId;
+                    affiliationName = lastAffiliationName;
                 }
 
-                candidate_reporting_unit_votes result = new candidate_reporting_unit_votes();
-                result.setMunicipalityName(municipalityName);
-                result.setReportingUnitId(reportingUnitId);
-                result.setReportingUnitName(reportingUnitName);
-                result.setCandidateId(candidateId);
-                result.setAffiliationName(affiliationName);
-                result.setAffiliationId(affiliationId);
-                result.setValidVotes(validVotes);
+                // Haal het CandidateId en validVotes
+                Long candidateId = getCandidateId(selection);
+                int validVotes = getValidVotes(selection);
 
-                try {
-                    candidate_reporting_unit_votes_repository.save(result);
-                    System.out.println("Saved result: " + result);
-                } catch (Exception e) {
-                    System.err.println("Error saving result for Candidate ID " + candidateId + ": " + e.getMessage());
+                // Sla de resultaten op voor zowel AffiliationIdentifier als Candidate
+                if (affiliationId != null || affiliationName != null) {
+                    candidate_reporting_unit_votes result = new candidate_reporting_unit_votes();
+                    result.setMunicipalityName(municipalityName);
+                    result.setReportingUnitId(reportingUnitId);
+                    result.setReportingUnitName(reportingUnitName);
+                    result.setAffiliationName(affiliationName);
+                    result.setAffiliationId(affiliationId);
+                    result.setValidVotes(validVotes);
+
+                    try {
+                        candidate_reporting_unit_votes_repository.save(result);
+                        System.out.println("Saved Affiliation result: " + result);
+                    } catch (Exception e) {
+                        System.err.println("Error saving result for Affiliation: " + e.getMessage());
+                    }
+                }
+
+                if (candidateId != null) {
+                    candidate_reporting_unit_votes result = new candidate_reporting_unit_votes();
+                    result.setMunicipalityName(municipalityName);
+                    result.setReportingUnitId(reportingUnitId);
+                    result.setReportingUnitName(reportingUnitName);
+                    result.setCandidateId(candidateId);
+                    result.setValidVotes(validVotes);
+
+                    try {
+                        candidate_reporting_unit_votes_repository.save(result);
+                        System.out.println("Saved Candidate result: " + result);
+                    } catch (Exception e) {
+                        System.err.println("Error saving result for Candidate ID " + candidateId + ": " + e.getMessage());
+                    }
                 }
             }
         }
@@ -124,7 +157,7 @@ public class candidate_reporting_unit_parser {
             Element affiliation = (Element) affiliationNodes.item(0);
             NodeList registeredNameNodes = affiliation.getElementsByTagName("RegisteredName");
             if (registeredNameNodes.getLength() > 0) {
-                return registeredNameNodes.item(0).getTextContent();
+                return registeredNameNodes.item(0).getTextContent().trim();
             }
         }
         return null;
@@ -134,13 +167,13 @@ public class candidate_reporting_unit_parser {
         NodeList affiliationNodes = selection.getElementsByTagName("AffiliationIdentifier");
         if (affiliationNodes.getLength() > 0) {
             Element affiliation = (Element) affiliationNodes.item(0);
-            String affiliationIdStr = affiliation.getAttribute("Id");
-            if (!affiliationIdStr.isEmpty()) {
-                return affiliationIdStr;
+            if (affiliation.hasAttribute("Id")) {
+                return affiliation.getAttribute("Id");
             }
         }
         return null;
     }
+
     private int getValidVotes(Element selection) {
         NodeList validVotesNodes = selection.getElementsByTagName("ValidVotes");
         if (validVotesNodes.getLength() > 0) {
