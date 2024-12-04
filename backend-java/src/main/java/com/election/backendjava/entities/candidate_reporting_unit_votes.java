@@ -28,6 +28,9 @@ public class candidate_reporting_unit_votes {
     @Column(name = "valid_votes")
     private int validVotes;
 
+    @Column(name = "affiliation_id")
+    private String affiliationId;
+
     // Getters and Setters
 
     public Long getId() {
@@ -86,6 +89,14 @@ public class candidate_reporting_unit_votes {
         this.validVotes = validVotes;
     }
 
+    public String getAffiliationId() {
+        return affiliationId;
+    }
+
+    public void setAffiliationId(String affiliationId) {
+        this.affiliationId = affiliationId;
+    }
+
     @Override
     public String toString() {
         return "candidate_reporting_unit_votes{" +
@@ -95,6 +106,7 @@ public class candidate_reporting_unit_votes {
                 ", candidateId=" + candidateId +
                 ", affiliationName='" + affiliationName + '\'' +
                 ", validVotes=" + validVotes +
+                ", affiliationId=" + affiliationId +
                 '}';
     }
 }

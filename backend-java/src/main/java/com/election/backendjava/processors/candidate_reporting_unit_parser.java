@@ -74,6 +74,7 @@ public class candidate_reporting_unit_parser {
 
                 Long candidateId = getCandidateId(selection);
                 String affiliationName = getAffiliationName(selection);
+                String affiliationId = getAffiliationId(selection);
                 int validVotes = getValidVotes(selection);
 
                 if (candidateId == null) {
@@ -87,6 +88,7 @@ public class candidate_reporting_unit_parser {
                 result.setReportingUnitName(reportingUnitName);
                 result.setCandidateId(candidateId);
                 result.setAffiliationName(affiliationName);
+                result.setAffiliationId(affiliationId);
                 result.setValidVotes(validVotes);
 
                 try {
@@ -100,7 +102,6 @@ public class candidate_reporting_unit_parser {
     }
 
     private String getMunicipalityName(Document doc) {
-        // Get the municipality name from <ManagingAuthority> -> <AuthorityIdentifier>
         NodeList authorityIdentifierNodes = doc.getElementsByTagName("AuthorityIdentifier");
         if (authorityIdentifierNodes.getLength() > 0) {
             return authorityIdentifierNodes.item(0).getTextContent();
@@ -129,6 +130,17 @@ public class candidate_reporting_unit_parser {
         return null;
     }
 
+    private String getAffiliationId(Element selection) {
+        NodeList affiliationNodes = selection.getElementsByTagName("AffiliationIdentifier");
+        if (affiliationNodes.getLength() > 0) {
+            Element affiliation = (Element) affiliationNodes.item(0);
+            String affiliationIdStr = affiliation.getAttribute("Id");
+            if (!affiliationIdStr.isEmpty()) {
+                return affiliationIdStr;
+            }
+        }
+        return null;
+    }
     private int getValidVotes(Element selection) {
         NodeList validVotesNodes = selection.getElementsByTagName("ValidVotes");
         if (validVotesNodes.getLength() > 0) {
