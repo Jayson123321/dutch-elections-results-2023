@@ -135,6 +135,12 @@ export default {
           newReply: { replyText: '' }, // Voeg een lege newReply toe voor consistentie
         });
 
+        // Reset formulier
+       this.newForum = {
+        title: '',
+       description: '',
+        user: { id: '1' },
+      };
 
       } catch (error) {
         console.error('Fout bij het toevoegen van een forum:', error);
