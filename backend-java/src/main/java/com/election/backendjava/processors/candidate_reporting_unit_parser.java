@@ -82,7 +82,7 @@ public class candidate_reporting_unit_parser {
                 String affiliationId = getAffiliationId(selection);
                 String affiliationName = getAffiliationName(selection);
 
-                // Als er een AffiliationIdentifier is, sla deze dan op
+                // Als er een AffiliationIdentifier is, slaan we deze op
                 if (affiliationId != null && affiliationName != null) {
                     lastAffiliationId = affiliationId;
                     lastAffiliationName = affiliationName;
@@ -97,30 +97,15 @@ public class candidate_reporting_unit_parser {
                 Long candidateId = getCandidateId(selection);
                 int validVotes = getValidVotes(selection);
 
-                // Sla de resultaten op voor zowel AffiliationIdentifier als Candidate
-                if (affiliationId != null || affiliationName != null) {
-                    candidate_reporting_unit_votes result = new candidate_reporting_unit_votes();
-                    result.setMunicipalityName(municipalityName);
-                    result.setReportingUnitId(reportingUnitId);
-                    result.setReportingUnitName(reportingUnitName);
-                    result.setAffiliationName(affiliationName);
-                    result.setAffiliationId(affiliationId);
-                    result.setValidVotes(validVotes);
-
-                    try {
-                        candidate_reporting_unit_votes_repository.save(result);
-                        System.out.println("Saved Affiliation result: " + result);
-                    } catch (Exception e) {
-                        System.err.println("Error saving result for Affiliation: " + e.getMessage());
-                    }
-                }
-
+                // Sla de resultaten op voor de Candidate
                 if (candidateId != null) {
                     candidate_reporting_unit_votes result = new candidate_reporting_unit_votes();
                     result.setMunicipalityName(municipalityName);
                     result.setReportingUnitId(reportingUnitId);
                     result.setReportingUnitName(reportingUnitName);
                     result.setCandidateId(candidateId);
+                    result.setAffiliationId(affiliationId); // Zet de affiliationId voor de candidate
+                    result.setAffiliationName(affiliationName); // Zet de affiliationName voor de candidate
                     result.setValidVotes(validVotes);
 
                     try {
