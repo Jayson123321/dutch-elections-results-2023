@@ -142,6 +142,12 @@ export default {
         user: { id: '1' },
       };
 
+        // Succesmelding instellen
+        this.successMessage = "Forum succesvol geplaatst!";
+        setTimeout(() => {
+        this.successMessage = '';
+       }, 3000);
+
       } catch (error) {
         console.error('Fout bij het toevoegen van een forum:', error);
         alert('Er is een fout opgetreden bij het plaatsen van het forum.');
