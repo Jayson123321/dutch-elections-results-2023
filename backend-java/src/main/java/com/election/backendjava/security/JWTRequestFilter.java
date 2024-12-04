@@ -1,9 +1,14 @@
+package com.election.backendjava.security;
+
 import io.jsonwebtoken.io.IOException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+import com.election.backendjava.utils.JWToken;
 
 @Component
 public class JWTRequestFilter extends OncePerRequestFilter {
@@ -25,7 +30,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
 
             // decode the encoded and signed token, after removing optional Bearer prefix
             JWToken jwToken = JWToken.decode(encryptedToken.replace("Bearer ", ""),
-            this.apiConfig.getPassphrase());
+            this.APIconfig.getPassphrase());
 
             // pass-on the token info as an attribute for the request
             request.setAttribute(JWToken.JWT_ATTRIBUTE_NAME, jwToken);

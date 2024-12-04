@@ -6,6 +6,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class APIconfig implements WebMvcConfigurer {
+
+    private String issuer = "your-issuer";
+    private String passphrase = "your-passphrase";
+    private long tokenDurationOfValidity = 3600000; // 1 hour in milliseconds
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -22,7 +27,16 @@ public class APIconfig implements WebMvcConfigurer {
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE");
     }
+
+    public String getIssuer() {
+        return issuer;
+    }
+
+    public String getPassphrase() {
+        return passphrase;
+    }
+
+    public long getTokenDurationOfValidity() {
+        return tokenDurationOfValidity;
+    }
 }
-
-
-
