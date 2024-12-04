@@ -119,8 +119,9 @@ export default {
     },
 
     async submitForum() {
-
-
+      // Valideer de velden
+      this.validateField('title');
+      this.validateField('description');
       if (Object.keys(this.errors).length > 0) return;
 
       try {
