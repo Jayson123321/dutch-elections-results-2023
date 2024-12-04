@@ -4,7 +4,6 @@
     <div class="chat-container">
       <h1>Forum</h1>
       <p>Discussieer hier over de partijen.</p>
-
       <div class="forum-form">
         <div class="form-group" :class="{ 'has-error': errors.title }">
           <input
@@ -24,6 +23,9 @@
           <span v-if="errors.description" class="error-message">{{ errors.description }}</span>
         </div>
         <button @click="submitForum">Forum Posten</button>
+        <div v-if="successMessage" class="success-message">
+          {{ successMessage }}
+        </div>
       </div>
 
       <div class="forum-list">
@@ -74,6 +76,7 @@ export default {
       },
       forums: [],
       errors: {}, // Lijst van bestaande forums
+      successMessage: '',
       newReply: {
         username: '',
         replyText: ''
@@ -116,48 +119,28 @@ export default {
     },
 
     async submitForum() {
-      // Valideer de velden
-      this.validateField('title');
-      this.validateField('description');
 
-      // Stop als er fouten zijn
+
       if (Object.keys(this.errors).length > 0) return;
-      // if (!this.newForum.title.trim() || !this.newForum.description.trim()) {
-      //   alert("Vul alle velden in voordat je het forum post!");
-      //   return;
-      // }
-      try {
-        console.log('Versturen van forum:', this.newForum);
 
-        const response = await fetch('http://localhost:8080/api/usersforum', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(this.newForum),
+      try {
+        const response = await axios.post('http://localhost:8080/api/usersforum', this.newForum);
+        const createdForum = response.data;
+
+        // Voeg direct het nieuwe forum toe aan de lijst
+        this.forums.push({
+          ...createdForum,
+          replies: [], // Initialiseer lege replies voor het nieuwe forum
+          newReply: { replyText: '' }, // Voeg een lege newReply toe voor consistentie
         });
 
-        if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(
-              `Fout bij het versturen van forum: ${response.statusText} - ${errorText}`
-          );
-        }
 
-        const createdForum = await response.json();
-        console.log('Forum succesvol toegevoegd:', createdForum);
-
-        // Voeg het nieuwe forum toe aan de lijst
-        this.forums.push(createdForum);
-
-        // Reset het formulier
-        this.newForum.title = '';
-        this.newForum.description = '';
       } catch (error) {
-        console.error('Fout bij het versturen van forum:', error);
-        alert('Er is een fout opgetreden bij het versturen van het forum.');
+        console.error('Fout bij het toevoegen van een forum:', error);
+        alert('Er is een fout opgetreden bij het plaatsen van het forum.');
       }
     },
+
     async submitReply(forumId) {
       try {
         const forum = this.forums.find(f => f.forumId === forumId);
@@ -182,12 +165,20 @@ export default {
   },
   mounted() {
     // Haal bestaande forums op wanneer de component wordt geladen
+
     this.fetchForums();
   },
 };
 </script>
 
 <style>
+
+.success-message {
+  color: green;
+  font-weight: bold;
+  margin: 10px 0;
+  text-align: center;
+}
 
 .has-error input,
 .has-error textarea {
@@ -332,3 +323,5 @@ form button {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 </style>
+
+
