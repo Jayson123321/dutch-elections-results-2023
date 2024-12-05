@@ -10,6 +10,4 @@ import java.util.List;
 
 @Repository
 public interface CandidateAuthorityVotesRepository extends JpaRepository<CandidateAuthorityVotes, Long> {
-    List<CandidateAuthorityVotes> findByAuthorityIdentifier(String authorityIdentifier);
-    List<CandidateAuthorityVotes> findByAuthorityIdentifierOrderByValidVotesDesc(String authorityIdentifier);
-}
+    List<CandidateAuthorityVotes> findByAffiliationIdAndAuthorityIdentifier(Long affiliationId, String authorityIdentifier);}
