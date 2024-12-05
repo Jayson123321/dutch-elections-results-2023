@@ -1,6 +1,9 @@
 <template>
   <div>
     <HeaderComponent/>
+    <div id="description">
+      <p>Deze pagina toont de verkiezingsresultaten per gemeente voor 2023. Selecteer een gemeente om de resultaten te bekijken en sorteer de stemmen op partijnaam of aantal stemmen. Alleen kandidaten die stemmen hebben ontvangen worden weergegeven.</p>
+    </div>
     <div id="titel">
       <h1>Score per stembureau</h1>
       <h1>Verkiezingen 2023 gemeente {{ selectedAuthority?.authorityName }}</h1>
@@ -29,6 +32,18 @@
           <tr v-for="(vote, index) in votes" :key="vote.id">
             <td><span class="affiliation-name">{{ index + 1 }}. {{ vote.affiliation.registeredName }}</span></td>
             <td>{{ vote.validVotes }} stemmen</td>
+            <div v-if="vote.showCandidates && candidateVotes.length > 0">
+
+              <table>
+                <tbody>
+                <tr v-for="(candidateVote, index) in candidateVotes" :key="candidateVote.id">
+                  <td>{{ index + 1 }}. {{ candidateVote.candidateName }}</td>
+                  <td>{{ candidateVote.validVotes }} stemmen</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <td><button @click="toggleCandidates(vote)">Toon kandidaten</button></td>
           </tr>
           </tbody>
         </table>
@@ -39,89 +54,6 @@
     </div>
   </div>
 </template>
-
-<style>
-canvas {
-  max-height: 500px;
-  max-width: 100%;
-}
-#sort-bar {
-  float: right;
-}
-#sort {
-  appearance: none;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' width='18px' height='18px'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E") no-repeat right center;
-  padding-right: 30px;
-  border: 1px solid var(--color-border);
-  border-radius: 4px;
-  color: var(--color-text);
-  background-color: var(--color-background-soft);
-}
-#titel {
-  text-align: center;
-  margin-top: 5%;
-  font-size: larger;
-}
-#h2uitslag {
-  border-bottom: 1px solid;
-}
-label {
-  margin-right: 10px;
-  display: block;
-  margin-top: 20px;
-  color: var(--color-text);
-}
-
-select {
-  margin-bottom: 20px;
-  padding: 5px;
-  display: block;
-  margin-top: 10px;
-  background-color: var(--color-background-soft);
-  color: var(--color-text);
-}
-
-th, td {
-  padding: 8px 12px;
-  border: none;
-  display: inline-block;
-  margin: 20px;
-  width: 50%;
-  border-color: var(--color-border);
-  color: var(--color-text);
-}
-
-table {
-  border: var(--color-border);
-}
-
-#StembureauName {
-  margin-left: 30%;
-  font-size: 1.2em;
-  font-weight: bold;
-  border: none;
-  color: var(--color-text);
-}
-
-.affiliation-name {
-  font-size: x-large;
-  color: var(--color-text);
-}
-
-#authority-select {
-  border-radius: 15px 15px 0 0;
-  border: var(--color-border);
-  background-color: var(--color-background-soft);
-  color: var(--color-text);
-}
-
-
-.authority-select {
-  font-weight: bold;
-  color: var(--color-text);
-  border-color: var(--color-border-hover);
-}
-</style>
 
 <script>
 import { defineComponent } from 'vue';
@@ -142,6 +74,7 @@ export default defineComponent({
       selectedAuthority: null,
       selectedReportingUnitId: null,
       votes: [],
+      candidateVotes: [],
       reportingUnits: [],
       chart: null,
       sortOrder: 'votes'
@@ -186,6 +119,8 @@ export default defineComponent({
         this.votes = this.sortOrder === 'name'
             ? votes.sort((a, b) => a.affiliation.registeredName.localeCompare(b.affiliation.registeredName))
             : votes.sort((a, b) => b.validVotes - a.validVotes);
+        // Add showCandidates property to each vote
+        this.votes.forEach(vote => vote.showCandidates = false);
         console.log(this.votes);
         this.$nextTick(() => {
           this.renderPieChart();
@@ -213,6 +148,24 @@ export default defineComponent({
         });
       } catch (error) {
         console.error('Error fetching party votes for reporting unit:', error);
+      }
+    },
+    async showCandidates(affiliationId) {
+      try {
+        const response = await fetch(`${config.apiBaseUrl}/result-local-authority/party/${affiliationId}/authority/${this.selectedAuthority.authorityIdentifier}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch candidate votes');
+        }
+        this.candidateVotes = await response.json();
+        console.log(this.candidateVotes);
+      } catch (error) {
+        console.error('Error fetching candidate votes:', error);
+      }
+    },
+    toggleCandidates(vote) {
+      vote.showCandidates = !vote.showCandidates;
+      if (vote.showCandidates) {
+        this.showCandidates(vote.affiliation.id);
       }
     },
     renderPieChart() {
