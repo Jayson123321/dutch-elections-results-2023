@@ -1,6 +1,7 @@
 package com.election.backendjava.entities;
 
 import jakarta.persistence.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
 @Table(name = "users")
@@ -46,11 +47,6 @@ public class User {
         this.password = password;
     }
 
-    public boolean verifyPassword(String inputPassword) {
-        // Implement password verification logic, e.g., hashing and comparing
-        return this.password.equals(inputPassword);
-    }
-
     public String getEmail() {
         return email;
     }
@@ -66,4 +62,9 @@ public class User {
     public void setRole(String role) {
         this.role = role;
     }
+
+    public boolean verifyPassword(String rawPassword) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.matches(rawPassword, this.password);}
 }
+
