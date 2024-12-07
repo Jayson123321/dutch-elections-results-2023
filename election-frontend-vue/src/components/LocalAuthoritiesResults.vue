@@ -4,11 +4,11 @@
     <div id="description">
       <p>Deze pagina toont de verkiezingsresultaten per gemeente voor 2023. Selecteer een gemeente om de resultaten te bekijken en sorteer de stemmen op partijnaam of aantal stemmen. Alleen kandidaten die stemmen hebben ontvangen worden weergegeven.</p>
     </div>
+    <canvas id="local-authorities-chart"></canvas>
     <div id="titel">
       <h1>Score per stembureau</h1>
       <h1>Verkiezingen 2023 gemeente {{ selectedAuthority?.authorityName }}</h1>
     </div>
-    <canvas id="local-authorities-chart"></canvas>
     <span class="authority-select"><label for="authority-select">Selecteer een gemeente</label></span>
     <select id="authority-select" v-model="selectedAuthorityId" @change="showAllSelectedAuthorityVotes">
       <option value="" disabled>Selecteer een gemeente</option>
@@ -31,7 +31,7 @@
           <tbody>
           <tr v-for="(vote, index) in votes" :key="vote.id">
             <td><span class="affiliation-name">{{ index + 1 }}. {{ vote.affiliation.registeredName }}</span></td>
-            <td>{{ vote.validVotes }} stemmen</td>
+            <td id="totalStemmen">{{ vote.validVotes }} stemmen</td>
             <div v-if="vote.showCandidates && candidateVotes.length > 0">
 
               <table>
@@ -206,3 +206,82 @@ export default defineComponent({
   }
 });
 </script>
+
+<style scoped>
+
+
+#totalStemmen{
+  font-weight: bold;
+}
+
+#description {
+  margin: 20px 0;
+  font-size: 1.2em;
+}
+
+#titel {
+  text-align: center;
+  margin: 20px 0;
+}
+
+#authority-select {
+  padding: 10px;
+  font-size: 1em;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px 0;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+}
+
+#local-authorities-chart {
+  max-width: 500px;
+  max-height: 500px;
+  margin: 20px auto;
+  width: 100%;
+  height: auto;
+}
+
+#sort-bar {
+  margin: 20px 0;
+  text-align: right;
+}
+
+#sort {
+  padding: 10px;
+  font-size: 1em;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.politicalComponent {
+  margin-top: 40px;
+}
+
+@media (max-width: 600px) {
+  #local-authorities-chart {
+    max-width: 300px;
+    max-height: 300px;
+  }
+}
+</style>
