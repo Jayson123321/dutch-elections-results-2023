@@ -25,11 +25,11 @@ public class JWToken {
         Key key = getKey(passphrase);
 
         return Jwts.builder()
-                .subject(this.callName)
-                .id(this.accountId.toString())
-                .issuer(issuer)
-                .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + expiration * 1000L))
+                .setSubject(this.callName)
+                .setId(this.accountId.toString())
+                .setIssuer(issuer)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000L))
                 .claim(JWT_ROLE_CLAIM, this.role)
                 .claim(JWT_IPADDRESS_CLAIM, this.ipAddress != null ? this.ipAddress : "1.1.1.1")
                 .signWith(key, SignatureAlgorithm.HS512)
