@@ -36,4 +36,8 @@ public class ResultLocalAuthorityController {
     public List<CandidateAuthorityVotes> getVotesByAffiliationAndAuthority(@PathVariable Long affiliationId, @PathVariable String authorityId) {
         return candidateAuthorityVotesRepository.findByAffiliationIdAndAuthorityIdentifier(affiliationId, authorityId);
     }
+    @GetMapping("/party/{affiliationId}/authority/{authorityId}/sortedByVotes")
+    public List<CandidateAuthorityVotes> getVotesByAffiliationAndAuthoritySortedByVotes(@PathVariable Long affiliationId, @PathVariable String authorityId) {
+        return candidateAuthorityVotesRepository.findByAffiliationIdAndAuthorityIdentifierOrderByValidVotesDesc(affiliationId, authorityId);
+    }
 }
