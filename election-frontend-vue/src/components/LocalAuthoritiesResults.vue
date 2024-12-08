@@ -29,7 +29,7 @@
             </select>
           </div>
           <tbody>
-          <tr v-for="(vote, index) in votes" :key="vote.id">
+          <tr id="affiliationVote" v-for="(vote, index) in votes" :key="vote.id">
             <td>
               <span class="affiliation-name">{{ index + 1 }}. {{ vote.affiliation.registeredName }}</span>
             </td>
@@ -40,7 +40,7 @@
                 <tbody>
                 <tr v-for="(candidateVote, index) in candidateVotes" :key="candidateVote.id">
                   <td>{{ index + 1 }}. {{ candidateVote.candidateName }}</td>
-                  <td>{{ candidateVote.validVotes }} stemmen</td>
+                  <td id="votes">{{ candidateVote.validVotes }} stemmen</td>
                 </tr>
                 </tbody>
               </table>
@@ -209,7 +209,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
+#votes {
+  border-bottom: 1px solid ;
+}
+#affiliationVote {
+  border-bottom: 1px solid ;
+}
 .show-candidates-button {
   padding: 4px 8px;
   font-size: 0.7em;
@@ -262,6 +267,7 @@ table {
 th, td {
   padding: 10px;
   text-align: left;
+
 }
 
 #local-authorities-chart {
