@@ -1,8 +1,8 @@
 <template>
   <div>
     <HeaderComponent/>
-    <div id="description">
-      <p>Deze pagina toont de verkiezingsresultaten per gemeente voor 2023. Selecteer een gemeente om de resultaten te bekijken en sorteer de stemmen op partijnaam of aantal stemmen. Alleen kandidaten die stemmen hebben ontvangen worden weergegeven.</p>
+    <div id="description-container">
+      <p id="description-text">Deze pagina toont de verkiezingsresultaten per gemeente voor 2023. Selecteer een gemeente om de resultaten te bekijken en sorteer de stemmen op partijnaam of aantal stemmen. Alleen kandidaten die stemmen hebben ontvangen worden weergegeven.</p>
     </div>
     <canvas id="local-authorities-chart"></canvas>
     <div id="titel">
@@ -35,10 +35,10 @@
             </td>
             <td id="totalStemmen"> Totaal: {{ vote.validVotes }} stemmen</td>
             <button class="show-candidates-button" @click="toggleCandidates(vote)">Toon stemmen per kandidaat</button>
-            <div v-if="vote.showCandidates && candidateVotes.length > 0">
+            <div v-if="vote.showCandidates && vote.candidateVotes.length > 0">
               <table>
                 <tbody>
-                <tr v-for="(candidateVote, index) in candidateVotes" :key="candidateVote.id">
+                <tr v-for="(candidateVote, index) in vote.candidateVotes" :key="candidateVote.id">
                   <td>{{ index + 1 }}. {{ candidateVote.candidateName }}</td>
                   <td id="votes">{{ candidateVote.validVotes }} stemmen</td>
                 </tr>
@@ -75,7 +75,6 @@ export default defineComponent({
       selectedAuthority: null,
       selectedReportingUnitId: null,
       votes: [],
-      candidateVotes: [],
       reportingUnits: [],
       chart: null,
       sortOrder: 'votes'
@@ -98,7 +97,6 @@ export default defineComponent({
         console.log('Geen gemeente geselecteerd');
         return;
       }
-      // Als sortOrder votes is, dan sorteer op Votes, anders op name
       try {
         const ChooseEndpoint = this.sortOrder === 'votes'
             ? `${config.apiBaseUrl}/result-local-authority/sortedByVotes/${selectedAuthority.authorityIdentifier}`
@@ -120,7 +118,6 @@ export default defineComponent({
         this.votes = this.sortOrder === 'name'
             ? votes.sort((a, b) => a.affiliation.registeredName.localeCompare(b.affiliation.registeredName))
             : votes.sort((a, b) => b.validVotes - a.validVotes);
-        // Add showCandidates property to each vote
         this.votes.forEach(vote => vote.showCandidates = false);
         console.log(this.votes);
         this.$nextTick(() => {
@@ -151,14 +148,14 @@ export default defineComponent({
         console.error('Error fetching party votes for reporting unit:', error);
       }
     },
-    async showCandidates(affiliationId) {
+    async showCandidates(vote) {
       try {
-        const response = await fetch(`${config.apiBaseUrl}/result-local-authority/party/${affiliationId}/authority/${this.selectedAuthority.authorityIdentifier}/sortedByVotes`);
+        const response = await fetch(`${config.apiBaseUrl}/result-local-authority/party/${vote.affiliation.id}/authority/${this.selectedAuthority.authorityIdentifier}/sortedByVotes`);
         if (!response.ok) {
           throw new Error('Failed to fetch candidate votes');
         }
-        this.candidateVotes = await response.json();
-        console.log(this.candidateVotes);
+        vote.candidateVotes = await response.json();
+        console.log(vote.candidateVotes);
       } catch (error) {
         console.error('Error fetching candidate votes:', error);
       }
@@ -166,7 +163,9 @@ export default defineComponent({
     toggleCandidates(vote) {
       vote.showCandidates = !vote.showCandidates;
       if (vote.showCandidates) {
-        this.showCandidates(vote.affiliation.id);
+        this.showCandidates(vote);
+      } else {
+        vote.candidateVotes = [];
       }
     },
     renderPieChart() {
@@ -193,7 +192,7 @@ export default defineComponent({
           plugins: {
             tooltip: {
               callbacks: {
-                label: function(context) {
+                label: function (context) {
                   const value = context.raw;
                   const percentage = ((value / totalVotes) * 100).toFixed(2);
                   return `${value} stemmen (${percentage}%)`;
@@ -209,33 +208,44 @@ export default defineComponent({
 </script>
 
 <style scoped>
-#votes {
-  border-bottom: 1px solid ;
+#description-container {
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 5px;
 }
-#affiliationVote {
-  border-bottom: 1px solid ;
-}
-.show-candidates-button {
-  padding: 4px 8px;
-  font-size: 0.7em;
-  border: none;
-  border-radius: 3px;
 
+#description-text {
+  font-size: 1.1em;
+  line-height: 1.6;
+}
+
+#votes {
+  border-bottom: 1px solid;
+  font-weight: bold;
+  font-size: medium;
+}
+
+#affiliationVote {
+  border-bottom: 1px solid;
+}
+
+.show-candidates-button {
+  padding: 8px 16px;
+  font-size: small;
+  border: 2px solid;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: transform 0.2s ease;
   margin-left: 10px;
 }
 
 .show-candidates-button:hover {
   transform: scale(1.05);
 }
-#totalStemmen{
-  font-weight: bold;
-}
 
-#description {
-  margin: 20px 0;
-  font-size: 1.2em;
+#totalStemmen {
+  font-weight: bold;
 }
 
 #titel {
@@ -267,7 +277,6 @@ table {
 th, td {
   padding: 10px;
   text-align: left;
-
 }
 
 #local-authorities-chart {
