@@ -30,10 +30,12 @@
           </div>
           <tbody>
           <tr v-for="(vote, index) in votes" :key="vote.id">
-            <td><span class="affiliation-name">{{ index + 1 }}. {{ vote.affiliation.registeredName }}</span></td>
-            <td id="totalStemmen">{{ vote.validVotes }} stemmen</td>
+            <td>
+              <span class="affiliation-name">{{ index + 1 }}. {{ vote.affiliation.registeredName }}</span>
+            </td>
+            <td id="totalStemmen"> Totaal: {{ vote.validVotes }} stemmen</td>
+            <button class="show-candidates-button" @click="toggleCandidates(vote)">Toon stemmen per kandidaat</button>
             <div v-if="vote.showCandidates && candidateVotes.length > 0">
-
               <table>
                 <tbody>
                 <tr v-for="(candidateVote, index) in candidateVotes" :key="candidateVote.id">
@@ -43,7 +45,6 @@
                 </tbody>
               </table>
             </div>
-            <td><button @click="toggleCandidates(vote)">Toon kandidaten</button></td>
           </tr>
           </tbody>
         </table>
@@ -152,7 +153,7 @@ export default defineComponent({
     },
     async showCandidates(affiliationId) {
       try {
-        const response = await fetch(`${config.apiBaseUrl}/result-local-authority/party/${affiliationId}/authority/${this.selectedAuthority.authorityIdentifier}`);
+        const response = await fetch(`${config.apiBaseUrl}/result-local-authority/party/${affiliationId}/authority/${this.selectedAuthority.authorityIdentifier}/sortedByVotes`);
         if (!response.ok) {
           throw new Error('Failed to fetch candidate votes');
         }
@@ -209,7 +210,20 @@ export default defineComponent({
 
 <style scoped>
 
+.show-candidates-button {
+  padding: 4px 8px;
+  font-size: 0.7em;
+  border: none;
+  border-radius: 3px;
 
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-left: 10px;
+}
+
+.show-candidates-button:hover {
+  transform: scale(1.05);
+}
 #totalStemmen{
   font-weight: bold;
 }
@@ -237,10 +251,6 @@ button {
   border-radius: 5px;
   cursor: pointer;
   margin: 10px 0;
-}
-
-button:hover {
-  background-color: #0056b3;
 }
 
 table {
