@@ -32,16 +32,27 @@ public class ResultLocalAuthorityControllerTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
     }
+
     // Test for getAuthorityTotalVotesSortedByVotes
     @Test
     public void testGetVotesByAffiliationAndAuthoritySortedByVotes() {
         // Nepversie van de database en zeggen dat deze twee stemmen moet teruggeven
         Long affiliationId = 1L;
         String authorityId = "1";
-        // Lijst van verwachte stemmen met twee nieuwe CandidateAuthorityVotes objecten
-        List<CandidateAuthorityVotes> expectedVotes = Arrays.asList(new CandidateAuthorityVotes(), new CandidateAuthorityVotes());
+        // Lijst van verwachte stemmen met specifieke gegevens
+        CandidateAuthorityVotes vote1 = new CandidateAuthorityVotes();
+        vote1.setId(1L);
+        vote1.setAuthorityIdentifier("1");
+        vote1.setValidVotes(100);
 
-        // Zeggen dat de nepversie van de database deze lijst van verwachte stemmen moet teruggeven als we zoeken op affiliationId en authorityId, gesorteerd op geldige stemmen in aflopende volgorde
+        CandidateAuthorityVotes vote2 = new CandidateAuthorityVotes();
+        vote2.setId(2L);
+        vote2.setAuthorityIdentifier("1");
+        vote2.setValidVotes(200);
+
+        List<CandidateAuthorityVotes> expectedVotes = Arrays.asList(vote1, vote2);
+
+        // Nepversie van de database deze lijst van verwachte stemmen moet teruggeven als we zoeken op affiliationId en authorityId, gesorteerd op geldige stemmen in aflopende volgorde
         when(candidateAuthorityVotesRepository.findByAffiliationIdAndAuthorityIdentifierOrderByValidVotesDesc(affiliationId, authorityId)).thenReturn(expectedVotes);
 
         // Roepen de methode van de controller aan met de gegeven affiliationId en authorityId
