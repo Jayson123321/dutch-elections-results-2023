@@ -39,8 +39,8 @@ export default {
 </template>
 <style>
 body {
-  background-color: var(--color-background);
-}
+    background-color: var(--color-background);
+  }
 .homepage {
   margin-top: 100px;
   text-align: center;
@@ -59,6 +59,7 @@ body {
   height: 100%;
   text-decoration: none;
   color: inherit;
+
 }
 
 .flexbox {
@@ -78,4 +79,5 @@ body {
   background-color: var(--vt-c-white-soft);
   color: var(--vt-c-black);
 }
+
 </style>
