@@ -1,11 +1,14 @@
 <template>
   <div>
     <HeaderComponent/>
+    <div id="description-container">
+      <p id="description-text">Deze pagina toont de verkiezingsresultaten per gemeente voor 2023. Selecteer een gemeente om de resultaten te bekijken en sorteer de stemmen op partijnaam of aantal stemmen. Alleen kandidaten die stemmen hebben ontvangen worden weergegeven.</p>
+    </div>
+    <canvas id="local-authorities-chart"></canvas>
     <div id="titel">
       <h1>Score per stembureau</h1>
       <h1>Verkiezingen 2023 gemeente {{ selectedAuthority?.authorityName }}</h1>
     </div>
-    <canvas id="local-authorities-chart"></canvas>
     <span class="authority-select"><label for="authority-select">Selecteer een gemeente</label></span>
     <select id="authority-select" v-model="selectedAuthorityId" @change="showAllSelectedAuthorityVotes">
       <option value="" disabled>Selecteer een gemeente</option>
@@ -26,9 +29,22 @@
             </select>
           </div>
           <tbody>
-          <tr v-for="(vote, index) in votes" :key="vote.id">
-            <td><span class="affiliation-name">{{ index + 1 }}. {{ vote.affiliation.registeredName }}</span></td>
-            <td>{{ vote.validVotes }} stemmen</td>
+          <tr id="affiliationVote" v-for="(vote, index) in votes" :key="vote.id">
+            <td>
+              <span class="affiliation-name">{{ index + 1 }}. {{ vote.affiliation.registeredName }}</span>
+            </td>
+            <td id="totalStemmen"> Totaal: {{ vote.validVotes }} stemmen</td>
+            <button class="show-candidates-button" @click="toggleCandidates(vote)">Toon stemmen per kandidaat</button>
+            <div v-if="vote.showCandidates && vote.candidateVotes.length > 0">
+              <table>
+                <tbody>
+                <tr v-for="(candidateVote, index) in vote.candidateVotes" :key="candidateVote.id">
+                  <td>{{ index + 1 }}. {{ candidateVote.candidateName }}</td>
+                  <td id="votes">{{ candidateVote.validVotes }} stemmen</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </tr>
           </tbody>
         </table>
@@ -39,89 +55,6 @@
     </div>
   </div>
 </template>
-
-<style>
-canvas {
-  max-height: 500px;
-  max-width: 100%;
-}
-#sort-bar {
-  float: right;
-}
-#sort {
-  appearance: none;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' width='18px' height='18px'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E") no-repeat right center;
-  padding-right: 30px;
-  border: 1px solid var(--color-border);
-  border-radius: 4px;
-  color: var(--color-text);
-  background-color: var(--color-background-soft);
-}
-#titel {
-  text-align: center;
-  margin-top: 5%;
-  font-size: larger;
-}
-#h2uitslag {
-  border-bottom: 1px solid;
-}
-label {
-  margin-right: 10px;
-  display: block;
-  margin-top: 20px;
-  color: var(--color-text);
-}
-
-select {
-  margin-bottom: 20px;
-  padding: 5px;
-  display: block;
-  margin-top: 10px;
-  background-color: var(--color-background-soft);
-  color: var(--color-text);
-}
-
-th, td {
-  padding: 8px 12px;
-  border: none;
-  display: inline-block;
-  margin: 20px;
-  width: 50%;
-  border-color: var(--color-border);
-  color: var(--color-text);
-}
-
-table {
-  border: var(--color-border);
-}
-
-#StembureauName {
-  margin-left: 30%;
-  font-size: 1.2em;
-  font-weight: bold;
-  border: none;
-  color: var(--color-text);
-}
-
-.affiliation-name {
-  font-size: x-large;
-  color: var(--color-text);
-}
-
-#authority-select {
-  border-radius: 15px 15px 0 0;
-  border: var(--color-border);
-  background-color: var(--color-background-soft);
-  color: var(--color-text);
-}
-
-
-.authority-select {
-  font-weight: bold;
-  color: var(--color-text);
-  border-color: var(--color-border-hover);
-}
-</style>
 
 <script>
 import { defineComponent } from 'vue';
@@ -164,7 +97,6 @@ export default defineComponent({
         console.log('Geen gemeente geselecteerd');
         return;
       }
-      // Als sortOrder votes is, dan sorteer op Votes, anders op name
       try {
         const ChooseEndpoint = this.sortOrder === 'votes'
             ? `${config.apiBaseUrl}/result-local-authority/sortedByVotes/${selectedAuthority.authorityIdentifier}`
@@ -186,6 +118,7 @@ export default defineComponent({
         this.votes = this.sortOrder === 'name'
             ? votes.sort((a, b) => a.affiliation.registeredName.localeCompare(b.affiliation.registeredName))
             : votes.sort((a, b) => b.validVotes - a.validVotes);
+        this.votes.forEach(vote => vote.showCandidates = false);
         console.log(this.votes);
         this.$nextTick(() => {
           this.renderPieChart();
@@ -215,6 +148,26 @@ export default defineComponent({
         console.error('Error fetching party votes for reporting unit:', error);
       }
     },
+    async showCandidates(vote) {
+      try {
+        const response = await fetch(`${config.apiBaseUrl}/result-local-authority/party/${vote.affiliation.id}/authority/${this.selectedAuthority.authorityIdentifier}/sortedByVotes`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch candidate votes');
+        }
+        vote.candidateVotes = await response.json();
+        console.log(vote.candidateVotes);
+      } catch (error) {
+        console.error('Error fetching candidate votes:', error);
+      }
+    },
+    toggleCandidates(vote) {
+      vote.showCandidates = !vote.showCandidates;
+      if (vote.showCandidates) {
+        this.showCandidates(vote);
+      } else {
+        vote.candidateVotes = [];
+      }
+    },
     renderPieChart() {
       if (this.chart) {
         this.chart.destroy();
@@ -239,7 +192,7 @@ export default defineComponent({
           plugins: {
             tooltip: {
               callbacks: {
-                label: function(context) {
+                label: function (context) {
                   const value = context.raw;
                   const percentage = ((value / totalVotes) * 100).toFixed(2);
                   return `${value} stemmen (${percentage}%)`;
@@ -253,3 +206,107 @@ export default defineComponent({
   }
 });
 </script>
+
+<style scoped>
+#description-container {
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 5px;
+}
+
+#description-text {
+  font-size: 1.1em;
+  line-height: 1.6;
+}
+
+#votes {
+  border-bottom: 1px solid;
+  font-weight: bold;
+  font-size: medium;
+}
+
+#affiliationVote {
+  border-bottom: 1px solid;
+}
+
+.show-candidates-button {
+  padding: 8px 16px;
+  font-size: small;
+  border: 2px solid;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  margin-left: 10px;
+}
+
+.show-candidates-button:hover {
+  transform: scale(1.05);
+}
+
+#totalStemmen {
+  font-weight: bold;
+}
+
+#titel {
+  text-align: center;
+  margin: 20px 0;
+}
+
+#authority-select {
+  padding: 10px;
+  font-size: 1em;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+}
+
+#local-authorities-chart {
+  max-width: 500px;
+  max-height: 500px;
+  margin: 20px auto;
+  width: 100%;
+  height: auto;
+}
+
+#sort-bar {
+  margin: 20px 0;
+  text-align: right;
+}
+
+#sort {
+  padding: 10px;
+  font-size: 1em;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.politicalComponent {
+  margin-top: 40px;
+}
+
+@media (max-width: 600px) {
+  #local-authorities-chart {
+    max-width: 300px;
+    max-height: 300px;
+  }
+}
+</style>
