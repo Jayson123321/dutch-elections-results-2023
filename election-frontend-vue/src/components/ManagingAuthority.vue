@@ -91,12 +91,10 @@ table {
   font-size: 1.2em;
   font-weight: bold;
   border: none;
-  color: #cccccc;
 }
 
 .affiliation-name {
   font-size: x-large;
-  color: white;
 }
 
 #authority-select {
