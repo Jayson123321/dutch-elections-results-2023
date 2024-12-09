@@ -129,7 +129,7 @@ export default {
         const createdForum = response.data;
 
         // Voeg direct het nieuwe forum toe aan de lijst
-        this.forums.push({
+        this.forums.unshift({
           ...createdForum,
           replies: [], // Initialiseer lege replies voor het nieuwe forum
           newReply: { replyText: '' }, // Voeg een lege newReply toe voor consistentie
