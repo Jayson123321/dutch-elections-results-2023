@@ -38,7 +38,17 @@
           <tr v-for="(vote, index) in partyVotes" :key="vote.id">
             <td><span class="affiliation-name">{{ index + 1 }}. {{ vote.affiliation.registeredName }}</span></td>
             <td>{{ vote.validVotes }} stemmen</td>
-            <td><button @click="fetchVotesByCandidate(vote.affiliation.id)">Toon stemmen per kandidaat</button></td>
+            <td><button @click="toggleCandidates(vote)">Toon stemmen per kandidaat</button></td>
+            <div v-if="vote.showCandidates">
+              <table>
+                <tbody>
+                <tr v-for="(candidateVote, index) in vote.candidateVotes" :key="index">
+                  <td>{{ candidateVote.candidateId }}</td>
+                  <td>{{ candidateVote.validVotes }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </tr>
           </tbody>
         </table>
@@ -140,7 +150,8 @@ export default defineComponent({
       partyVotes: [],
       reportingUnits: [],
       stemBureau: [],
-      chart: null
+      chart: null,
+      candidateVotes: []
     };
   },
 
@@ -203,6 +214,7 @@ export default defineComponent({
           throw new Error('Failed to fetch party votes for reporting unit');
         }
         this.partyVotes = await response.json();
+        this.partyVotes.forEach(vote => vote.showCandidates = false);
         this.partyVotes.sort((a, b) => b.validVotes - a.validVotes);
         console.log(this.partyVotes);
         this.$nextTick(() => {
@@ -212,17 +224,24 @@ export default defineComponent({
         console.error('Error fetching party votes for reporting unit:', error);
       }
     },
-    async fetchVotesByCandidate(affiliationId) {
+    async fetchVotesByCandidate(vote) {
       try {
-        const response = await fetch(`${config.apiBaseUrl}/candidate-reporting-unit-votes/reporting-unit/${this.selectedAuthority.authorityIdentifier}/affiliation/${affiliationId}/managingAuthorityNumber/${this.partyVotes[0].managingAuthorityNumber}`);
-        console.log(response);
+        const response = await fetch(`${config.apiBaseUrl}/candidate-reporting-unit-votes/reporting-unit/${this.selectedAuthority.authorityIdentifier}/affiliation/${vote.affiliation.id}/managingAuthorityNumber/${this.partyVotes[0].managingAuthorityNumber}`);
         if (!response.ok) {
           throw new Error('Failed to fetch votes by candidate');
         }
-        const candidateVotes = await response.json();
-        console.log(candidateVotes);
+        vote.candidateVotes = await response.json();
+        console.log(vote.candidateVotes);
       } catch (error) {
         console.error('Error fetching votes by candidate:', error);
+      }
+    },
+    toggleCandidates(vote) {
+      vote.showCandidates = !vote.showCandidates;
+      if (vote.showCandidates) {
+        this.fetchVotesByCandidate(vote);
+      } else {
+        vote.candidateVotes = [];
       }
     },
     renderChart() {
@@ -254,7 +273,7 @@ export default defineComponent({
           plugins: {
             tooltip: {
               callbacks: {
-                label: function(context) {
+                label: function (context) {
                   const value = context.raw;
                   const percentage = ((value / totalVotes) * 100).toFixed(2);
                   return `${value} stemmen (${percentage}%)`;
@@ -266,6 +285,6 @@ export default defineComponent({
       });
     }
   },
-  components: {PoliticalNews, FooterComponent, HeaderComponent }
+  components: {PoliticalNews, FooterComponent, HeaderComponent}
 });
 </script>
