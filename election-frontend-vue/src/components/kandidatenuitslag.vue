@@ -78,6 +78,8 @@ export default {
       filteredVotes: [], // Gefilterde stemmen voor de geselecteerde gemeente
       totalVotes: 10475203, // Static total votes
       error: null,
+      reportingUnits: [], // Rapportage-eenheden
+      selectedReportingUnit: null, // Geselecteerde rapportage-eenheid
     };
   }
 
@@ -99,6 +101,18 @@ export default {
   }
   ,
   methods: {
+    async fetchReportingUnitsByMunicipality(municipalityName) {
+      try {
+        const response = await fetch(`http://localhost:8080/api/candidate-reporting-unit-votes/municipality/${municipalityName}`);
+        if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+        const data = await response.json();
+        this.reportingUnits = data; // Rapportage-eenheden
+      } catch (error) {
+        console.error("Error fetching reporting units:", error);
+        this.error = "Failed to fetch reporting units.";
+      }
+    },
+
     async fetchCandidateVotesByAuthority() {
       try {
         const response = await fetch(`http://localhost:8080/api/candidate-authority-votes/candidate/${this.id}`);
