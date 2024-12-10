@@ -13,4 +13,7 @@ public interface CandidateAuthorityVotesRepository extends JpaRepository<Candida
     List<CandidateAuthorityVotes> findByAffiliationIdAndAuthorityIdentifier(Long affiliationId, String authorityIdentifier);
 
     List<CandidateAuthorityVotes> findByAffiliationIdAndAuthorityIdentifierOrderByValidVotesDesc(Long affiliationId, String authorityId);
+
+    List<CandidateAuthorityVotes> findByCandidateId(Long candidateId);
+
 }
