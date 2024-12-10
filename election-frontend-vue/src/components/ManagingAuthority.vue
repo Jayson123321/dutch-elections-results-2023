@@ -35,16 +35,16 @@
         <h3>{{ selectedReportingUnitId ? reportingUnits.find(unit => unit.id === selectedReportingUnitId)?.name : '' }}</h3>
         <table>
           <tbody>
-          <tr v-for="(vote, index) in partyVotes" :key="vote.id">
-            <td><span class="affiliation-name">{{ index + 1 }}. {{ vote.affiliation.registeredName }}</span></td>
-            <td>{{ vote.validVotes }} stemmen</td>
-            <td><button @click="toggleCandidates(vote)">Toon stemmen per kandidaat</button></td>
+          <tr class="affiliationVote" v-for="(vote, index) in partyVotes" :key="vote.id">
+              <td class="affiliation-name">{{ index + 1 }}. {{ vote.affiliation.registeredName }}</td>
+            <td id="totalStemmen">Totaal: {{ vote.validVotes }} stemmen</td>
+            <td><button class="show-candidates-button" @click="toggleCandidates(vote)">Toon stemmen per kandidaat</button></td>
             <div v-if="vote.showCandidates">
               <table>
                 <tbody>
                 <tr v-for="(candidateVote, index) in vote.candidateVotes" :key="index">
                   <td>{{ candidateVote.candidateId }}</td>
-                  <td>{{ candidateVote.validVotes }}</td>
+                  <td id="votes">{{ candidateVote.validVotes }}</td>
                 </tr>
                 </tbody>
               </table>
@@ -61,6 +61,18 @@
 </template>
 
 <style>
+table {
+  border-collapse: collapse;
+}
+
+.affiliationVote {
+  border-bottom: 1px solid;
+}
+#votes {
+  border-bottom: 1px solid;
+  font-weight: bold;
+  font-size: medium;
+}
 #titel {
   text-align: center;
   margin-top: 5%;
@@ -127,6 +139,16 @@ canvas {
   width: auto;
   max-width: 35%;
 }
+.show-candidates-button {
+  padding: 8px 16px;
+  font-size: small;
+  border: 2px solid;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  margin-left: 10px;
+}
+
 </style>
 
 <script>
