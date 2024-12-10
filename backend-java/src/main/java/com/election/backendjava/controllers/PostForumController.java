@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/usersforum")
@@ -26,6 +27,12 @@ public class PostForumController {
     public List<UserForum> getAllForums() {
         return forumService.getAllForums();
     }
+//    public List<UserForum> getAllForums() {
+//        return forumService.getAllForums()
+//                .stream()
+//                .sorted((f1, f2) -> f2.getCreatedAt().compareTo(f1.getCreatedAt()))
+//                .collect(Collectors.toList());
+//    }
 
     @PostMapping("/{forumId}/replies")
     public Reply saveReply(@PathVariable Long forumId, @RequestBody Reply reply) {
