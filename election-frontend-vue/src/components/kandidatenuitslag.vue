@@ -7,49 +7,58 @@
     <!-- Kandidateninformatie weergeven -->
     <div v-if="candidate">
       <h2>Naam: {{ candidate.candidateName }}</h2>
+      <p>Totale stemmen: {{ candidateVotes }}</p>
     </div>
 
-    <!-- Stemmenoverzicht -->
-    <h3>Stemmen</h3>
-    <ul>
-      <li>
-        <p>Kandidaatstemmen: {{ candidateVotes }}</p>
-      </li>
-
-    </ul>
+    <!-- Gemeente selectie -->
     <div>
-      <!-- Gemeente selectie -->
       <label for="authority-select">Kies een gemeente:</label>
       <select id="authority-select" v-model="selectedAuthority" @change="filterVotesByAuthority">
         <option value="" disabled>Kies een gemeente</option>
         <option v-for="vote in votesPerAuthority" :key="vote.authorityName" :value="vote.authorityName">
           {{ vote.authorityName }}
         </option>
-
       </select>
+    </div>
 
-
-
-      <!-- Gefilterde resultaten -->
-      <h3 v-if="selectedAuthority">Resultaten voor {{ selectedAuthority }}</h3>
+    <!-- Gefilterde resultaten per gemeente -->
+    <div v-if="selectedAuthority">
+      <h3>Resultaten voor {{ selectedAuthority }}</h3>
       <table v-if="filteredVotes.length > 0">
-        <thead>
-        <tr>
-          <th>Kandidaat</th>
-          <th>Stemmen</th>
-        </tr>
-        </thead>
         <tbody>
         <tr v-for="vote in filteredVotes" :key="vote.id">
-          <td>{{ candidate.candidateName }}</td>
-          <td>{{ vote.validVotes }}</td>
+          <td>Naam: {{ candidate.candidateName }}</td>
+          <td>Stemmen gemeente: {{ vote.validVotes }}</td>
         </tr>
         </tbody>
       </table>
       <p v-else>Geen stemmen gevonden voor deze gemeente.</p>
     </div>
 
+    <!-- Rapportage-eenheid selectie -->
+    <div v-if="selectedAuthority">
+      <label for="reporting-unit-select">Kies een rapportage-eenheid:</label>
+      <select id="reporting-unit-select" v-model="selectedReportingUnit" @change="filterVotesByReportingUnit">
+        <option value="" disabled>Kies een rapportage-eenheid</option>
+        <option v-for="unit in reportingUnits" :key="unit.reportingUnitId" :value="unit.reportingUnitId">
+          {{ unit.reportingUnitName }}
+        </option>
+      </select>
+    </div>
 
+    <!-- Gefilterde resultaten per rapportage-eenheid -->
+    <div v-if="selectedReportingUnit">
+      <h3>Resultaten voor rapportage-eenheid {{ selectedReportingUnit }}</h3>
+      <table v-if="filteredReportingUnitVotes.length > 0">
+        <tbody>
+        <tr v-for="vote in filteredReportingUnitVotes" :key="vote.id">
+          <td>Naam: {{ candidate.candidateName }}</td>
+          <td>Stemmen rapportage-eenheid: {{ vote.validVotes }}</td>
+        </tr>
+        </tbody>
+      </table>
+      <p v-else>Geen stemmen gevonden voor deze rapportage-eenheid.</p>
+    </div>
 
     <FooterComponent />
   </div>
@@ -68,48 +77,57 @@ export default {
     FooterComponent,
     HeaderComponent,
   },
-  props: ['id'], // Accepteert kandidaat-ID als prop
+  props: ['id'],
   data() {
     return {
       candidate: null,
       candidateVotes: 0,
-      votesPerAuthority: [], // Alle stemmen per gemeente
-      selectedAuthority: null, // Geselecteerde gemeente
-      filteredVotes: [], // Gefilterde stemmen voor de geselecteerde gemeente
-      totalVotes: 10475203, // Static total votes
+      votesPerAuthority: [],
+      selectedAuthority: null,
+      filteredVotes: [],
+      reportingUnits: [],
+      selectedReportingUnit: null,
+      filteredReportingUnitVotes: [],
       error: null,
-      reportingUnits: [], // Rapportage-eenheden
-      selectedReportingUnit: null, // Geselecteerde rapportage-eenheid
     };
-  }
-
-
-  ,
+  },
   async created() {
     if (this.id) {
       try {
         await this.findCandidateVotesById();
-        await this.fetchCandidateData(); // Landelijke stemmen
-        await this.fetchCandidateVotesByAuthority(); // Stemmen per gemeente
-        this.filterVotesByAuthority(); // Filter stemmen per gemeente
+        await this.fetchCandidateData();
+        await this.fetchCandidateVotesByAuthority();
+        this.filterVotesByAuthority();
       } catch (error) {
         this.error = "Er is een probleem opgetreden bij het ophalen van de gegevens.";
       }
     } else {
       this.error = "Geen kandidaat-ID opgegeven in de route.";
     }
-  }
-  ,
+  },
   methods: {
     async fetchReportingUnitsByMunicipality(municipalityName) {
       try {
         const response = await fetch(`http://localhost:8080/api/candidate-reporting-unit-votes/municipality/${municipalityName}`);
         if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
         const data = await response.json();
-        this.reportingUnits = data; // Rapportage-eenheden
+        console.log("Fetched reporting units:", data); // Log the fetched data
+        this.reportingUnits = data;
       } catch (error) {
         console.error("Error fetching reporting units:", error);
         this.error = "Failed to fetch reporting units.";
+      }
+    },
+
+    filterVotesByAuthority() {
+      if (this.selectedAuthority) {
+        this.filteredVotes = this.votesPerAuthority.filter(vote =>
+            vote.authorityName === this.selectedAuthority
+        );
+        this.fetchReportingUnitsByMunicipality(this.selectedAuthority);
+      } else {
+        this.filteredVotes = [];
+        this.reportingUnits = [];
       }
     },
 
@@ -117,37 +135,30 @@ export default {
       try {
         const response = await fetch(`http://localhost:8080/api/candidate-authority-votes/candidate/${this.id}`);
         if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
-
         const data = await response.json();
-        console.log("Received votes per authority:", data); // Controleer de data hier
         this.votesPerAuthority = data;
       } catch (error) {
         console.error("Error fetching candidate votes per authority:", error);
         this.error = "Failed to fetch candidate votes per authority.";
       }
-    }
-    ,
+    },
 
-    filterVotesByAuthority() {
-      if (this.selectedAuthority) {
-        this.filteredVotes = this.votesPerAuthority.filter(vote =>
-            vote.authorityName === this.selectedAuthority
+    filterVotesByReportingUnit() {
+      if (this.selectedReportingUnit) {
+        this.filteredReportingUnitVotes = this.reportingUnits.filter(unit =>
+            unit.reportingUnitId === this.selectedReportingUnit
         );
       } else {
-        this.filteredVotes = [];
+        this.filteredReportingUnitVotes = [];
       }
-    }
-
-    ,
+    },
 
     async fetchCandidateData() {
       try {
-        // Fetch candidate details and national-level votes
         const response = await fetch(`http://localhost:8080/api/candidate-votes/votes/${this.id}`);
         if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
-
         const data = await response.json();
-        this.candidateVotes = data.validVotes; // Totale stemmen op nationaal niveau
+        this.candidateVotes = data.validVotes;
       } catch (error) {
         console.error("Error fetching candidate data:", error);
         this.error = "Failed to fetch candidate data.";
@@ -163,8 +174,7 @@ export default {
         console.error("Fout bij het ophalen van de kandidaat:", error);
       }
     },
-  }
-  ,
+  },
 };
 </script>
 

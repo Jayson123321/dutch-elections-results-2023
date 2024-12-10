@@ -16,16 +16,10 @@ public class CandidateReportingUnitVotesService {
     }
 
     public List<candidate_reporting_unit_votes> findByReportingUnitId(String reportingUnitId) {
-        return repository.findAll().stream()
-                .filter(vote -> vote.getReportingUnitId().equals(reportingUnitId))
-                .toList();
+        return repository.findByReportingUnitId(reportingUnitId);
     }
 
     public List<candidate_reporting_unit_votes> findByMunicipalityName(String municipalityName) {
-        return repository.findAll().stream()
-                .filter(vote -> vote.getMunicipalityName().equalsIgnoreCase(municipalityName))
-                .toList();
+        return repository.findByMunicipalityNameIgnoreCase(municipalityName);
     }
-
-
 }
