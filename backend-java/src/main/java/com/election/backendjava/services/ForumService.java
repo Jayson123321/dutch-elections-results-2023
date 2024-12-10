@@ -26,7 +26,8 @@ public class ForumService {
     }
 
     public List<UserForum> getAllForums() {
-        List<UserForum> forums = postForumRepository.findAll();
+        List<UserForum> forums = postForumRepository.findAllSortedByCreatedAt();
+//        List<UserForum> forums = postForumRepository.findAll();
         logger.info("Aantal opgehaalde forums: {}", forums.size());
         return forums;
     }
