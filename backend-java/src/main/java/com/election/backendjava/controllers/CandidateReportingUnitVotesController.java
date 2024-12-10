@@ -26,4 +26,9 @@ public class CandidateReportingUnitVotesController {
     public List<candidate_reporting_unit_votes> getByReportingUnit(@PathVariable String reportingUnitId) {
         return service.findByReportingUnitId(reportingUnitId);
     }
+
+    @GetMapping("/affiliation/{affiliationId}/Candidate/{candidateId}/reporting-unit/{reportingUnitId}")
+    public List<candidate_reporting_unit_votes> getValidVotesByAffiliationIdAndCandidateIdAndReportingUnitId(@PathVariable Long affiliationId, @PathVariable Long candidateId, @PathVariable String reportingUnitId) {
+        return service.findValidVotesByAffiliationIdAndCandidateIdAndReportingUnit(affiliationId, candidateId, reportingUnitId);
+    }
 }
