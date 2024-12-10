@@ -22,4 +22,8 @@ public class CandidateReportingUnitVotesService {
     public List<candidate_reporting_unit_votes> findByMunicipalityName(String municipalityName) {
         return repository.findByMunicipalityNameIgnoreCase(municipalityName);
     }
+
+    public List<candidate_reporting_unit_votes> findValidVotesByAffiliationIdAndCandidateIdAndReportingUnit (Long affiliationId, Long candidateId, String reportingUnitId) {
+        return repository.findValidVotesByAffiliationIdAndCandidateIdAndReportingUnitId(String.valueOf(affiliationId), candidateId, reportingUnitId);
+    }
 }
