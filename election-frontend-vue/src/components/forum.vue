@@ -94,6 +94,8 @@ export default {
         this.forums = await response.json();
         console.log('Forums opgehaald:', this.forums); // Debugging
 
+        this.forums.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
         // Fetch replies for each forum and initialize newReply for each forum
         for (let forum of this.forums) {
           const repliesResponse = await fetch(`http://localhost:8080/api/usersforum/${forum.forumId}/replies`);
@@ -227,6 +229,7 @@ export default {
   background-color: var(--background-color);
   font-family: Arial, sans-serif;
   color: var(--text-color);
+  min-height: 100vh;
 }
 
 .forum-form {
@@ -266,6 +269,7 @@ export default {
 .forum-list {
   width: 100%;
   max-width: 800px;
+  margin-top: 20px;
 }
 
 .forum-item {
