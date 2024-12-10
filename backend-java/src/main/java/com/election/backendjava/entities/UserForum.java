@@ -1,6 +1,9 @@
 package com.election.backendjava.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 public class UserForum {
@@ -20,6 +23,16 @@ public class UserForum {
     @JoinColumn(name = "id" , nullable = false)
    @JsonBackReference
    private User user;
+
+//    @CreationTimestamp
+//    @Column(name = "created_at", nullable = false, updatable = false)
+//    private LocalDateTime createdAt;
+//    @PrePersist
+//    public void prePersist() {
+//        this.createdAt = LocalDateTime.now();
+//    }
+@Column(name = "created_at", nullable = false, updatable = false)
+private LocalDateTime createdAt = LocalDateTime.now();
 
     //getters and setters
     public Long getForumId() {
@@ -49,6 +62,14 @@ public class UserForum {
     }
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
 }
