@@ -26,7 +26,6 @@
             persistent-placeholder
             clearable
             transition="scale-transition"
-
         ></v-autocomplete>
       </div>
       <button v-if="selectedReportingUnitId" @click="fetchPartyVotesByReportingUnitAndAuthorityNumber">Bekijk stemmen</button>
@@ -39,6 +38,7 @@
           <tr v-for="(vote, index) in partyVotes" :key="vote.id">
             <td><span class="affiliation-name">{{ index + 1 }}. {{ vote.affiliation.registeredName }}</span></td>
             <td>{{ vote.validVotes }} stemmen</td>
+            <td><button @click="fetchVotesByCandidate(vote.affiliation.id)">Toon stemmen per kandidaat</button></td>
           </tr>
           </tbody>
         </table>
@@ -210,6 +210,19 @@ export default defineComponent({
         });
       } catch (error) {
         console.error('Error fetching party votes for reporting unit:', error);
+      }
+    },
+    async fetchVotesByCandidate(affiliationId) {
+      try {
+        const response = await fetch(`${config.apiBaseUrl}/candidate-reporting-unit-votes/reporting-unit/${this.selectedAuthority.authorityIdentifier}/affiliation/${affiliationId}/managingAuthorityNumber/${this.partyVotes[0].managingAuthorityNumber}`);
+        console.log(response);
+        if (!response.ok) {
+          throw new Error('Failed to fetch votes by candidate');
+        }
+        const candidateVotes = await response.json();
+        console.log(candidateVotes);
+      } catch (error) {
+        console.error('Error fetching votes by candidate:', error);
       }
     },
     renderChart() {
