@@ -26,8 +26,8 @@ public class ForumService {
     }
 
     public List<UserForum> getAllForums() {
-        List<UserForum> forums = postForumRepository.findAllSortedByCreatedAt();
-//        List<UserForum> forums = postForumRepository.findAll();
+//        List<UserForum> forums = postForumRepository.findAllSortedByCreatedAt();
+        List<UserForum> forums = postForumRepository.findAll();
         logger.info("Aantal opgehaalde forums: {}", forums.size());
         return forums;
     }
@@ -38,5 +38,13 @@ public class ForumService {
 
     public List<Reply> getRepliesByForumId(Long forumId) {
         return replyRepository.findByUserForum_ForumId(forumId);
+    }
+
+    public void deleteForumById(Long forumId) {
+        replyRepository.deleteByUserForum_ForumId(forumId);
+
+        postForumRepository.deleteById(forumId);
+
+        logger.info("Forum with ID {} and its replies have been deleted.", forumId);
     }
 }
