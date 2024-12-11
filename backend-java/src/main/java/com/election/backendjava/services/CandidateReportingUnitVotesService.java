@@ -34,4 +34,14 @@ public class CandidateReportingUnitVotesService {
     public List<candidate_reporting_unit_votes> findValidVotesByAffiliationIdAndReportingUnitIdAndManagingAuthorityNumber(Long affiliationId, String reportingUnitId, String managingAuthorityNumber) {
         return repository.findByCandidate_AffiliationIdAndReportingUnitIdAndManagingAuthorityNumber(String.valueOf(affiliationId), reportingUnitId, managingAuthorityNumber);
     }
+
+    public List<candidate_reporting_unit_votes> findByCandidateAndReportingUnit(Long candidateId, String reportingUnitId) {
+        return repository.findByCandidate_IdAndReportingUnitId(candidateId, reportingUnitId);
+    }
+    public List<candidate_reporting_unit_votes> findByReportingUnitAndCandidate(String reportingUnitId, Long candidateId) {
+        return repository.findByReportingUnitIdAndCandidate_Id(reportingUnitId, candidateId);
+    }
+    public List<candidate_reporting_unit_votes> findByReportingUnitAndCandidate(String reportingUnitId, String affiliationId, Long candidateId) {
+        return repository.findByReportingUnitIdAndCandidate_AffiliationIdAndCandidate_Id(reportingUnitId, affiliationId, candidateId);
+    }
 }

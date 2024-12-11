@@ -4,13 +4,11 @@
 
     <h1>Resultaat Kandidaat</h1>
 
-    <!-- Kandidateninformatie weergeven -->
     <div v-if="candidate">
       <h2>Naam: {{ candidate.candidateName }}</h2>
       <p>Totale stemmen: {{ candidateVotes }}</p>
     </div>
 
-    <!-- Gemeente selectie -->
     <div>
       <label for="authority-select">Kies een gemeente:</label>
       <select id="authority-select" v-model="selectedAuthority" @change="filterVotesByAuthority">
@@ -21,24 +19,20 @@
       </select>
     </div>
 
-    <!-- Gefilterde resultaten per gemeente -->
     <div v-if="selectedAuthority">
       <h3>Resultaten voor {{ selectedAuthority }}</h3>
       <table v-if="filteredVotes.length > 0">
-        <tbody>
         <tr v-for="vote in filteredVotes" :key="vote.id">
           <td>Naam: {{ candidate.candidateName }}</td>
           <td>Stemmen gemeente: {{ vote.validVotes }}</td>
         </tr>
-        </tbody>
       </table>
       <p v-else>Geen stemmen gevonden voor deze gemeente.</p>
     </div>
 
-    <!-- Rapportage-eenheid selectie -->
     <div v-if="selectedAuthority">
       <label for="reporting-unit-select">Kies een rapportage-eenheid:</label>
-      <select id="reporting-unit-select" v-model="selectedReportingUnit" @change="filterVotesByReportingUnit">
+      <select id="reporting-unit-select" v-model="selectedReportingUnit" @change="fetchVotesForReportingUnit(selectedReportingUnit)">
         <option value="" disabled>Kies een rapportage-eenheid</option>
         <option v-for="unit in reportingUnits" :key="unit.reportingUnitId" :value="unit.reportingUnitId">
           {{ unit.reportingUnitName }}
@@ -46,20 +40,18 @@
       </select>
     </div>
 
-    <!-- Gefilterde resultaten per rapportage-eenheid -->
     <div v-if="selectedReportingUnit">
       <h3>Resultaten voor rapportage-eenheid {{ selectedReportingUnit }}</h3>
       <table v-if="filteredReportingUnitVotes.length > 0">
-        <tbody>
         <tr v-for="vote in filteredReportingUnitVotes" :key="vote.id">
           <td>Naam: {{ candidate.candidateName }}</td>
           <td>Stemmen rapportage-eenheid: {{ vote.validVotes }}</td>
         </tr>
-        </tbody>
       </table>
       <p v-else>Geen stemmen gevonden voor deze rapportage-eenheid.</p>
     </div>
 
+    <div v-if="error" class="error">{{ error }}</div>
     <FooterComponent />
   </div>
 </template>
@@ -94,11 +86,11 @@ export default {
   async created() {
     if (this.id) {
       try {
-        await this.findCandidateVotesById();
         await this.fetchCandidateData();
+        await this.findCandidateVotesById();
         await this.fetchCandidateVotesByAuthority();
-        this.filterVotesByAuthority();
       } catch (error) {
+        console.error("Fout bij initialisatie:", error);
         this.error = "Er is een probleem opgetreden bij het ophalen van de gegevens.";
       }
     } else {
@@ -106,6 +98,25 @@ export default {
     }
   },
   methods: {
+
+    async fetchVotesForReportingUnit(reportingUnitId) {
+      if (!reportingUnitId) {
+        console.warn("Geen rapportage-eenheid geselecteerd.");
+        return;
+      }
+      try {
+        const response = await fetch(
+            `http://localhost:8080/api/candidate-reporting-unit-votes/reporting-unit/${reportingUnitId}/candidate/${this.candidate.id}/affiliation/${this.candidate.affiliationId}`
+        );
+        if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+        const data = await response.json();
+        this.filteredReportingUnitVotes = data;
+      } catch (error) {
+        console.error("Error fetching votes for reporting unit:", error);
+      }
+    }
+    ,
+
     async fetchReportingUnitsByMunicipality(municipalityName) {
       try {
         const response = await fetch(`http://localhost:8080/api/candidate-reporting-unit-votes/municipality/${municipalityName}`);
@@ -151,14 +162,31 @@ export default {
     },
 
     filterVotesByReportingUnit() {
-      if (this.selectedReportingUnit) {
-        this.filteredReportingUnitVotes = this.reportingUnits.filter(unit =>
-            unit.reportingUnitId === this.selectedReportingUnit
-        );
-      } else {
+      if (!this.selectedReportingUnit || !this.candidate) {
+        console.warn("Geen rapportage-eenheid of kandidaat beschikbaar.");
         this.filteredReportingUnitVotes = [];
+        return;
+      }
+      this.filteredReportingUnitVotes = this.reportingUnits.filter(
+          (unit) =>
+              unit.reportingUnitId === this.selectedReportingUnit &&
+              unit.candidate?.id === this.candidate.id
+      );
+    }
+    ,
+
+    async fetchFilteredVotes(candidateId, reportingUnitId) {
+      try {
+        const response = await fetch(
+            `http://localhost:8080/api/candidate-reporting-unit-votes/candidate/${candidateId}/reporting-unit/${reportingUnitId}`
+        );
+        const data = await response.json();
+        this.filteredReportingUnitVotes = data;
+      } catch (error) {
+        console.error("Error fetching filtered votes:", error);
       }
     },
+
 
     async fetchCandidateData() {
       try {
