@@ -20,7 +20,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-                                    FilterChain chain) throws IOException, ServletException {
+                                    FilterChain filterChain) throws ServletException, IOException {
         // get the encrypted token string from the authorization request header
         String encryptedToken = request.getHeader(HttpHeaders.AUTHORIZATION);
 
@@ -38,7 +38,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
             // pass-on the token info as an attribute for the request
             request.setAttribute(JWToken.JWT_ATTRIBUTE_NAME, jwToken);
             // proceed along the chain of filters towards the REST controller
-            chain.doFilter(request, response);
+            filterChain.doFilter(request, response);
 
         } catch (RuntimeException e) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
