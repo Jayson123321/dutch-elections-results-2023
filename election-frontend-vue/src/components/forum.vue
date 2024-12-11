@@ -34,19 +34,20 @@
           <h3 @click="goToQuestionDetails(forum.forumId)">{{ forum.title }}</h3>
           <p>{{ forum.description }}</p>
 
+
           <form @submit.prevent="submitReply(forum.forumId)">
             <div v-for="reply in forum.replies" :key="reply.replyId" class="reply-item">
               <p><strong>{{ reply.username }}:</strong> {{ reply.replyText }}</p>
             </div>
             <br>
-  <textarea
+            <textarea
       v-model="forum.newReply.replyText"
       placeholder="Beantwoord dit vraag"
       required
   ></textarea>
             <button type="submit">Antwoord Posten</button>
           </form>
-
+          <button @click="deleteForum(forum.forumId)">Verwijder post</button>
         </div>
       </div>
     </div>
@@ -94,7 +95,7 @@ export default {
         this.forums = await response.json();
         console.log('Forums opgehaald:', this.forums); // Debugging
 
-        this.forums.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        // this.forums.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
         // Fetch replies for each forum and initialize newReply for each forum
         for (let forum of this.forums) {
