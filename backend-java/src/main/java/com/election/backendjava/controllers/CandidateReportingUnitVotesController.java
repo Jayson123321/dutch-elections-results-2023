@@ -31,4 +31,12 @@ public class CandidateReportingUnitVotesController {
     public List<candidate_reporting_unit_votes> getValidVotesByAffiliationIdAndCandidateIdAndReportingUnitId(@PathVariable Long affiliationId, @PathVariable Long candidateId, @PathVariable String reportingUnitId) {
         return service.findValidVotesByAffiliationIdAndCandidateIdAndReportingUnit(affiliationId, candidateId, reportingUnitId);
     }
+    @GetMapping("/affiliation/{affiliationId}/reporting-unit/{reportingUnitId}/")
+    public List<candidate_reporting_unit_votes> getValidVotesByAffiliationIdAndReportingUnitId(@PathVariable Long affiliationId, @PathVariable String reportingUnitId) {
+        return service.findValidVotesByAffiliationIdAndReportingUnit(affiliationId, reportingUnitId);
+    }
+    @GetMapping("/reporting-unit/{reportingUnitId}/affiliation/{affiliationId}/managingAuthorityNumber/{managingAuthorityNumber}")
+    public List<candidate_reporting_unit_votes> getValidVotesByAffiliationIdAndReportingUnitIdAndManagingAuthorityNumber(@PathVariable String reportingUnitId, @PathVariable Long affiliationId, @PathVariable String managingAuthorityNumber) {
+        return service.findValidVotesByAffiliationIdAndReportingUnitIdAndManagingAuthorityNumber(affiliationId, reportingUnitId, managingAuthorityNumber);
+    }
 }
