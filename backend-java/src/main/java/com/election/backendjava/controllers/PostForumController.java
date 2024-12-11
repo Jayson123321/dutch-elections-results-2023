@@ -49,4 +49,15 @@ public class PostForumController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @DeleteMapping("/{forumId}")
+    public ResponseEntity<Void> deleteForum(@PathVariable Long forumId) {
+        try {
+            forumService.deleteForumById(forumId);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
