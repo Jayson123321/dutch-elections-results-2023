@@ -19,8 +19,12 @@ public class candidate_reporting_unit_votes {
     @Column(name = "reporting_unit_name")
     private String reportingUnitName;
 
-    @Column(name = "candidate_id")
-    private Long candidateId;
+    @ManyToOne
+    @JoinColumns({
+            @JoinColumn(name = "candidate_id", referencedColumnName = "candidate_identifier", nullable = false, insertable = false, updatable = false),
+            @JoinColumn(name = "affiliation_id", referencedColumnName = "affiliation_id", nullable = false, insertable = false, updatable = false)
+    })
+    private Candidate candidate;
 
     @Column(name = "affiliation_name")
     private String affiliationName;
@@ -28,14 +32,10 @@ public class candidate_reporting_unit_votes {
     @Column(name = "valid_votes")
     private int validVotes;
 
-    @Column(name = "affiliation_id")
-    private String affiliationId;
+    @Column(name = "managing_authority_number")
+    private String managingAuthorityNumber;
 
     // Getters and Setters
-
-    public Long getId() {
-        return id;
-    }
 
     public void setId(Long id) {
         this.id = id;
@@ -65,14 +65,6 @@ public class candidate_reporting_unit_votes {
         this.reportingUnitName = reportingUnitName;
     }
 
-    public Long getCandidateId() {
-        return candidateId;
-    }
-
-    public void setCandidateId(Long candidateId) {
-        this.candidateId = candidateId;
-    }
-
     public String getAffiliationName() {
         return affiliationName;
     }
@@ -89,24 +81,23 @@ public class candidate_reporting_unit_votes {
         this.validVotes = validVotes;
     }
 
+    public String getManagingAuthorityNumber() {
+        return managingAuthorityNumber;
+    }
+
+    public void setManagingAuthorityNumber(String managingAuthorityNumber) {
+        this.managingAuthorityNumber = managingAuthorityNumber;
+    }
+
+    public void setCandidate(Candidate candidate) {
+        this.candidate = candidate;
+    }
+
+    public String getCandidateName() {
+        return candidate.getCandidateName();
+    }
+
     public String getAffiliationId() {
-        return affiliationId;
-    }
-
-    public void setAffiliationId(String affiliationId) {
-        this.affiliationId = affiliationId;
-    }
-
-    @Override
-    public String toString() {
-        return "candidate_reporting_unit_votes{" +
-                "municipalityName='" + municipalityName + '\'' +
-                ", reportingUnitId='" + reportingUnitId + '\'' +
-                ", reportingUnitName='" + reportingUnitName + '\'' +
-                ", candidateId=" + candidateId +
-                ", affiliationName='" + affiliationName + '\'' +
-                ", validVotes=" + validVotes +
-                ", affiliationId=" + affiliationId +
-                '}';
+        return candidate.getAffiliationId();
     }
 }
