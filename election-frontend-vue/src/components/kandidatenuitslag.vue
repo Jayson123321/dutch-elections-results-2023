@@ -112,7 +112,14 @@ export default {
         if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
         const data = await response.json();
         console.log("Fetched reporting units:", data); // Log the fetched data
-        this.reportingUnits = data;
+
+        // Remove duplicates
+        const uniqueReportingUnits = Array.from(new Set(data.map(unit => unit.reportingUnitId)))
+            .map(id => {
+              return data.find(unit => unit.reportingUnitId === id);
+            });
+
+        this.reportingUnits = uniqueReportingUnits;
       } catch (error) {
         console.error("Error fetching reporting units:", error);
         this.error = "Failed to fetch reporting units.";
