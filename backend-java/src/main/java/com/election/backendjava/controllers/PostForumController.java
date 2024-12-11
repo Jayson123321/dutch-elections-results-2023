@@ -27,12 +27,6 @@ public class PostForumController {
     public List<UserForum> getAllForums() {
         return forumService.getAllForums();
     }
-//    public List<UserForum> getAllForums() {
-//        return forumService.getAllForums()
-//                .stream()
-//                .sorted((f1, f2) -> f2.getCreatedAt().compareTo(f1.getCreatedAt()))
-//                .collect(Collectors.toList());
-//    }
 
     @PostMapping("/{forumId}/replies")
     public Reply saveReply(@PathVariable Long forumId, @RequestBody Reply reply) {
