@@ -90,12 +90,12 @@ export default {
         console.log("Ophalen van forums...");
         const response = await fetch('http://localhost:8080/api/usersforum');
         if (!response.ok) {
-          throw new Error('Fout bij ophalen van forums: ' + response.statusText);
+          throw new Error(`Server error: ${response.status} - ${response.statusText}`);
         }
         this.forums = await response.json();
         console.log('Forums opgehaald:', this.forums); // Debugging
 
-        // this.forums.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        this.forums.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
         // Fetch replies for each forum and initialize newReply for each forum
         for (let forum of this.forums) {
@@ -177,7 +177,19 @@ export default {
     },
     goToQuestionDetails(forumId) {
       this.$router.push({ name: 'forum', params: { forumId } });
+    },
+
+    async deleteForum(forumId) {
+      try {
+        await axios.delete(`http://localhost:8080/api/usersforum/${forumId}`);
+        this.forums = this.forums.filter(forum => forum.forumId !== forumId);
+        alert('Forum succesvol verwijderd.');
+      } catch (error) {
+        console.error('Fout bij het verwijderen van het forum:', error);
+        alert('Er is een fout opgetreden bij het verwijderen van het forum.');
+      }
     }
+
   },
   mounted() {
     // Haal bestaande forums op wanneer de component wordt geladen
