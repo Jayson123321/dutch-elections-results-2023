@@ -12,4 +12,6 @@ import java.util.List;
 public interface CandidateAuthorityVotesRepository extends JpaRepository<CandidateAuthorityVotes, Long> {
     List<CandidateAuthorityVotes> findByAffiliationIdAndAuthorityIdentifier(Long affiliationId, String authorityIdentifier);
     List<CandidateAuthorityVotes> findByAffiliationIdAndAuthorityIdentifierOrderByValidVotesDesc(Long affiliationId, String authorityId);
+
+    List<CandidateAuthorityVotes> findByCandidateId(Long candidateId);
 }
