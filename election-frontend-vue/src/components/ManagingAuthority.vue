@@ -120,8 +120,9 @@ table {
 }
 
 #authority-select {
-  border-radius: 15px 15px 0 0;
-}
+  padding: 10px;
+  font-size: 1em;
+  border-radius: 5px;}
 
 .authority-select {
   font-weight: bold;
