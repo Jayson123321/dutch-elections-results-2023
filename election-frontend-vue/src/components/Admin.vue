@@ -222,6 +222,7 @@ export default {
     <div class="unban-requests-container">
       <div class="content-box">
         <h2 class="section-title">Unban Requests</h2>
+        <p class="placeholder-text">No unban requests yet.</p>
       </div>
     </div>
 
