@@ -17,7 +17,7 @@
       </option>
     </select>
     <button v-if="selectedReportingUnitId" @click="fetchPartyVotesByReportingUnitAndAuthorityNumber">Toon stemmen</button>
-    <div v-if="votes.length > 0">
+    <div class="votingTable" v-if="votes.length > 0">
       <div id="StembureauName">
         <h3>{{ selectedReportingUnitId ? reportingUnits.find(unit => unit.id === selectedReportingUnitId)?.name : '' }}</h3>
         <table>
@@ -49,10 +49,10 @@
           </tbody>
         </table>
       </div>
-    </div>
     <div class="politicalComponent">
       <PoliticalNews/>
     </div>
+  </div>
   </div>
 </template>
 
@@ -208,6 +208,10 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.votingTable {
+  float: left;
+  margin-left: 15%;
+}
 #description-container {
   border: 1px solid #ddd;
   padding: 20px;
@@ -275,8 +279,12 @@ table {
 }
 
 th, td {
-  padding: 10px;
-  text-align: left;
+  padding: 8px 12px;
+  border: none;
+  display: block;
+  margin: 20px;
+  width: 50%;
+  border-color: white;
 }
 
 #local-authorities-chart {
