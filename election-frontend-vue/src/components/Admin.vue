@@ -509,6 +509,35 @@ button {
   color: red;
   font-weight: bold;
 }
+.unban-requests-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+.content-box {
+  background-color: #1A1A1A;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.5s ease;
+  text-align: center;
+}
+
+.content-box:hover {
+  transform: scale(1.02);
+}
+
+.section-title {
+  font-size: 24px;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.placeholder-text {
+  font-size: 18px;
+  color: #888;
+}
 
 
 </style>
