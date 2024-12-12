@@ -1,6 +1,9 @@
 <template>
   <div>
     <HeaderComponent/>
+    <div id="description-container">
+      <p id="description-text">Deze pagina toont de verkiezingsresultaten per gemeente voor 2023. Selecteer een gemeente en vervolgens een stembureau om de resultaten te bekijken. Alleen kandidaten die stemmen hebben ontvangen worden weergegeven.</p>
+    </div>
     <div id="titel">
       <h1>Score per stembureau</h1>
       <h1>Verkiezingen 2023 gemeente {{ selectedAuthority?.authorityName }}</h1>
@@ -61,6 +64,17 @@
 </template>
 
 <style>
+#description-container {
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 5px;
+}
+
+#description-text {
+  font-size: 1.1em;
+  line-height: 1.6;
+}
 table {
   border-collapse: collapse;
 }
