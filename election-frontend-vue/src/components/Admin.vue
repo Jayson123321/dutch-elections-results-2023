@@ -219,6 +219,12 @@ export default {
         <canvas id="userChart" ref="userChart"></canvas>
       </div>
     </div>
+    <div class="unban-requests-container">
+      <div class="content-box">
+        <h2 class="section-title">Unban Requests</h2>
+      </div>
+    </div>
+
     <div class="content-container">
       <h2 class="page-title">Admin Dashboard</h2>
       <div class="user-stats">
@@ -502,5 +508,6 @@ button {
   color: red;
   font-weight: bold;
 }
+
 
 </style>
