@@ -6,16 +6,23 @@
       <p>Discussieer hier over de partijen.</p>
 
       <div class="forum-form">
-        <input
-            v-model="newForum.title"
-            placeholder="Titel"
-            required
-        />
-        <textarea
-            v-model="newForum.description"
-            placeholder="Beschrijving"
-            required
-        ></textarea>
+        <div class="form-group" :class="{ 'has-error': errors.title }">
+          <input
+              v-model="newForum.title"
+              placeholder="Titel"
+              @blur="validateField('title')"
+          />
+          <span v-if="errors.title" class="error-message">{{ errors.title }}</span>
+        </div>
+
+        <div class="form-group" :class="{ 'has-error': errors.description }">
+          <textarea
+              v-model="newForum.description"
+              placeholder="Beschrijving"
+              @blur="validateField('description')"
+          ></textarea>
+          <span v-if="errors.description" class="error-message">{{ errors.description }}</span>
+        </div>
         <button @click="submitForum">Forum Posten</button>
       </div>
 
@@ -66,7 +73,8 @@ export default {
           id: '', // Dummy user ID
         },
       },
-      forums: [], // Lijst van bestaande forums
+      forums: [],
+      errors: {}, // Lijst van bestaande forums
       newReply: {
         username: '',
         replyText: ''
@@ -98,7 +106,27 @@ export default {
         console.error('Fout bij het ophalen van forums:', error);
       }
     },
+
+    // Valideer velden
+    validateField(field) {
+      if (!this.newForum[field]?.trim()) {
+        this.errors[field] = 'Vul dit veld in';
+      } else {
+        delete this.errors[field];
+      }
+    },
+
     async submitForum() {
+      // Valideer de velden
+      this.validateField('title');
+      this.validateField('description');
+
+      // Stop als er fouten zijn
+      if (Object.keys(this.errors).length > 0) return;
+      // if (!this.newForum.title.trim() || !this.newForum.description.trim()) {
+      //   alert("Vul alle velden in voordat je het forum post!");
+      //   return;
+      // }
       try {
         console.log('Versturen van forum:', this.newForum);
 
@@ -162,6 +190,21 @@ export default {
 
 <style>
 
+.has-error input,
+.has-error textarea {
+  border: 2px solid red;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin: 5px 0;
+}
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin: 5px 0;
+}
 :root {
   --background-color: #f0f0f0;
   --text-color: #333333;
@@ -199,7 +242,7 @@ export default {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
-  border: 1px solid var(--border-color);
+  //border: 1px solid var(--border-color);
   border-radius: 5px;
   font-size: 16px;
   background-color: var(--input-background-color);
