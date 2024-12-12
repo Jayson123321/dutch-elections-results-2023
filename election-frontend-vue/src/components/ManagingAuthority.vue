@@ -43,8 +43,8 @@
               <table>
                 <tbody>
                 <tr v-for="(candidateVote, index) in vote.candidateVotes" :key="index">
-                  <td>{{ candidateVote.candidateId }}</td>
-                  <td id="votes">{{ candidateVote.validVotes }}</td>
+                  <td>{{ candidateVote.candidateName }}</td>
+                  <td id="votes">{{ candidateVote.validVotes }} stemmen</td>
                 </tr>
                 </tbody>
               </table>
