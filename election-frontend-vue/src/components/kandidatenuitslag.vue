@@ -81,6 +81,7 @@ export default {
       selectedReportingUnit: null,
       filteredReportingUnitVotes: [],
       error: null,
+      cache: {},
     };
   },
   async created() {
@@ -118,25 +119,23 @@ export default {
     ,
 
     async fetchReportingUnitsByMunicipality(municipalityName) {
+      if (this.cache[municipalityName]) {
+        this.reportingUnits = this.cache[municipalityName];
+        return;
+      }
       try {
         const response = await fetch(`http://localhost:8080/api/candidate-reporting-unit-votes/municipality/${municipalityName}`);
         if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
         const data = await response.json();
-        console.log("Fetched reporting units:", data); // Log the fetched data
-
-        // Remove duplicates
         const uniqueReportingUnits = Array.from(new Set(data.map(unit => unit.reportingUnitId)))
-            .map(id => {
-              return data.find(unit => unit.reportingUnitId === id);
-            });
-
+            .map(id => data.find(unit => unit.reportingUnitId === id));
         this.reportingUnits = uniqueReportingUnits;
+        this.cache[municipalityName] = uniqueReportingUnits; // Cache de resultaten
       } catch (error) {
         console.error("Error fetching reporting units:", error);
         this.error = "Failed to fetch reporting units.";
       }
     },
-
     filterVotesByAuthority() {
       if (this.selectedAuthority) {
         this.filteredVotes = this.votesPerAuthority.filter(vote =>
@@ -212,14 +211,39 @@ export default {
   },
 };
 </script>
-
 <style scoped>
+:root {
+  --background-color-light: #f9f9f9;
+  --text-color-light: #333;
+  --background-color-dark: #333;
+  --text-color-dark: #f9f9f9;
+  --element-background-color-light: #fff;
+  --element-background-color-dark: #444;
+  --border-color-light: #ddd;
+  --border-color-dark: #555;
+}
+
+[data-theme="light"] {
+  --background-color: var(--background-color-light);
+  --text-color: var(--text-color-light);
+  --element-background-color: var(--element-background-color-light);
+  --border-color: var(--border-color-light);
+}
+
+[data-theme="dark"] {
+  --background-color: var(--background-color-dark);
+  --text-color: var(--text-color-dark);
+  --element-background-color: var(--element-background-color-dark);
+  --border-color: var(--border-color-dark);
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
   font-family: Arial, sans-serif;
-  background-color: #f9f9f9;
+  background-color: var(--background-color);
+  color: var(--text-color);
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: grid;
@@ -229,14 +253,14 @@ export default {
 
 h1 {
   text-align: center;
-  color: #333;
+  color: inherit;
   margin-top: 50px;
   margin-bottom: 20px;
   font-size: 2.5em;
 }
 
 h2, h3 {
-  color: #555;
+  color: inherit;
 }
 
 ul {
@@ -245,7 +269,7 @@ ul {
 }
 
 li {
-  background: #fff;
+  background: var(--element-background-color);
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
@@ -256,15 +280,18 @@ label {
   display: block;
   margin-bottom: 10px;
   font-weight: bold;
+  color: inherit;
 }
 
 select {
   width: 100%;
   padding: 10px;
   border-radius: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
+  background-color: var(--element-background-color);
+  color: inherit;
 }
 
 table {
@@ -276,15 +303,16 @@ table {
 th, td {
   padding: 12px;
   text-align: left;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--border-color);
+  color: inherit;
 }
 
 th {
-  background-color: #f2f2f2;
+  background-color: var(--element-background-color);
 }
 
 tr:hover {
-  background-color: #f1f1f1;
+  background-color: var(--element-background-color);
 }
 
 .error {
@@ -305,7 +333,7 @@ tr:hover {
 }
 
 .candidate-info, .votes-overview, .authority-selection, .filtered-results {
-  background: #fff;
+  background: var(--element-background-color);
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
@@ -313,5 +341,6 @@ tr:hover {
 
 .candidate-info h2, .votes-overview h3, .authority-selection h3, .filtered-results h3 {
   margin-top: 0;
+  color: inherit;
 }
 </style>
