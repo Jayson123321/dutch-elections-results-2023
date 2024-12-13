@@ -298,7 +298,7 @@ export default {
         <h3>Ban User</h3>
         <p>Are you sure you want to ban {{ users.find(user => user.id === selectedUserId)?.username }}?</p>
         <input v-model="banReason" type="text" placeholder="Enter reason for banning" class="input-field">
-        <button @click="banUser" class="popup-button">Yes, Ban User</button>
+        <button @click="banUser" class="popup-button">Ban User</button>
         <button @click="closeBanPopup" class="close-button">Cancel</button>
       </div>
     </div>
