@@ -20,6 +20,7 @@ export default {
       newUsername: '',
       newEmail: '',
       chart: null,
+      banReason: ''
     };
   },
   mounted() {
