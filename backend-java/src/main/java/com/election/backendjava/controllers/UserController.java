@@ -48,6 +48,4 @@ public class UserController {
     public void unbanUser(@PathVariable Long id) {
         userService.unbanUser(id);
     }
-
-
 }

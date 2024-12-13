@@ -12,7 +12,6 @@
 //import javax.xml.parsers.DocumentBuilder;
 //import javax.xml.parsers.DocumentBuilderFactory;
 //import java.io.File;
-//import java.io.FilenameFilter;
 //
 //@Component
 //public class CandidateAffiliationVoteParser {
@@ -54,35 +53,40 @@
 //        Document doc = dBuilder.parse(xmlFile);
 //        doc.getDocumentElement().normalize();
 //
+//        // Retrieve AuthorityIdentifier and AuthorityName
+//        NodeList authorityIdentifierNodes = doc.getElementsByTagName("AuthorityIdentifier");
+//        if (authorityIdentifierNodes.getLength() == 0) {
+//            System.err.println("No AuthorityIdentifier found in the document");
+//            return;
+//        }
+//
+//        Element authorityIdentifierElement = (Element) authorityIdentifierNodes.item(0);
+//        String authorityIdentifierStr = authorityIdentifierElement.getAttribute("Id");
+//        if (authorityIdentifierStr.isEmpty()) {
+//            System.err.println("Authority Identifier is empty");
+//            return;
+//        }
+//
+//        String authorityName = authorityIdentifierElement.getTextContent();
+//        Long authorityIdentifier = Long.parseLong(authorityIdentifierStr);
+//        System.out.println("Authority Identifier: " + authorityIdentifier);
+//        System.out.println("Authority Name: " + authorityName);
+//
 //        NodeList contestNodes = doc.getElementsByTagName("Contest");
 //
 //        for (int i = 0; i < contestNodes.getLength(); i++) {
 //            Element contestElement = (Element) contestNodes.item(i);
 //
-//            // Haal Contest Identifier
-//            NodeList contestIdentifierNodes = contestElement.getElementsByTagName("ContestIdentifier");
-//            if (contestIdentifierNodes.getLength() == 0) {
-//                System.err.println("No ContestIdentifier found in Contest " + i);
-//                continue;
-//            }
-//
-//            Element contestIdentifierElement = (Element) contestIdentifierNodes.item(0);
-//            String authorityIdentifierStr = contestIdentifierElement.getAttribute("Id");
-//            if (authorityIdentifierStr.isEmpty()) {
-//                System.err.println("Authority Identifier is empty in Contest " + i);
-//                continue;
-//            }
-//
-//            Long authorityIdentifier = Long.parseLong(authorityIdentifierStr);
-//            System.out.println("Authority Identifier: " + authorityIdentifier);
-//
-//            // Verwerk de Selections
+//            // Process the Contest Selections
 //            NodeList selectionNodes = contestElement.getElementsByTagName("Selection");
 //            for (int j = 0; j < selectionNodes.getLength(); j++) {
 //                Element selectionElement = (Element) selectionNodes.item(j);
 //
-//                // Verkrijg Candidate Identifier (verplicht)
 //                Long candidateIdentifierId = null;
+//                Long affiliationId = null;
+//                String registeredName = null;
+//
+//                // Retrieve Candidate Identifier (mandatory)
 //                NodeList candidateNodes = selectionElement.getElementsByTagName("CandidateIdentifier");
 //                if (candidateNodes.getLength() > 0) {
 //                    String candidateIdentifierStr = candidateNodes.item(0).getAttributes().getNamedItem("Id").getNodeValue();
@@ -97,38 +101,45 @@
 //                    continue;
 //                }
 //
-//                // Verkrijg Affiliation Identifier (indien aanwezig)
-//                Long affiliationId = null;
+//                // Retrieve Affiliation Identifier and RegisteredName
 //                NodeList affiliationNodes = selectionElement.getElementsByTagName("AffiliationIdentifier");
 //                if (affiliationNodes.getLength() > 0) {
-//                    String affiliationIdStr = affiliationNodes.item(0).getAttributes().getNamedItem("Id").getNodeValue();
+//                    Element affiliationElement = (Element) affiliationNodes.item(0);
+//                    String affiliationIdStr = affiliationElement.getAttribute("Id");
 //                    if (!affiliationIdStr.isEmpty()) {
 //                        affiliationId = Long.parseLong(affiliationIdStr);
 //                    } else {
 //                        System.err.println("Affiliation Identifier is empty in Selection " + j);
 //                        continue;
 //                    }
-//                } else {
-//                    // Log een waarschuwing als er geen AffiliationIdentifier is in de selectie
-//                    System.err.println("No AffiliationIdentifier found in Selection " + j);
-//
-//                    // We gaan nu zoeken naar de AffiliationIdentifier buiten de Selection
-//                    NodeList affiliationSelectionNodes = contestElement.getElementsByTagName("Selection");
-//                    for (int k = 0; k < affiliationSelectionNodes.getLength(); k++) {
-//                        Element affiliationSelection = (Element) affiliationSelectionNodes.item(k);
-//                        NodeList affiliationIdentifierNodes = affiliationSelection.getElementsByTagName("AffiliationIdentifier");
-//                        if (affiliationIdentifierNodes.getLength() > 0) {
-//                            affiliationId = Long.parseLong(affiliationIdentifierNodes.item(0).getAttributes().getNamedItem("Id").getNodeValue());
-//                            break;  // Break als we het vinden
-//                        }
+//                    NodeList registeredNameNodes = affiliationElement.getElementsByTagName("RegisteredName");
+//                    if (registeredNameNodes.getLength() > 0) {
+//                        registeredName = registeredNameNodes.item(0).getTextContent();
+//                    } else {
+//                        System.err.println("RegisteredName not found in AffiliationIdentifier");
 //                    }
-//                    if (affiliationId == null) {
-//                        System.err.println("No AffiliationIdentifier found in entire contest");
+//                } else {
+//                    // Fallback: check for AffiliationIdentifier outside Selection
+//                    NodeList contestAffiliationNodes = contestElement.getElementsByTagName("AffiliationIdentifier");
+//                    if (contestAffiliationNodes.getLength() > 0) {
+//                        Element affiliationElement = (Element) contestAffiliationNodes.item(0);
+//                        String affiliationIdStr = affiliationElement.getAttribute("Id");
+//                        if (!affiliationIdStr.isEmpty()) {
+//                            affiliationId = Long.parseLong(affiliationIdStr);
+//                        }
+//                        NodeList registeredNameNodes = affiliationElement.getElementsByTagName("RegisteredName");
+//                        if (registeredNameNodes.getLength() > 0) {
+//                            registeredName = registeredNameNodes.item(0).getTextContent();
+//                        } else {
+//                            System.err.println("RegisteredName not found in fallback AffiliationIdentifier");
+//                        }
+//                    } else {
+//                        System.err.println("No AffiliationIdentifier found in entire contest for Selection " + j);
 //                        continue;
 //                    }
 //                }
 //
-//                // Haal Valid Votes op
+//                // Retrieve Valid Votes
 //                NodeList validVotesNodes = selectionElement.getElementsByTagName("ValidVotes");
 //                if (validVotesNodes.getLength() == 0) {
 //                    System.err.println("Valid Votes not found in Selection " + j);
@@ -143,12 +154,14 @@
 //
 //                int validVotes = Integer.parseInt(validVotesStr);
 //
-//                // Maak en sla CandidateAffiliationVotes-object op
+//                // Create and save CandidateAffiliationVotes object
 //                CandidateAffiliationVotes votesRecord = new CandidateAffiliationVotes();
 //                votesRecord.setCandidateIdentifierId(candidateIdentifierId);
 //                votesRecord.setAffiliationId(affiliationId);
 //                votesRecord.setAuthorityIdentifier(authorityIdentifier);
+//                votesRecord.setAuthorityName(authorityName);
 //                votesRecord.setValidVotes(validVotes);
+//                votesRecord.setRegisteredName(registeredName);
 //
 //                try {
 //                    candidateAffiliationVotesRepository.save(votesRecord);

@@ -1,13 +1,11 @@
 <script lang="ts">
-import { defineComponent, ref } from 'vue'; // Import ref
+import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: "Registration",
   setup() {
     const router = useRouter();
-
-    // Gebruik ref om reactieve variabelen te maken
     const username = ref('');
     const password = ref('');
     const email = ref('');
@@ -50,49 +48,60 @@ export default defineComponent({
 </script>
 
 <template>
-  <main>
-    <h1>Registration</h1>
-    <form @submit.prevent="register">
-      <label for="username">Username</label>
-      <input type="text" id="username" v-model="username" required>
-      <label for="password">Password</label>
-      <input type="password" id="password" v-model="password" required>
-      <label for="email">Email</label>
-      <input type="email" id="email" v-model="email" required>
-      <button type="submit">Register</button>
-    </form>
+  <main class="form-container">
+    <div class="form-box">
+      <h1>Registration</h1>
+      <form @submit.prevent="register" class="form">
+        <label for="username">Username</label>
+        <input type="text" id="username" v-model="username" required>
+        <label for="password">Password</label>
+        <input type="password" id="password" v-model="password" required>
+        <label for="email">Email</label>
+        <input type="email" id="email" v-model="email" required>
+        <button type="submit">Register</button>
+      </form>
+    </div>
   </main>
 </template>
 
 <style scoped>
-main {
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+}
+
+.form-box {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form {
   display: flex;
   flex-direction: column;
-  place-items: center;
   gap: 1rem;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-label {
+.form label {
   font-weight: bold;
+  color: #333333;
 }
 
-input {
+.form input {
   padding: 0.5rem;
   border-radius: 0.25rem;
-  border: 1px solid #ccc;
+  border: 1px solid #cccccc;
 }
 
-button {
+.form button {
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
   border: none;
-  background-color: #007bff;
+  background-color: #333333;
   color: white;
   cursor: pointer;
 }

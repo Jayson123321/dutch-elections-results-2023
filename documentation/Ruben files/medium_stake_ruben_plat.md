@@ -10,6 +10,9 @@ Geef hier aan welke docenten die je per sprint hebt gesproken voor hulp, uitleg 
 | 1      | Jairo Bambang Oetomo, Nico Tromp, Bas Bolier, Evert-Jan Couperus. |
 | 2      | Bas Bolier, Evert-Jan Couperus, Jairo Bambang Oetomo.             |
 | 3      | Engelbert Fellinger, Jairo Bambang Oetomo                         |
+| 4      | Engelbert Fellinger, Evert-Jan Couperus                           |
+
+
 
 
 ## Leeruitkomsten
@@ -38,22 +41,26 @@ Zie hoofdstuk 9 van de de studiehandleiding voor de verschillende onderdelen waa
 Geef hier aan welke verticale user-stories je volledig hebt afgerond in welke sprint. Noteer per userstory het aantal
 story-points (weights), de titel en de link naar de userstory in gitlab. Kleine userstories zonder logica (zoals footer, header etc, graag niet vermelden).
 
-| Sprint | Story points | US title      | US link                                                                                                                                |
-|--------|--------------|---------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| 2      | 4            |      As a user, I want to be able to see all political parties, including their membership numbers, so that I can get an overview of the different parties and how large they are in terms of members.         | https://gitlab.fdmci.hva.nl/semester-3-hbo-ict/onderwijs/student-projecten/2024-2025/out-p-se-ti/semester-1/wiipuujaamee42/-/issues/2  |
-| 2      | 3            |       As a user, I want to be able to view all the members of the political parties so that I can see who the representatives are within each party and understand their roles better.        | https://gitlab.fdmci.hva.nl/semester-3-hbo-ict/onderwijs/student-projecten/2024-2025/out-p-se-ti/semester-1/wiipuujaamee42/-/issues/11 |
-| 2      | 3            |       As a user, I want to see an overview of all political parties so that I can easily access information about the different parties.        |                                                                                                                                        |
-| 3      | 3            |      As a user, I want to be able to see all political parties, including their membership numbers, so that I can get an overview of the different parties and how large they are in terms of members.         | https://gitlab.fdmci.hva.nl/semester-3-hbo-ict/onderwijs/student-projecten/2024-2025/out-p-se-ti/semester-1/wiipuujaamee42/-/issues/2  |
-| 3      | 4            |          As a user, I want to be able to view all the members of the political parties so that I can see who the representatives are within each party and understand their roles better.     | https://gitlab.fdmci.hva.nl/semester-3-hbo-ict/onderwijs/student-projecten/2024-2025/out-p-se-ti/semester-1/wiipuujaamee42/-/issues/11 |
+| Sprint | Story points | US title | US link                                                                                                                                |
+|--------|--------------|---------|----------------------------------------------------------------------------------------------------------------------------------------|
+| 2      | 4            |      As a user, I want to be able to see all political parties, including their membership numbers, so that I can get an overview of the different parties and how large they are in terms of members.   | https://gitlab.fdmci.hva.nl/semester-3-hbo-ict/onderwijs/student-projecten/2024-2025/out-p-se-ti/semester-1/wiipuujaamee42/-/issues/2  |
+| 2      | 3            |       As a user, I want to be able to view all the members of the political parties so that I can see who the representatives are within each party and understand their roles better.  | https://gitlab.fdmci.hva.nl/semester-3-hbo-ict/onderwijs/student-projecten/2024-2025/out-p-se-ti/semester-1/wiipuujaamee42/-/issues/11 |
+| 2      | 3            |       As a user, I want to see an overview of all political parties so that I can easily access information about the different parties.  |                                                                                                                                        |
+| 3      | 3            |      As a user, I want to be able to see all political parties, including their membership numbers, so that I can get an overview of the different parties and how large they are in terms of members.   | https://gitlab.fdmci.hva.nl/semester-3-hbo-ict/onderwijs/student-projecten/2024-2025/out-p-se-ti/semester-1/wiipuujaamee42/-/issues/2  |
+| 3      | 4            |          As a user, I want to be able to view all the members of the political parties so that I can see who the representatives are within each party and understand their roles better. | https://gitlab.fdmci.hva.nl/semester-3-hbo-ict/onderwijs/student-projecten/2024-2025/out-p-se-ti/semester-1/wiipuujaamee42/-/issues/11 |
+| 4      | 3            |          as a user I want to be able to see the total results per canditate so I can see how popular a candidate is over the whole country. |   https://gitlab.fdmci.hva.nl/semester-3-hbo-ict/onderwijs/student-projecten/2024-2025/out-p-se-ti/semester-1/wiipuujaamee42/-/issues/35  |
+| 4      | 3            |   As a user I want to see a pie graph to see how many votes a candidate has relatively gotten over the country.     |  https://gitlab.fdmci.hva.nl/semester-3-hbo-ict/onderwijs/student-projecten/2024-2025/out-p-se-ti/semester-1/wiipuujaamee42/-/issues/45|
 (Zorg ervoor dat de tabel ook in tekstvorm netjes uitlijnd)
 
 ## Bijdrage aan het product
 Geef hier aan ten opzichte van je teamgenoten hoeveel je hebt bijgedragen aan het product.
 
 | Sprint | Niks | Minder | Hetzelfde | Meer | Alles |
-|--------|------|--------|-----------|------|-------|
-| 2      |      |        |           | x    |       |
-| 3      |      |        |           | x    |       |
+|--------|------|--------|-----------|-----|-------|
+| 2      |      |        |           | x   |       |
+| 3      |      |        |           | x   |       |
+| 4      |      |        | x         |     |       |
+
 (Zet een X in de kolommen, zorg ervoor dat de tabel ook in tekstvorm netjes uitlijnd)
 
 ## Bijeenkomsten
@@ -63,6 +70,8 @@ Geef in de onderstaande tabel aan bij hoeveel bijeenkomsten je aanwezig bent gew
 |--------|-------------|--------|--------|-------|
 | 2      | 2           | 1/2    | 1      | 1     |
 | 3      | 1           | 1      | 1      | 1     |
+| 4      | 1           | 1      | 1      | 1     |
+
 
 (Zet het aantal in de kolommen, zorg ervoor dat de tabel ook in tekstvorm netjes uitlijnd)
 
@@ -74,6 +83,7 @@ Als je niet aanwezig kon zijn, b.v. door ziekte, hoef je dat niet aan te geven.
 |--------|-------|--------|--------|---------|
 | 2      |       |        |        | x       |
 | 3      |       |        |        | x       |
+| 4      |       |        |        | x       |
 
 (Zet een X in de kolommen, zorg ervoor dat de tabel ook in tekstvorm netjes uitlijnd)
 
@@ -167,6 +177,28 @@ Onderzoekend vermogen (knowledgebase artikelen, bronnen) (Optioneel)
 Criterion Feedback
 n.v.t.|
 
+| 4  |
+Jullie laten een product zien waar rond data het nodige gebeurt en dat is positief. Voor sprint 5 en 6 kunnen jullie de gebruiker nog wat meer meenemen in consistent design.
+Jullie laten een site zien waar de nodige functionaliteit aanwezig is rond de data en ook extra's zoals de newsfeed import via RSS. Ook gedeployed. Het admin panel is een plus.
+Jullie planning en voortgang zien er ok uit.
+Plannen gezien voor een veilig forum.
+
+Jullie team geeft een positieve indruk wat betreft samenwerking, planning en productiviteit. Mooi dat je aangeeft hoe je werkt aan persoonlijke ontwikkeldoelen. De retro is hiervoor het middel om hierop te reflecteren.
+Expert meeting feedback Ruben Plat
+Evert-Jan Couperus :
+Geen statisch gecodeerde endpoints meer, maak een variabele daarvoor aan en zorg ervoor dat het consistent blijft. Er moet een config file komen waarin de variabelen worden aangemaakt om de endpoints correct te gebruiken.
+Commit en merge meer, er zijn veel parallelle branches aanwezig waarin te lang gewerkt wordt voor het gemerged wordt met main.
+We moeten dus allemaal proberen te vermijden om te lang te werken in een branch zonder te mergen.
+Het feit dat de site gedeployed is is geweldig.
+data is goed zichtbaar
+news feed is een leuke extra
+
+elke pagina ziet er anders uit dat moet veranderd worden want de pagina moet meer consistent worden
+admin panel is goed geïmplementeerd.
+goede presentatie
+veel gedaan met front end backend.
+sommige pagina's waren beetje chaotisch
+sommige dingen waren in het midden sommige links en sommige ergens random dus dat moet veranderd worden.
 (Zorg ervoor dat de tabel ook in tekstvorm netjes uitlijnd)
 
 ## Dit heb ik veranderd nav de feedback
@@ -177,6 +209,7 @@ dit met duidelijke voorbeelden.
 |--------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | 2      | De communicatie was niet goed, daarna werd het verbeterd door actiever te zijn in de les en meer te overleggen met elkaar ook door standups etcetera. Voor de rest stonden er geen verbeteringspunten in de feedback. |
 | 3      | In de ontvangen feedback van de gehele sprint 3 hebben we nog geen verbeterpunten gekregen dus kan ik hier niks zeggen.                                                                                               |
+| 4      | De feedback die we hebben gekregen van de expert meeting is dat we meer moeten mergen en committen. Dit hebben we gedaan en we hebben ook een config file aangemaakt. Ook hebben we de endpoints dynamisch gemaakt.  |
 
 (Zorg ervoor dat de tabel ook in tekstvorm netjes uitlijnd)
 
@@ -186,9 +219,10 @@ Ook kan je hier aangeven of er problemen zijn in de samenwerking die je graag op
 
 **NB: Deze informatie zal niet worden gedeeld met je teamgenoten.**
 
-| Sprint | Feedback op de samenwerking |
-|--------|-----------------------------|
-| 2      | nvt                         |
-| 3      | nvt                         |
+| Sprint | Feedback op de samenwerking                                                     |
+|--------|---------------------------------------------------------------------------------|
+| 2      | nvt                                                                             |
+| 3      | nvt                                                                             |
+| 4      | De communicatie ging veel beter dan bij de vorige sprints daar ben ik trots op. |
 
 (Zorg ervoor dat de tabel ook in tekstvorm netjes uitlijnd)

@@ -4,28 +4,54 @@
 
     <h1>Resultaat Kandidaat</h1>
 
-    <!-- Kandidateninformatie weergeven -->
     <div v-if="candidate">
       <h2>Naam: {{ candidate.candidateName }}</h2>
+      <p>Totale stemmen: {{ candidateVotes }}</p>
     </div>
 
-    <!-- Stemmenoverzicht -->
-    <h3>Stemmen</h3>
-    <ul>
-      <li>
-        <p>Kandidaatstemmen: {{ candidateVotes }}</p>
-      </li>
-
-    </ul>
-
-    <!-- Cirkeldiagram -->
-    <canvas id="votesChart" width="400" height="400"></canvas>
-
-    <!-- Foutmelding indien aanwezig -->
-    <div v-if="error" class="error">
-      {{ error }}
+    <div>
+      <label for="authority-select">Kies een gemeente:</label>
+      <select id="authority-select" v-model="selectedAuthority" @change="filterVotesByAuthority">
+        <option value="" disabled>Kies een gemeente</option>
+        <option v-for="vote in votesPerAuthority" :key="vote.authorityName" :value="vote.authorityName">
+          {{ vote.authorityName }}
+        </option>
+      </select>
     </div>
 
+    <div v-if="selectedAuthority">
+      <h3>Resultaten voor {{ selectedAuthority }}</h3>
+      <table v-if="filteredVotes.length > 0">
+        <tr v-for="vote in filteredVotes" :key="vote.id">
+          <td>Naam: {{ candidate.candidateName }}</td>
+          <td>Stemmen gemeente: {{ vote.validVotes }}</td>
+        </tr>
+      </table>
+      <p v-else>Geen stemmen gevonden voor deze gemeente.</p>
+    </div>
+
+    <div v-if="selectedAuthority">
+      <label for="reporting-unit-select">Kies een rapportage-eenheid:</label>
+      <select id="reporting-unit-select" v-model="selectedReportingUnit" @change="fetchVotesForReportingUnit(selectedReportingUnit)">
+        <option value="" disabled>Kies een rapportage-eenheid</option>
+        <option v-for="unit in reportingUnits" :key="unit.reportingUnitId" :value="unit.reportingUnitId">
+          {{ unit.reportingUnitName }}
+        </option>
+      </select>
+    </div>
+
+    <div v-if="selectedReportingUnit">
+      <h3>Resultaten voor rapportage-eenheid {{ selectedReportingUnit }}</h3>
+      <table v-if="filteredReportingUnitVotes.length > 0">
+        <tr v-for="vote in filteredReportingUnitVotes" :key="vote.id">
+          <td>Naam: {{ candidate.candidateName }}</td>
+          <td>Stemmen rapportage-eenheid: {{ vote.validVotes }}</td>
+        </tr>
+      </table>
+      <p v-else>Geen stemmen gevonden voor deze rapportage-eenheid.</p>
+    </div>
+
+    <div v-if="error" class="error">{{ error }}</div>
     <FooterComponent />
   </div>
 </template>
@@ -43,23 +69,29 @@ export default {
     FooterComponent,
     HeaderComponent,
   },
-  props: ['id'], // Accepteert kandidaat-ID als prop
+  props: ['id'],
   data() {
     return {
       candidate: null,
       candidateVotes: 0,
-      totalVotes: 10475203 , // Static total votes
+      votesPerAuthority: [],
+      selectedAuthority: null,
+      filteredVotes: [],
+      reportingUnits: [],
+      selectedReportingUnit: null,
+      filteredReportingUnitVotes: [],
       error: null,
+      cache: {},
     };
   },
   async created() {
     if (this.id) {
       try {
-        await this.findCandidateVotesById();
-        console.log("Candidate data:", this.candidate);
         await this.fetchCandidateData();
-        this.createChart();
+        await this.findCandidateVotesById();
+        await this.fetchCandidateVotesByAuthority();
       } catch (error) {
+        console.error("Fout bij initialisatie:", error);
         this.error = "Er is een probleem opgetreden bij het ophalen van de gegevens.";
       }
     } else {
@@ -67,20 +99,106 @@ export default {
     }
   },
   methods: {
+
+    async fetchVotesForReportingUnit(reportingUnitId) {
+      if (!reportingUnitId) {
+        console.warn("Geen rapportage-eenheid geselecteerd.");
+        return;
+      }
+      try {
+        const response = await fetch(
+            `http://localhost:8080/api/candidate-reporting-unit-votes/reporting-unit/${reportingUnitId}/candidate/${this.candidate.id}/affiliation/${this.candidate.affiliationId}`
+        );
+        if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+        const data = await response.json();
+        this.filteredReportingUnitVotes = data;
+      } catch (error) {
+        console.error("Error fetching votes for reporting unit:", error);
+      }
+    }
+    ,
+
+    async fetchReportingUnitsByMunicipality(municipalityName) {
+      if (this.cache[municipalityName]) {
+        this.reportingUnits = this.cache[municipalityName];
+        return;
+      }
+      try {
+        const response = await fetch(`http://localhost:8080/api/candidate-reporting-unit-votes/municipality/${municipalityName}`);
+        if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+        const data = await response.json();
+        const uniqueReportingUnits = Array.from(new Set(data.map(unit => unit.reportingUnitId)))
+            .map(id => data.find(unit => unit.reportingUnitId === id));
+        this.reportingUnits = uniqueReportingUnits;
+        this.cache[municipalityName] = uniqueReportingUnits; // Cache de resultaten
+      } catch (error) {
+        console.error("Error fetching reporting units:", error);
+        this.error = "Failed to fetch reporting units.";
+      }
+    },
+    filterVotesByAuthority() {
+      if (this.selectedAuthority) {
+        this.filteredVotes = this.votesPerAuthority.filter(vote =>
+            vote.authorityName === this.selectedAuthority
+        );
+        this.fetchReportingUnitsByMunicipality(this.selectedAuthority);
+      } else {
+        this.filteredVotes = [];
+        this.reportingUnits = [];
+      }
+    },
+
+    async fetchCandidateVotesByAuthority() {
+      try {
+        const response = await fetch(`http://localhost:8080/api/candidate-authority-votes/candidate/${this.id}`);
+        if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+        const data = await response.json();
+        this.votesPerAuthority = data;
+      } catch (error) {
+        console.error("Error fetching candidate votes per authority:", error);
+        this.error = "Failed to fetch candidate votes per authority.";
+      }
+    },
+
+    filterVotesByReportingUnit() {
+      if (!this.selectedReportingUnit || !this.candidate) {
+        console.warn("Geen rapportage-eenheid of kandidaat beschikbaar.");
+        this.filteredReportingUnitVotes = [];
+        return;
+      }
+      this.filteredReportingUnitVotes = this.reportingUnits.filter(
+          (unit) =>
+              unit.reportingUnitId === this.selectedReportingUnit &&
+              unit.candidate?.id === this.candidate.id
+      );
+    }
+    ,
+
+    async fetchFilteredVotes(candidateId, reportingUnitId) {
+      try {
+        const response = await fetch(
+            `http://localhost:8080/api/candidate-reporting-unit-votes/candidate/${candidateId}/reporting-unit/${reportingUnitId}`
+        );
+        const data = await response.json();
+        this.filteredReportingUnitVotes = data;
+      } catch (error) {
+        console.error("Error fetching filtered votes:", error);
+      }
+    },
+
+
     async fetchCandidateData() {
       try {
-        // Fetch candidate details and votes
         const response = await fetch(`http://localhost:8080/api/candidate-votes/votes/${this.id}`);
         if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
         const data = await response.json();
-
-        // this.candidate = data; // Assuming the response contains candidate details
         this.candidateVotes = data.validVotes;
       } catch (error) {
         console.error("Error fetching candidate data:", error);
         this.error = "Failed to fetch candidate data.";
       }
     },
+
     async findCandidateVotesById() {
       try {
         const response = await fetch(`http://localhost:8080/api/candidate/${this.id}`);
@@ -90,52 +208,59 @@ export default {
         console.error("Fout bij het ophalen van de kandidaat:", error);
       }
     },
-    createChart() {
-      const ctx = document.getElementById('votesChart').getContext('2d');
-      const otherVotes = this.totalVotes - this.candidateVotes;
-
-      new Chart(ctx, {
-        type: 'pie',
-        data: {
-          labels: ['Kandidaatstemmen', 'Overige stemmen'],
-          datasets: [
-            {
-              data: [this.candidateVotes, otherVotes],
-              backgroundColor: ['#36A2EB', '#FF6384'],
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              position: 'top',
-            },
-            title: {
-              display: true,
-              text: 'Verdeling van geldige stemmen',
-            },
-          },
-        },
-      });
-    },
   },
 };
 </script>
-
 <style scoped>
+:root {
+  --background-color-light: #f9f9f9;
+  --text-color-light: #333;
+  --background-color-dark: #333;
+  --text-color-dark: #f9f9f9;
+  --element-background-color-light: #fff;
+  --element-background-color-dark: #444;
+  --border-color-light: #ddd;
+  --border-color-dark: #555;
+}
+
+[data-theme="light"] {
+  --background-color: var(--background-color-light);
+  --text-color: var(--text-color-light);
+  --element-background-color: var(--element-background-color-light);
+  --border-color: var(--border-color-light);
+}
+
+[data-theme="dark"] {
+  --background-color: var(--background-color-dark);
+  --text-color: var(--text-color-dark);
+  --element-background-color: var(--element-background-color-dark);
+  --border-color: var(--border-color-dark);
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
   font-family: Arial, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 20px;
 }
 
 h1 {
   text-align: center;
-  color: #333;
-  margin-top: 100px;
+  color: inherit;
+  margin-top: 50px;
   margin-bottom: 20px;
+  font-size: 2.5em;
+}
+
+h2, h3 {
+  color: inherit;
 }
 
 ul {
@@ -144,16 +269,78 @@ ul {
 }
 
 li {
-  background: #fff;
+  background: var(--element-background-color);
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
   margin: 10px 0;
 }
 
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: inherit;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  background-color: var(--element-background-color);
+  color: inherit;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+  color: inherit;
+}
+
+th {
+  background-color: var(--element-background-color);
+}
+
+tr:hover {
+  background-color: var(--element-background-color);
+}
+
 .error {
   color: red;
   text-align: center;
   margin-top: 20px;
+  font-weight: bold;
+}
+
+.header, .footer {
+  grid-column: 1 / -1;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.candidate-info, .votes-overview, .authority-selection, .filtered-results {
+  background: var(--element-background-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.candidate-info h2, .votes-overview h3, .authority-selection h3, .filtered-results h3 {
+  margin-top: 0;
+  color: inherit;
 }
 </style>

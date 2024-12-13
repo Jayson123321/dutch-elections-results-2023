@@ -1,59 +1,103 @@
-<template>
-  <div>
-    <h1>Login</h1>
-    <form @submit.prevent="login">
-      <div>
-        <label for="email">Email:</label>
-        <input type="email" v-model="email" id="email" required />
-      </div>
-      <div>
-        <label for="password">Password:</label>
-        <input type="password" v-model="password" id="password" required />
-      </div>
-      <button type="submit">Login</button>
-    </form>
-    <p v-if="errorMessage">{{ errorMessage }}</p>
-  </div>
-</template>
+<script lang="ts">
+import { defineComponent, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-<script>
-export default {
-  data() {
-    return {
-      email: '',
-      password: '',
-      errorMessage: ''
-    };
-  },
-  methods: {
-    async login() {
+export default defineComponent({
+  name: "Login",
+  setup() {
+    const router = useRouter();
+    const username = ref('');
+    const password = ref('');
+
+    const login = async () => {
       try {
         const response = await fetch('http://localhost:8080/api/login', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           },
-          body: JSON.stringify({email: this.email, password: this.password})
+          body: JSON.stringify({
+            username: username.value,
+            password: password.value
+          }),
         });
 
-        if (response.ok) {
-          const token = response.headers.get('Authorization').split(' ')[1];
-          localStorage.setItem('jwt', token);
-          console.log('Login successful:', token);
-          this.errorMessage = '';
-        } else {
-          const data = await response.json();
-          this.errorMessage = data.message;
+        if (!response.ok) {
+          throw new Error('Login failed');
         }
+
+        const data = await response.json();
+        console.log(data);
+
+        router.push('/dashboard');
       } catch (error) {
         console.error('Error:', error);
-        this.errorMessage = 'An error occurred during login.';
       }
-    }
+    };
+
+    return {
+      username,
+      password,
+      login
+    };
   }
-}
+});
 </script>
 
+<template>
+  <main class="form-container">
+    <div class="form-box">
+      <h1>Login</h1>
+      <form @submit.prevent="login" class="form">
+        <label for="username">Username</label>
+        <input type="text" id="username" v-model="username" required>
+        <label for="password">Password</label>
+        <input type="password" id="password" v-model="password" required>
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  </main>
+</template>
+
 <style scoped>
-/* Add any styles you need here */
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+}
+
+.form-box {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form label {
+  font-weight: bold;
+  color: #333333;
+}
+
+.form input {
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid #cccccc;
+}
+
+.form button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  border: none;
+  background-color: #333333;
+  color: white;
+  cursor: pointer;
+}
 </style>
