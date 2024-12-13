@@ -198,7 +198,7 @@ export default defineComponent({
   methods: {
     async fetchAuthorities() {
       try {
-        const response = await fetch('http://localhost:8080/api/managing-authorities/getAllAuthorities');
+        const response = await fetch(`${config.apiBaseUrl}/managing-authorities/getAllAuthorities`);
         if (!response.ok) {
           throw new Error('Failed to fetch authorities');
         }

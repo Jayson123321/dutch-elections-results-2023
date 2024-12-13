@@ -27,6 +27,7 @@
 import { defineComponent, ref, onMounted } from 'vue';
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import { Chart, DoughnutController, PieController, ArcElement, Tooltip, Legend } from "chart.js";
+import type { ChartConfiguration } from "chart.js";
 import PoliticalNews from "@/components/PoliticalNews.vue";
 import config from '@/config';
 import FooterComponent from "@/components/FooterComponent.vue";
@@ -50,7 +51,7 @@ export default defineComponent({
   data() {
     return {
       results: [] as Result[],
-      chart: null as Chart | null,
+      chart: null as Chart<"pie", number[], string> | null,
     };
   },
   methods: {
@@ -88,7 +89,7 @@ export default defineComponent({
 
       const totalVotes = this.results.reduce((sum, result) => sum + result.totalVotes, 0);
 
-      this.chart = new Chart(ctx, {
+      const config: ChartConfiguration<"pie", number[], string> = {
         type: 'pie',
         data: {
           labels: this.results.map(result => result.affiliationName),
@@ -118,7 +119,9 @@ export default defineComponent({
             },
           }
         }
-      });
+      };
+
+      this.chart = new Chart(ctx, config);
     }
   },
   mounted() {
