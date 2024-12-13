@@ -47,7 +47,7 @@
   ></textarea>
             <button type="submit">Antwoord Posten</button>
           </form>
-          <button @click="deleteForum(forum.forumId)">Verwijder post</button>
+          <button class="delete-button" @click="deleteForum(forum.forumId)">Verwijder post</button>
         </div>
       </div>
     </div>
@@ -352,12 +352,12 @@ form button {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.forum-item button {
+.forum-item .delete-button {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  background-color: #ff0000; /* Rood */
-  color: #ffffff; /* Witte tekst */
+  background-color: #ff0000;
+  color: #ffffff;
   cursor: pointer;
   font-size: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
