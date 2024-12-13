@@ -541,5 +541,17 @@ button {
   color: #888;
 }
 
+.input-field {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  border: 1px solid #555;
+  background-color: #2A2A2A;
+  color: white;
+  font-size: 16px;
+}
+
 
 </style>
