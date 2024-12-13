@@ -1,48 +1,62 @@
 package com.election.backendjava.filters;
 
-import com.election.backendjava.utils.JWToken;
 import com.election.backendjava.APIconfig;
+import com.election.backendjava.dto.JWToken;
+import com.election.backendjava.services.JwtService;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
+import java.util.Set;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Component
 public class JWTRequestFilter extends OncePerRequestFilter {
+    private static final Set <String> ALLOWED_PATHS = Set.of("/authentication/**");
+    private final AntPathMatcher pathMatcher = new AntPathMatcher();
 
     @Autowired
-    private APIconfig apiConfig;
+    private JwtService jwtService;
+
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
-        // get the encrypted token string from the authorization request header
-        String encryptedToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        // block the request if no token was found
-        if (encryptedToken == null) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "No token provided.");
+        String path = request.getServletPath();
+        if (isWhiteListed(path)) {
+            filterChain.doFilter(request, response);
             return;
         }
 
-        try {
-            // decode the encoded and signed token, after removing optional Bearer prefix
-            JWToken jwToken = JWToken.decode(encryptedToken.replace("Bearer ", ""),
-                    this.apiConfig.getPassphrase());
-
-            // pass-on the token info as an attribute for the request
-            request.setAttribute(JWToken.JWT_ATTRIBUTE_NAME, jwToken);
-            // proceed along the chain of filters towards the REST controller
-            filterChain.doFilter(request, response);
-
-        } catch (RuntimeException e) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
-                    e.getMessage() + " You need to logon first.");
+        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing or invalid Authorization header");
+            return;
         }
+
+        String token = authHeader.substring(7);
+        JWToken JWToken = null;
+
+        try {
+
+            JWToken = jwtService.decode(token);
+
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
+            return;
+        }
+
+        request.setAttribute(JwtService.JWT_ATTRIBUTE_NAME, JWToken);
+        filterChain.doFilter(request, response);
+    }
+    private boolean isWhiteListed(String path) {
+        return ALLOWED_PATHS.stream().anyMatch(p -> pathMatcher.match(p, path));
     }
 }
