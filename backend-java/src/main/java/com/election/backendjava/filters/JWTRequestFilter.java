@@ -19,16 +19,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Component
 public class JWTRequestFilter extends OncePerRequestFilter {
-    private static final Set <String> ALLOWED_PATHS = Set.of("/authentication/**");
+    private static final Set<String> ALLOWED_PATHS = Set.of("/authentication/**", "/api/register"); // Add "/api/register" here
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
 
     @Autowired
     private JwtService jwtService;
 
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
         String path = request.getServletPath();
         if (isWhiteListed(path)) {
             filterChain.doFilter(request, response);
@@ -45,9 +43,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
         JWToken JWToken = null;
 
         try {
-
             JWToken = jwtService.decode(token);
-
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
             return;
@@ -56,6 +52,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
         request.setAttribute(JwtService.JWT_ATTRIBUTE_NAME, JWToken);
         filterChain.doFilter(request, response);
     }
+
     private boolean isWhiteListed(String path) {
         return ALLOWED_PATHS.stream().anyMatch(p -> pathMatcher.match(p, path));
     }
