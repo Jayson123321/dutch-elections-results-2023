@@ -20,10 +20,9 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-
     public static final String JWT_ATTRIBUTE_NAME = "jwTokenInfo";
 
-    private APIconfig apiConfig;
+    private final APIconfig apiConfig;
 
     @Autowired
     public JwtService(APIconfig apiConfig) {

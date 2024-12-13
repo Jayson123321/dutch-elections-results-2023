@@ -1,5 +1,6 @@
 package com.election.backendjava;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
@@ -9,13 +10,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class APIconfig implements WebMvcConfigurer {
 
-    @Value("${api.issuer}")
+    @Value("${jwt.issuer}")
     private String issuer;
 
-    @Value("${api.passphrase}")
+    @Value("${jwt.passphrase}")
     private String passphrase;
 
-    @Value("${api.tokenDurationOfValidity}")
+    @Value("${jwt.tokenDurationOfValidity}")
     private int tokenDurationOfValidity;
 
     public String getIssuer() {
