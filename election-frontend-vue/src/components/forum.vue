@@ -95,7 +95,7 @@ export default {
         this.forums = await response.json();
         console.log('Forums opgehaald:', this.forums); // Debugging
 
-        this.forums.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        // this.forums.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
         // Fetch replies for each forum and initialize newReply for each forum
         for (let forum of this.forums) {
@@ -193,7 +193,6 @@ export default {
   },
   mounted() {
     // Haal bestaande forums op wanneer de component wordt geladen
-
     this.fetchForums();
   },
 };
@@ -352,6 +351,23 @@ form button {
   font-size: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+
+.forum-item button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #ff0000; /* Rood */
+  color: #ffffff; /* Witte tekst */
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  display: block;
+  margin: 10px auto;
+}
+.forum-item button:hover {
+  background-color: #cc0000;
+}
+
 </style>
 
 
