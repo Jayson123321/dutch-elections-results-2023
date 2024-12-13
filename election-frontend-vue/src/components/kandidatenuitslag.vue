@@ -60,6 +60,7 @@
 import FooterComponent from './FooterComponent.vue';
 import HeaderComponent from './HeaderComponent.vue';
 import { Chart, registerables } from 'chart.js';
+import config from "@/config.ts";
 
 Chart.register(...registerables);
 
@@ -107,7 +108,7 @@ export default {
       }
       try {
         const response = await fetch(
-            `http://localhost:8080/api/candidate-reporting-unit-votes/reporting-unit/${reportingUnitId}/candidate/${this.candidate.id}/affiliation/${this.candidate.affiliationId}`
+            `${config.apiBaseUrl}/candidate-reporting-unit-votes/reporting-unit/${reportingUnitId}/candidate/${this.candidate.id}/affiliation/${this.candidate.affiliationId}`
         );
         if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
         const data = await response.json();
@@ -124,7 +125,7 @@ export default {
         return;
       }
       try {
-        const response = await fetch(`http://localhost:8080/api/candidate-reporting-unit-votes/municipality/${municipalityName}`);
+        const response = await fetch(`${config.apiBaseUrl}/candidate-reporting-unit-votes/municipality/${municipalityName}`);
         if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
         const data = await response.json();
         const uniqueReportingUnits = Array.from(new Set(data.map(unit => unit.reportingUnitId)))
@@ -150,7 +151,7 @@ export default {
 
     async fetchCandidateVotesByAuthority() {
       try {
-        const response = await fetch(`http://localhost:8080/api/candidate-authority-votes/candidate/${this.id}`);
+        const response = await fetch(`${config.apiBaseUrl}/candidate-authority-votes/candidate/${this.id}`);
         if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
         const data = await response.json();
         this.votesPerAuthority = data;
@@ -177,7 +178,7 @@ export default {
     async fetchFilteredVotes(candidateId, reportingUnitId) {
       try {
         const response = await fetch(
-            `http://localhost:8080/api/candidate-reporting-unit-votes/candidate/${candidateId}/reporting-unit/${reportingUnitId}`
+            `${config.apiBaseUrl}/candidate-reporting-unit-votes/candidate/${candidateId}/reporting-unit/${reportingUnitId}`
         );
         const data = await response.json();
         this.filteredReportingUnitVotes = data;
@@ -189,7 +190,7 @@ export default {
 
     async fetchCandidateData() {
       try {
-        const response = await fetch(`http://localhost:8080/api/candidate-votes/votes/${this.id}`);
+        const response = await fetch(`${config.apiBaseUrl}/candidate-votes/votes/${this.id}`);
         if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
         const data = await response.json();
         this.candidateVotes = data.validVotes;
@@ -201,7 +202,7 @@ export default {
 
     async findCandidateVotesById() {
       try {
-        const response = await fetch(`http://localhost:8080/api/candidate/${this.id}`);
+        const response = await fetch(`${config.apiBaseUrl}/candidate/${this.id}`);
         if (!response.ok) throw new Error(`HTTP-fout! Status: ${response.status}`);
         this.candidate = await response.json();
       } catch (error) {
