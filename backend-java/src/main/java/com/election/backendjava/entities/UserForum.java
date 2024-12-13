@@ -1,9 +1,9 @@
 package com.election.backendjava.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class UserForum {
@@ -24,15 +24,9 @@ public class UserForum {
    @JsonBackReference
    private User user;
 
-//    @CreationTimestamp
-//    @Column(name = "created_at", nullable = false, updatable = false)
-//    private LocalDateTime createdAt;
-//    @PrePersist
-//    public void prePersist() {
-//        this.createdAt = LocalDateTime.now();
-//    }
-@Column(name = "created_at", nullable = false, updatable = false)
-private LocalDateTime createdAt = LocalDateTime.now();
+    @OneToMany(mappedBy = "userForum", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Reply> replies;
 
     //getters and setters
     public Long getForumId() {
@@ -64,12 +58,12 @@ private LocalDateTime createdAt = LocalDateTime.now();
         this.description = description;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public List<Reply> getReplies() {
+        return replies;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setReplies(List<Reply> replies) {
+        this.replies = replies;
     }
 
 }
