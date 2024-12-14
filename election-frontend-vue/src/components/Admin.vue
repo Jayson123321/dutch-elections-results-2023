@@ -229,7 +229,7 @@ export default {
 
     <div class="content-container">
       <h2 class="page-title">Admin Dashboard</h2>
-      <div class="user-stats">
+      <div class="user-stats" v-if="userCount > 0">
         <p>Total Users: {{ userCount }}</p>
       </div>
       <div class="user-table-wrapper" v-if="users.length > 0">
@@ -254,13 +254,13 @@ export default {
               <button v-if="user.role === 'banned'" @click="openUnbanPopup(user.id)" class="unban-button">Unban</button>
             </div>
           </div>
-
         </div>
       </div>
       <div v-else class="no-users-message">
         <p>No users found</p>
       </div>
     </div>
+
     <FooterComponent/>
 
     <div v-if="showPopup" class="popup-overlay">
