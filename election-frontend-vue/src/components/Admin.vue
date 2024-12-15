@@ -232,6 +232,15 @@ export default {
       <div class="user-stats" v-if="userCount > 0">
         <p>Total Users: {{ userCount }}</p>
       </div>
+      <div class="search-container">
+        <input
+            type="text"
+            v-model="searchQuery"
+            placeholder="Search users by name or email..."
+            class="search-input"
+        />
+      </div>
+
       <div class="user-table-wrapper" v-if="users.length > 0">
         <div class="user-table-container">
           <div class="user-table-row header-row">
