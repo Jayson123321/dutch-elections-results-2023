@@ -51,6 +51,11 @@
 </template>
 
 <style>
+#input-0 {
+  background-color: transparent;
+  border: none;
+}
+
 #titel {
   text-align: center;
   margin-top: 5%;
