@@ -69,7 +69,7 @@ export default {
 
       const ctx = this.$refs.userChart.getContext('2d');
 
-      // Bereken aantal gebruikers per rol
+      //Calculate amount of users per role
       const userCount = this.users.filter(user => user.role !== 'banned').length;
       const bannedCount = this.users.filter(user => user.role === 'banned').length;
 
@@ -78,7 +78,7 @@ export default {
         datasets: [{
           label: 'User Roles',
           data: [userCount, bannedCount],
-          backgroundColor: ['#36A2EB', '#FF6384'], // Blauw voor actieve gebruikers, rood voor gebande gebruikers
+          backgroundColor: ['#36A2EB', '#FF6384'],
           borderColor: ['#36A2EB', '#FF6384'],
           borderWidth: 1
         }]
