@@ -61,6 +61,10 @@
 </template>
 
 <style>
+#input-0 {
+  background-color: transparent;
+  border: none;
+}
 table {
   border-collapse: collapse;
 }
