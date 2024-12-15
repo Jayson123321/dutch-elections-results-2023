@@ -262,7 +262,7 @@ export default {
             <div class="user-table-cell">Role</div>
             <div class="user-table-cell actions-header">Actions</div>
           </div>
-          <div v-for="user in users" :key="user.id" class="user-table-row">
+          <div v-for="user in filteredUsers" :key="user.id" class="user-table-row">
             <div class="user-table-cell">{{ user.username }}</div>
             <div class="user-table-cell">{{ user.email }}</div>
             <div
