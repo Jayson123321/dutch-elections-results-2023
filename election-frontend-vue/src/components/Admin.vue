@@ -11,6 +11,7 @@ export default {
     return {
       users: [],
       userCount: 0,
+      searchQuery: '', // Toegevoegd voor zoekfunctionaliteit
       showPopup: false,
       showUsernamePopup: false,
       showEmailPopup: false,
@@ -22,6 +23,18 @@ export default {
       chart: null,
       banReason: ''
     };
+  },
+  computed: {
+    filteredUsers() {
+      if (!this.searchQuery) {
+        return this.users;
+      }
+      const query = this.searchQuery.toLowerCase();
+      return this.users.filter(user =>
+          user.username.toLowerCase().includes(query) ||
+          user.email.toLowerCase().includes(query)
+      );
+    }
   },
   mounted() {
     this.fetchUsers();
@@ -92,8 +105,7 @@ export default {
           }
         }
       });
-    }
-    ,
+    },
     deleteUser(userId) {
       if (confirm('Are you sure you want to delete this user?')) {
         axios.delete(`http://localhost:8080/api/users/${userId}`)
@@ -208,6 +220,7 @@ export default {
   }
 }
 </script>
+
 
 
 
