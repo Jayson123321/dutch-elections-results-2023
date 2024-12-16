@@ -11,7 +11,7 @@ export default {
     return {
       users: [],
       userCount: 0,
-      searchQuery: '', // Toegevoegd voor zoekfunctionaliteit
+      searchQuery: '',
       showPopup: false,
       showUsernamePopup: false,
       showEmailPopup: false,
@@ -21,7 +21,8 @@ export default {
       newUsername: '',
       newEmail: '',
       chart: null,
-      banReason: ''
+      banReason: '',
+      unbanRequests: []
     };
   },
   computed: {
