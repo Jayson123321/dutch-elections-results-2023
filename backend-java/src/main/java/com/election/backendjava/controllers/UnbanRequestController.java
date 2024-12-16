@@ -15,8 +15,13 @@ public class UnbanRequestController {
     @Autowired
     private UnbanRequestService unbanRequestService;
 
-    @GetMapping("/all")
+    @GetMapping
     public List<UnbanRequest> getAllUnbanRequests() {
         return unbanRequestService.getAllUnbanRequests();
+    }
+
+    @GetMapping("/test")
+    public String testEndpoint() {
+        return "UnbanRequestController is working";
     }
 }
