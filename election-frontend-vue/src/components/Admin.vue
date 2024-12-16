@@ -40,6 +40,7 @@ export default {
   mounted() {
     this.fetchUsers();
     this.fetchUserCount();
+    this.fetchUnbanRequests();
   },
   methods: {
     fetchUsers() {
