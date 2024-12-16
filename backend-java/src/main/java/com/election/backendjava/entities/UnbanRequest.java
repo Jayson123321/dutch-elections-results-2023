@@ -14,6 +14,20 @@ public class UnbanRequest {
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
+    @Column(name = "ticket_number", nullable = false)
+    private String ticketNumber;
+
+    @Column(name = "message", nullable = false)
+    private String message;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public Long getId() {
         return id;
     }
@@ -22,11 +36,19 @@ public class UnbanRequest {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public String getTicketNumber() {
+        return ticketNumber;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setTicketNumber(String ticketNumber) {
+        this.ticketNumber = ticketNumber;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
