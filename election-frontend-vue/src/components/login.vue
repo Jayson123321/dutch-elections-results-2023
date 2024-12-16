@@ -3,10 +3,10 @@ import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 export default defineComponent({
-  name: "Login",
+  name: "UserLogin",
   setup() {
     const router = useRouter();
-    const username = ref('');
+    const email = ref('');
     const password = ref('');
 
     const login = async () => {
@@ -17,7 +17,7 @@ export default defineComponent({
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            username: username.value,
+            email: email.value,
             password: password.value
           }),
         });
@@ -29,6 +29,9 @@ export default defineComponent({
         const data = await response.json();
         console.log(data);
 
+        // Store the JWT token in local storage
+        localStorage.setItem('jwtToken', data.token);
+
         router.push('/dashboard');
       } catch (error) {
         console.error('Error:', error);
@@ -36,7 +39,7 @@ export default defineComponent({
     };
 
     return {
-      username,
+      email,
       password,
       login
     };
@@ -49,8 +52,8 @@ export default defineComponent({
     <div class="form-box">
       <h1>Login</h1>
       <form @submit.prevent="login" class="form">
-        <label for="username">Username</label>
-        <input type="text" id="username" v-model="username" required>
+        <label for="email">Email</label>
+        <input type="text" id="email" v-model="email" required>
         <label for="password">Password</label>
         <input type="password" id="password" v-model="password" required>
         <button type="submit">Login</button>

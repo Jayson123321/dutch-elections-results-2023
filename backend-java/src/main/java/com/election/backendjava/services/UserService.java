@@ -21,20 +21,22 @@ public class UserService {
     public void deleteUserById(Long id) {
         userRepository.deleteById(id);
     }
+
     public long getUserCount() {
         return userRepository.count();
     }
 
     public void updateUser(Long id, User user) {
-        System.out.println("Received PUT request to update user with ID: " + id); //debug
+        System.out.println("Received PUT request to update user with ID: " + id); // debug
         Optional<User> existingUser = userRepository.findById(id);
         if (existingUser.isPresent()) {
             User userToUpdate = existingUser.get();
             userToUpdate.setUsername(user.getUsername()); // this is for the username only
-            userToUpdate.setRole(user.getRole()); //updating role
+            userToUpdate.setRole(user.getRole()); // updating role
             userRepository.save(userToUpdate);
         }
     }
+
     public void updateUserEmail(Long id, User user) {
         Optional<User> existingUser = userRepository.findById(id);
         if (existingUser.isPresent()) {
@@ -62,5 +64,7 @@ public class UserService {
         }
     }
 
-
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
 }
