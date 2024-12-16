@@ -19,9 +19,4 @@ public class UnbanRequestController {
     public List<UnbanRequest> getAllUnbanRequests() {
         return unbanRequestService.getAllUnbanRequests();
     }
-
-    @GetMapping("/test")
-    public String testEndpoint() {
-        return "UnbanRequestController is working";
-    }
 }
