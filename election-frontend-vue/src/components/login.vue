@@ -50,7 +50,7 @@ export default defineComponent({
 <template>
   <main class="form-container">
     <div class="form-box">
-      <h1>Login</h1>
+      <h1>User Login</h1>
       <form @submit.prevent="login" class="form">
         <label for="email">Email</label>
         <input type="text" id="email" v-model="email" required>

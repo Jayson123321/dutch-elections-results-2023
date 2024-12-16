@@ -1,5 +1,6 @@
 package com.election.backendjava;
 
+import com.election.backendjava.dto.LoginRequest;
 import com.election.backendjava.entities.User;
 import com.election.backendjava.repositories.UserRepository;
 import com.election.backendjava.services.JwtService;
@@ -19,13 +20,13 @@ public class Login {
     private JwtService jwtService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User userCredentials) {
-        User userFromDb = userRepository.findByEmailAndPassword(userCredentials.getEmail(), userCredentials.getPassword());
+    public ResponseEntity<String> login(@RequestBody LoginRequest userCredentials) {
+        User userFromDb = userRepository.findByEmailAndPassword(userCredentials.email(), userCredentials.password());
 
         if (userFromDb != null) {
             String tokenString = jwtService.encode(userFromDb.getUsername(), userFromDb.getId(), userFromDb.getRole());
             return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenString)
-                    .body("{\"message\": \"Login successful\"}");
+                    .body("{\"token\": \"" + tokenString + "\", \"message\": \"Login successful\"}");
         } else {
             return ResponseEntity.status(401).body("{\"message\": \"Login failed: Incorrect email or password\"}");
         }
