@@ -1,7 +1,6 @@
 package com.election.backendjava.entities;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "unban_request")
@@ -16,9 +15,8 @@ public class UnbanRequest {
     private User user;
 
     @Column(name = "ticket_number", nullable = false, unique = true, updatable = false)
-    @GeneratedValue(generator = "ticket-gen")
-    @GenericGenerator(name = "ticket-gen", strategy = "uuid")
-    private String ticketNumber;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long ticketNumber;
 
     @Column(name = "message", nullable = false)
     private String message;
@@ -39,11 +37,11 @@ public class UnbanRequest {
         this.user = user;
     }
 
-    public String getTicketNumber() {
+    public Long getTicketNumber() {
         return ticketNumber;
     }
 
-    public void setTicketNumber(String ticketNumber) {
+    public void setTicketNumber(Long ticketNumber) {
         this.ticketNumber = ticketNumber;
     }
 
