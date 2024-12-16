@@ -14,10 +14,6 @@ public class UnbanRequest {
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
-    @Column(name = "ticket_number", nullable = false, unique = true, updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ticketNumber;
-
     @Column(name = "message", nullable = false)
     private String message;
 
@@ -35,14 +31,6 @@ public class UnbanRequest {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Long getTicketNumber() {
-        return ticketNumber;
-    }
-
-    public void setTicketNumber(Long ticketNumber) {
-        this.ticketNumber = ticketNumber;
     }
 
     public String getMessage() {
