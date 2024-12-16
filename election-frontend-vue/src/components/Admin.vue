@@ -248,9 +248,16 @@ export default {
     <div class="unban-requests-container">
       <div class="content-box">
         <h2 class="section-title">Unban Requests</h2>
-        <p class="placeholder-text">No unban requests.</p>
+        <div v-if="unbanRequests.length > 0">
+          <div v-for="request in unbanRequests" :key="request.id" class="unban-request">
+            <p><strong>Request by:</strong> {{ request.user.username }}</p>
+            <p><strong>Message:</strong> {{ request.message }}</p>
+          </div>
+        </div>
+        <p v-else class="placeholder-text">No unban requests available</p>
       </div>
     </div>
+
 
     <div class="content-container">
       <h2 class="page-title">Admin Dashboard</h2>
