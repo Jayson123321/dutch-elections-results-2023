@@ -217,7 +217,17 @@ export default {
           .catch(error => {
             console.error('An error occurred while unbanning the user:', error);
           });
-    }
+    },
+    fetchUnbanRequests() {
+      axios.get('http://localhost:8080/api/unban-requests')
+          .then(response => {
+            this.unbanRequests = response.data;
+          })
+          .catch(error => {
+            console.error('An error occurred while fetching unban requests:', error);
+          });
+    },
+
   }
 }
 </script>
