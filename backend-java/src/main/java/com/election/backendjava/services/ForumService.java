@@ -4,9 +4,13 @@ import com.election.backendjava.entities.Reply;
 import com.election.backendjava.entities.UserForum;
 import com.election.backendjava.repositories.PostForumRepository;
 import com.election.backendjava.repositories.ReplyRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,10 +29,10 @@ public class ForumService {
         return postForumRepository.save(form);
     }
 
-    public List<UserForum> getAllForums() {
-//        List<UserForum> forums = postForumRepository.findAllSortedByCreatedAt();
-        List<UserForum> forums = postForumRepository.findAll();
-        logger.info("Aantal opgehaalde forums: {}", forums.size());
+    public Page<UserForum> getAllForums(int page) {
+        Pageable pageable = PageRequest.of( page, 5);
+        Page<UserForum> forums = postForumRepository.findAll(pageable);
+        logger.info("Aantal opgehaalde forums op deze pagina: {}", forums.getNumberOfElements());
         return forums;
     }
 
@@ -41,6 +45,10 @@ public class ForumService {
     }
 
     public void deleteForumById(Long forumId) {
+        if (!postForumRepository.existsById(forumId)) {
+            throw new EntityNotFoundException("Forum met ID " + forumId + " bestaat niet.");
+        }
+
         replyRepository.deleteByUserForum_ForumId(forumId);
 
         postForumRepository.deleteById(forumId);
