@@ -50,6 +50,11 @@
           <button class="delete-button" @click="deleteForum(forum.forumId)">Verwijder post</button>
         </div>
       </div>
+      <div class="pagination">
+        <button @click="goToPage(currentPage - 1)" :disabled="currentPage <= 0">Vorige</button>
+        <span>Pagina {{ currentPage + 1 }} van {{ totalPages }}</span>
+        <button @click="goToPage(currentPage + 1)" :disabled="currentPage >= totalPages - 1">Volgende</button>
+      </div>
     </div>
     <FooterComponent />
   </div>
@@ -76,7 +81,9 @@ export default {
         },
       },
       forums: [],
-      errors: {}, // Lijst van bestaande forums
+      currentPage: 0,
+      totalPages: 0,
+      errors: {},
       successMessage: '',
       newReply: {
         username: '',
@@ -85,17 +92,18 @@ export default {
     };
   },
   methods: {
-    async fetchForums() {
+    async fetchForums(page = 0) {
       try {
         console.log("Ophalen van forums...");
-        const response = await fetch('http://localhost:8080/api/usersforum');
+        const response = await fetch(`http://localhost:8080/api/usersforum?page=${page}&size=5`);
         if (!response.ok) {
           throw new Error(`Server error: ${response.status} - ${response.statusText}`);
         }
-        this.forums = await response.json();
-        console.log('Forums opgehaald:', this.forums); // Debugging
-
-        // this.forums.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        const data = await response.json();
+        console.log(response.json())
+        this.forums = data.content;
+        this.totalPages = data.totalPages;
+        this.currentPage = data.number;
 
         // Fetch replies for each forum and initialize newReply for each forum
         for (let forum of this.forums) {
@@ -105,14 +113,13 @@ export default {
           } else {
             forum.replies = [];
           }
-          forum.newReply = { replyText: '' }; // Initialize newReply for each forum
+          forum.newReply = { replyText: '' };
         }
       } catch (error) {
         console.error('Fout bij het ophalen van forums:', error);
       }
     },
 
-    // Valideer velden
     validateField(field) {
       if (!this.newForum[field]?.trim()) {
         this.errors[field] = 'Vul dit veld in';
@@ -122,7 +129,6 @@ export default {
     },
 
     async submitForum() {
-      // Valideer de velden
       this.validateField('title');
       this.validateField('description');
       if (Object.keys(this.errors).length > 0) return;
@@ -131,22 +137,19 @@ export default {
         const response = await axios.post('http://localhost:8080/api/usersforum', this.newForum);
         const createdForum = response.data;
 
-        // Voeg direct het nieuwe forum toe aan de lijst
         this.forums.unshift({
           ...createdForum,
           replies: [], // Initialiseer lege replies voor het nieuwe forum
           newReply: { replyText: '' }, // Voeg een lege newReply toe voor consistentie
         });
 
-        // Reset formulier
        this.newForum = {
         title: '',
        description: '',
         user: { id: '1' },
       };
 
-        // Succesmelding instellen
-        this.successMessage = "Forum succesvol geplaatst!";
+       this.successMessage = "Forum succesvol geplaatst!";
         setTimeout(() => {
         this.successMessage = '';
        }, 3000);
@@ -188,12 +191,17 @@ export default {
         console.error('Fout bij het verwijderen van het forum:', error);
         alert('Er is een fout opgetreden bij het verwijderen van het forum.');
       }
+    },
+
+    goToPage(page) {
+      if (page >= 0 && page < this.totalPages) {
+        this.fetchForums(page);
+      }
     }
 
   },
   mounted() {
-    // Haal bestaande forums op wanneer de component wordt geladen
-    this.fetchForums();
+    this.fetchForums(this.currentPage);
   },
 };
 </script>
@@ -260,7 +268,6 @@ export default {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
-  //border: 1px solid var(--border-color);
   border-radius: 5px;
   font-size: 16px;
   background-color: var(--input-background-color);
@@ -271,7 +278,7 @@ export default {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  background-color: #ff4500; /* Reddit-like button color */
+  background-color: #ff4500;
   color: var(--button-text-color);
   cursor: pointer;
   font-size: 16px;
@@ -367,7 +374,6 @@ form button {
 .forum-item button:hover {
   background-color: #cc0000;
 }
-
 </style>
 
 
