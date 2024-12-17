@@ -57,6 +57,7 @@ export default defineComponent({
         <input type="password" id="password" v-model="password" required>
         <button type="submit">Login</button>
       </form>
+      <p>Don't have an account? <router-link to="/registration">Register here</router-link></p>
     </div>
   </main>
 </template>
@@ -100,6 +101,17 @@ export default defineComponent({
   border: none;
   background-color: #333333;
   color: white;
+  cursor: pointer;
+}
+
+p {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+router-link {
+  color: #333333;
+  text-decoration: underline;
   cursor: pointer;
 }
 </style>

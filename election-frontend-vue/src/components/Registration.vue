@@ -35,17 +35,17 @@ export default defineComponent({
           data = await response.json();
         } else {
           const text = await response.text();
-          console.log(text); // Log the plain text response
-          data = { message: text }; // Create a JSON-like object from the text
+          console.log(text);
+          data = { message: text };
         }
 
         console.log(data);
 
         if (data.token) {
           localStorage.setItem('jwtToken', data.token);
-          await router.push('/managing-authorities');
+          await router.push('/');
         } else {
-          console.log(data.message); // Handle the plain text message
+          console.log(data.message);
         }
       } catch (error) {
         console.error('Error:', error);
