@@ -24,6 +24,7 @@ export default defineComponent({
 
         if (!response.ok) {
           const errorText = await response.text();
+          alert(`Login failed: ${errorText}`);
           throw new Error(`Login failed: ${errorText}`);
         }
 

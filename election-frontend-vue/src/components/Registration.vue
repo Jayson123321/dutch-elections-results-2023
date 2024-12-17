@@ -26,6 +26,7 @@ export default defineComponent({
 
         if (!response.ok) {
           const errorText = await response.text();
+          alert(`Registration failed: ${errorText}`);
           throw new Error(`Registration failed: ${errorText}`);
         }
 
