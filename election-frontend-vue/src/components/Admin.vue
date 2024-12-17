@@ -64,14 +64,31 @@ export default {
             console.error('An error occurred while retrieving the user count:', error);
           });
     },
+    fetchUnbanRequests() {
+      axios.get('http://localhost:8080/api/unban-requests')
+          .then(response => {
+            this.unbanRequests = response.data;
+          })
+          .catch(error => {
+            console.error('An error occurred while fetching unban requests:', error);
+          });
+    },
+    approveUnbanRequest(requestId) {
+      axios.put(`http://localhost:8080/api/unban-requests/${requestId}/approve`)
+          .then(() => {
+            alert('Unban request approved successfully.');
+            this.fetchUnbanRequests();
+            this.fetchUsers(); // Ververst de user data
+          })
+          .catch(error => {
+            console.error('An error occurred while approving the unban request:', error);
+          });
+    },
     renderChart() {
       if (this.chart) {
         this.chart.destroy();
       }
-
       const ctx = this.$refs.userChart.getContext('2d');
-
-      //Calculate amount of users per role
       const userCount = this.users.filter(user => user.role !== 'banned').length;
       const bannedCount = this.users.filter(user => user.role === 'banned').length;
 
@@ -92,9 +109,7 @@ export default {
         options: {
           responsive: true,
           plugins: {
-            legend: {
-              position: 'top',
-            },
+            legend: { position: 'top' },
             tooltip: {
               callbacks: {
                 label: function (context) {
@@ -141,13 +156,8 @@ export default {
     updateUsername() {
       if (this.newUsername.trim() !== '') {
         const userToUpdate = this.users.find(user => user.id === this.selectedUserId);
-
         if (userToUpdate) {
-          const updatedUser = {
-            ...userToUpdate,
-            username: this.newUsername
-          };
-
+          const updatedUser = { ...userToUpdate, username: this.newUsername };
           axios.put(`http://localhost:8080/api/users/${this.selectedUserId}`, updatedUser)
               .then(() => {
                 alert('Username updated successfully.');
@@ -171,7 +181,7 @@ export default {
     },
     updateEmail() {
       if (this.newEmail.trim() !== '') {
-        axios.put(`http://localhost:8080/api/users/${this.selectedUserId}/email`, {email: this.newEmail})
+        axios.put(`http://localhost:8080/api/users/${this.selectedUserId}/email`, { email: this.newEmail })
             .then(() => {
               alert('Email updated successfully.');
               this.fetchUsers();
@@ -218,30 +228,9 @@ export default {
           .catch(error => {
             console.error('An error occurred while unbanning the user:', error);
           });
-    },
-    fetchUnbanRequests() {
-      axios.get('http://localhost:8080/api/unban-requests')
-          .then(response => {
-            this.unbanRequests = response.data;
-          })
-          .catch(error => {
-            console.error('An error occurred while fetching unban requests:', error);
-          });
-    },
-
-  },
-  acceptUnbanRequest(requestId) {
-    axios.put(`http://localhost:8080/api/unban-requests/${requestId}/accept`)
-        .then(() => {
-          alert('Unban request approved.');
-          this.fetchUnbanRequests();
-          this.fetchUsers();
-        })
-        .catch(error => {
-          console.error('An error occurred while approving the unban request:', error);
-          alert('Failed to approve unban request.');
-        });
+    }
   }
+
 
 }
 </script>
