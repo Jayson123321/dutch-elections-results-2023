@@ -599,6 +599,36 @@ button {
   color: white;
   font-size: 16px;
 }
+.unban-request-card {
+  background-color: #1A1A1A;
+  border: 1px solid #555;
+  border-radius: 8px;
+  padding: 15px;
+  margin: 10px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: white;
+  transition: transform 0.3s ease;
+}
+
+.unban-request-card:hover {
+  transform: scale(1.02);
+}
+
+.request-header {
+  font-size: 16px;
+  font-weight: bold;
+  color: #5bc0de;
+}
+
+.request-body {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #ddd;
+}
+
+.request-body p {
+  margin: 5px 0;
+}
 
 
 </style>
