@@ -22,7 +22,6 @@ public class AuthenticationController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/register")
-    @CrossOrigin(origins = "http://localhost:5175")
     public ResponseEntity<?> register(@RequestBody User user) {
         try {
             authenticationService.register(user);
@@ -33,7 +32,6 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    @CrossOrigin(origins = "http://localhost:5175")
     public ResponseEntity<?> login(@RequestBody User user) {
         try {
             String username = authenticationService.login(user);
