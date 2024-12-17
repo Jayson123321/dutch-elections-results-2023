@@ -64,6 +64,7 @@
 import HeaderComponent from './HeaderComponent.vue';
 import FooterComponent from './FooterComponent.vue';
 import axios from 'axios';
+import config from "@/config.ts";
 
 export default {
   name: "ForumComponent",
@@ -95,7 +96,7 @@ export default {
     async fetchForums(page = 0) {
       try {
         console.log("Ophalen van forums...");
-        const response = await fetch(`http://localhost:8080/api/usersforum?page=${page}&size=5`);
+        const response = await fetch(`${config.apiBaseUrl}/usersforum?page=${page}&size=5`);
         if (!response.ok) {
           throw new Error(`Server error: ${response.status} - ${response.statusText}`);
         }
@@ -107,7 +108,7 @@ export default {
 
         // Fetch replies for each forum and initialize newReply for each forum
         for (let forum of this.forums) {
-          const repliesResponse = await fetch(`http://localhost:8080/api/usersforum/${forum.forumId}/replies`);
+          const repliesResponse = await fetch(`${config.apiBaseUrl}/usersforum/${forum.forumId}/replies`);
           if (repliesResponse.ok) {
             forum.replies = await repliesResponse.json();
           } else {
@@ -134,7 +135,7 @@ export default {
       if (Object.keys(this.errors).length > 0) return;
 
       try {
-        const response = await axios.post('http://localhost:8080/api/usersforum', this.newForum);
+        const response = await axios.post(`${config.apiBaseUrl}/usersforum`, this.newForum);
         const createdForum = response.data;
 
         this.forums.unshift({
@@ -163,7 +164,7 @@ export default {
     async submitReply(forumId) {
       try {
         const forum = this.forums.find(f => f.forumId === forumId);
-        const response = await axios.post(`http://localhost:8080/api/usersforum/${forumId}/replies`, forum.newReply);
+        const response = await axios.post(`${config.apiBaseUrl}/usersforum/${forumId}/replies`, forum.newReply);
         console.log('Reply succesvol toegevoegd:', response.data);
 
         // Voeg de nieuwe reply toe aan de juiste forum
@@ -186,7 +187,7 @@ export default {
       const confirmed = confirm("Weet je zeker dat je dit forum wilt verwijderen?");
       if (confirmed) {
         try {
-          await axios.delete(`http://localhost:8080/api/usersforum/${forumId}`);
+          await axios.delete(`${config.apiBaseUrl}/usersforum/${forumId}`);
           this.forums = this.forums.filter(forum => forum.forumId !== forumId);
           alert('Forum succesvol verwijderd.');
         } catch (error) {
