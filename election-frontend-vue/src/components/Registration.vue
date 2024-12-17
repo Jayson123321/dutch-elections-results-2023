@@ -35,14 +35,18 @@ export default defineComponent({
           data = await response.json();
         } else {
           const text = await response.text();
-          throw new Error(`Unexpected response format: ${text}`);
+          console.log(text); // Log the plain text response
+          data = { message: text }; // Create a JSON-like object from the text
         }
 
         console.log(data);
 
-        localStorage.setItem('jwtToken', data.token);
-
-        await router.push('/managing-authorities');
+        if (data.token) {
+          localStorage.setItem('jwtToken', data.token);
+          await router.push('/managing-authorities');
+        } else {
+          console.log(data.message); // Handle the plain text message
+        }
       } catch (error) {
         console.error('Error:', error);
       }
