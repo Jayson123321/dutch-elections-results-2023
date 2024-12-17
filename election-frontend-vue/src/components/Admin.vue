@@ -229,7 +229,20 @@ export default {
           });
     },
 
+  },
+  acceptUnbanRequest(requestId) {
+    axios.put(`http://localhost:8080/api/unban-requests/${requestId}/accept`)
+        .then(() => {
+          alert('Unban request approved.');
+          this.fetchUnbanRequests();
+          this.fetchUsers();
+        })
+        .catch(error => {
+          console.error('An error occurred while approving the unban request:', error);
+          alert('Failed to approve unban request.');
+        });
   }
+
 }
 </script>
 
