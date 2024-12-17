@@ -1,14 +1,9 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import FooterComponent from './FooterComponent.vue'
-import HeaderComponent from './HeaderComponent.vue'
+
 export default defineComponent({
-  name: "loginPage",
-  components: {
-    FooterComponent,
-    HeaderComponent
-  },
+  name: "Login",
   setup() {
     const router = useRouter();
     const username = ref('');
@@ -34,7 +29,7 @@ export default defineComponent({
         const data = await response.json();
         console.log(data);
 
-        router.push('/managing-authorities');
+        router.push('/dashboard');
       } catch (error) {
         console.error('Error:', error);
       }
@@ -50,55 +45,59 @@ export default defineComponent({
 </script>
 
 <template>
-  <header-component />
-  <footer-component />
-  <main>
-    <h1>Login</h1>
-    <form @submit.prevent="login">
-      <label for="username">Username</label>
-      <input type="text" id="username" v-model="username" required>
-      <label for="password">Password</label>
-      <input type="password" id="password" v-model="password" required>
-      <button type="submit">Login</button>
-      <p>Not have an account?</p>
-      <router-link to="/registration">Register</router-link>
-    </form>
+  <main class="form-container">
+    <div class="form-box">
+      <h1>Login</h1>
+      <form @submit.prevent="login" class="form">
+        <label for="username">Username</label>
+        <input type="text" id="username" v-model="username" required>
+        <label for="password">Password</label>
+        <input type="password" id="password" v-model="password" required>
+        <button type="submit">Login</button>
+      </form>
+    </div>
   </main>
 </template>
 
 <style scoped>
-form {
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+}
+
+.form-box {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form {
   display: flex;
   flex-direction: column;
-  padding: 2rem;
-  height: 100%;
-  border-radius: 8px;
-  color: #c0ccbc;
-  width: 100%;
+  gap: 1rem;
 }
 
-label {
-  margin-top: 1rem;
+.form label {
+  font-weight: bold;
+  color: #333333;
 }
 
-input {
-  margin-top: 0.5rem;
+.form input {
   padding: 0.5rem;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  border: 1px solid #cccccc;
 }
 
-button {
-  margin-top: 1.5rem;
-  padding: 0.75rem;
-  background-color: #4caf50;
-  color: white;
+.form button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
   border: none;
-  border-radius: 4px;
+  background-color: #333333;
+  color: white;
   cursor: pointer;
-}
-
-button:hover {
-  background-color: #45a049;
 }
 </style>

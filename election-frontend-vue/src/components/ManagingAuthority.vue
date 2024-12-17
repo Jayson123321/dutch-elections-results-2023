@@ -1,6 +1,9 @@
 <template>
   <div>
     <HeaderComponent/>
+    <div id="description-container">
+      <p id="description-text">Deze pagina toont de verkiezingsresultaten per gemeente voor 2023. Selecteer een gemeente en vervolgens een stembureau om de resultaten te bekijken. Alleen kandidaten die stemmen hebben ontvangen worden weergegeven.</p>
+    </div>
     <div id="titel">
       <h1>Score per stembureau</h1>
       <h1>Verkiezingen 2023 gemeente {{ selectedAuthority?.authorityName }}</h1>
@@ -26,7 +29,6 @@
             persistent-placeholder
             clearable
             transition="scale-transition"
-
         ></v-autocomplete>
       </div>
       <button v-if="selectedReportingUnitId" @click="fetchPartyVotesByReportingUnitAndAuthorityNumber">Bekijk stemmen</button>
@@ -36,9 +38,20 @@
         <h3>{{ selectedReportingUnitId ? reportingUnits.find(unit => unit.id === selectedReportingUnitId)?.name : '' }}</h3>
         <table>
           <tbody>
-          <tr v-for="(vote, index) in partyVotes" :key="vote.id">
-            <td><span class="affiliation-name">{{ index + 1 }}. {{ vote.affiliation.registeredName }}</span></td>
-            <td>{{ vote.validVotes }} stemmen</td>
+          <tr class="affiliationVote" v-for="(vote, index) in partyVotes" :key="vote.id">
+              <td class="affiliation-name">{{ index + 1 }}. {{ vote.affiliation.registeredName }}</td>
+            <td id="totalStemmen">Totaal: {{ vote.validVotes }} stemmen</td>
+            <td><button class="show-candidates-button" @click="toggleCandidates(vote)">Toon stemmen per kandidaat</button></td>
+            <div v-if="vote.showCandidates">
+              <table>
+                <tbody>
+                <tr v-for="(candidateVote, index) in vote.candidateVotes" :key="index">
+                  <td>{{ candidateVote.candidateName }}</td>
+                  <td id="votes">{{ candidateVote.validVotes }} stemmen</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </tr>
           </tbody>
         </table>
@@ -51,6 +64,34 @@
 </template>
 
 <style>
+#input-0 {
+  background-color: transparent;
+  border: none;
+}
+
+#description-container {
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 5px;
+}
+
+#description-text {
+  font-size: 1.1em;
+  line-height: 1.6;
+}
+table {
+  border-collapse: collapse;
+}
+
+.affiliationVote {
+  border-bottom: 1px solid;
+}
+#votes {
+  border-bottom: 1px solid;
+  font-weight: bold;
+  font-size: medium;
+}
 #titel {
   text-align: center;
   margin-top: 5%;
@@ -91,17 +132,16 @@ table {
   font-size: 1.2em;
   font-weight: bold;
   border: none;
-  color: #cccccc;
 }
 
 .affiliation-name {
   font-size: x-large;
-  color: white;
 }
 
 #authority-select {
-  border-radius: 15px 15px 0 0;
-}
+  padding: 10px;
+  font-size: 1em;
+  border-radius: 5px;}
 
 .authority-select {
   font-weight: bold;
@@ -119,6 +159,16 @@ canvas {
   width: auto;
   max-width: 35%;
 }
+.show-candidates-button {
+  padding: 8px 16px;
+  font-size: small;
+  border: 2px solid;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  margin-left: 10px;
+}
+
 </style>
 
 <script>
@@ -142,7 +192,8 @@ export default defineComponent({
       partyVotes: [],
       reportingUnits: [],
       stemBureau: [],
-      chart: null
+      chart: null,
+      candidateVotes: []
     };
   },
 
@@ -205,6 +256,7 @@ export default defineComponent({
           throw new Error('Failed to fetch party votes for reporting unit');
         }
         this.partyVotes = await response.json();
+        this.partyVotes.forEach(vote => vote.showCandidates = false);
         this.partyVotes.sort((a, b) => b.validVotes - a.validVotes);
         console.log(this.partyVotes);
         this.$nextTick(() => {
@@ -212,6 +264,26 @@ export default defineComponent({
         });
       } catch (error) {
         console.error('Error fetching party votes for reporting unit:', error);
+      }
+    },
+    async fetchVotesByCandidate(vote) {
+      try {
+        const response = await fetch(`${config.apiBaseUrl}/candidate-reporting-unit-votes/reporting-unit/${this.selectedAuthority.authorityIdentifier}/affiliation/${vote.affiliation.id}/managingAuthorityNumber/${this.partyVotes[0].managingAuthorityNumber}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch votes by candidate');
+        }
+        vote.candidateVotes = await response.json();
+        console.log(vote.candidateVotes);
+      } catch (error) {
+        console.error('Error fetching votes by candidate:', error);
+      }
+    },
+    toggleCandidates(vote) {
+      vote.showCandidates = !vote.showCandidates;
+      if (vote.showCandidates) {
+        this.fetchVotesByCandidate(vote);
+      } else {
+        vote.candidateVotes = [];
       }
     },
     renderChart() {
@@ -243,7 +315,7 @@ export default defineComponent({
           plugins: {
             tooltip: {
               callbacks: {
-                label: function(context) {
+                label: function (context) {
                   const value = context.raw;
                   const percentage = ((value / totalVotes) * 100).toFixed(2);
                   return `${value} stemmen (${percentage}%)`;
@@ -255,6 +327,6 @@ export default defineComponent({
       });
     }
   },
-  components: {PoliticalNews, FooterComponent, HeaderComponent }
+  components: {PoliticalNews, FooterComponent, HeaderComponent}
 });
 </script>
