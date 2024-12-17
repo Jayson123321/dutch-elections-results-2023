@@ -374,6 +374,19 @@ form button {
 .forum-item button:hover {
   background-color: #cc0000;
 }
+
+.pagination button{
+  color:var(--button-text-color) ;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #7a7a7a;
+  color: var(--button-text-color);
+  cursor: pointer;
+  font-size: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+}
 </style>
 
 
