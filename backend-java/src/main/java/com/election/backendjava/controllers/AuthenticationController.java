@@ -5,10 +5,7 @@ import com.election.backendjava.services.AuthenticationService;
 import com.election.backendjava.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -25,6 +22,7 @@ public class AuthenticationController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/register")
+    @CrossOrigin(origins = "http://localhost:5175")
     public ResponseEntity<?> register(@RequestBody User user) {
         try {
             authenticationService.register(user);
@@ -35,6 +33,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
+    @CrossOrigin(origins = "http://localhost:5175")
     public ResponseEntity<?> login(@RequestBody User user) {
         try {
             String username = authenticationService.login(user);

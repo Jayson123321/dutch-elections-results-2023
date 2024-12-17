@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
 @Service
 public class AuthenticationService {
 
@@ -23,7 +22,6 @@ public class AuthenticationService {
         User existingUser = userRepository.findByEmail(user.getEmail())
                 .orElseThrow(() -> new Exception("User not found"));
 
-
         if (!passwordEncoder.matches(user.getPassword(), existingUser.getPassword())) {
             throw new Exception("Invalid credentials");
         }
@@ -39,7 +37,6 @@ public class AuthenticationService {
         if (!user.getEmail().contains("@")) {
             throw new Exception("Invalid email format.");
         }
-
 
         if (user.getPassword().length() < 8) {
             throw new Exception("Password must be at least 8 characters long.");

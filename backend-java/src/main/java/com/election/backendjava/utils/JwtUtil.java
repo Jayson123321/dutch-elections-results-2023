@@ -1,6 +1,5 @@
 package com.election.backendjava.utils;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
@@ -11,19 +10,14 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private static final Dotenv dotenv = Dotenv.configure()
-            .directory(System.getProperty("user.dir") + "/backend") // Specify the backend directory
-            .filename(".env") // .env file
-            .load();
-
-    private static final String SECRET_KEY = dotenv.get("JWT_SECRET_KEY");
+    private static final String SECRET_KEY = "of7zB4MRRvLMiXFBPh/UPVWuwzuw3TuerleDgnROsKs";
     private static final long EXPIRATION_TIME = 86400000; // 1 day in milliseconds
 
     private final Key key;
 
     public JwtUtil() {
         if (SECRET_KEY == null || SECRET_KEY.isEmpty()) {
-            throw new IllegalArgumentException("JWT_SECRET_KEY is not specified in the .env file!");
+            throw new IllegalArgumentException("JWT_SECRET_KEY is not specified!");
         }
         this.key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }

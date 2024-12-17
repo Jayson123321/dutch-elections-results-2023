@@ -3,7 +3,7 @@ import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 export default defineComponent({
-  name: "Registration",
+  name: "RegistrationComponent",
   setup() {
     const router = useRouter();
     const username = ref('');
@@ -12,7 +12,7 @@ export default defineComponent({
 
     const register = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/register', {
+        const response = await fetch('http://localhost:8080/api/auth/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -31,7 +31,9 @@ export default defineComponent({
         const data = await response.json();
         console.log(data);
 
-        router.push('/managing-authorities');
+        localStorage.setItem('jwtToken', data.token);
+
+        await router.push('/managing-authorities');
       } catch (error) {
         console.error('Error:', error);
       }
