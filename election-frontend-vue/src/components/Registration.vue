@@ -64,23 +64,36 @@ export default defineComponent({
 </script>
 
 <template>
-  <main class="form-container">
-    <div class="form-box">
-      <h1>Registration</h1>
-      <form @submit.prevent="register" class="form">
-        <label for="username">Username</label>
-        <input type="text" id="username" v-model="username" required>
-        <label for="password">Password</label>
-        <input type="password" id="password" v-model="password" required>
-        <label for="email">Email</label>
-        <input type="email" id="email" v-model="email" required>
-        <button type="submit">Register</button>
-      </form>
-    </div>
-  </main>
+  <div>
+    <router-link to="/" class="home-link">Home</router-link>
+    <main class="form-container">
+      <div class="form-box">
+        <h1>Registration</h1>
+        <form @submit.prevent="register" class="form">
+          <label for="username">Username</label>
+          <input type="text" id="username" v-model="username" required>
+          <label for="password">Password</label>
+          <input type="password" id="password" v-model="password" required>
+          <label for="email">Email</label>
+          <input type="email" id="email" v-model="email" required>
+          <button type="submit">Register</button>
+          <p>Already have an account? <router-link to="/login">Log in here</router-link></p>
+        </form>
+      </div>
+    </main>
+  </div>
 </template>
 
 <style scoped>
+.home-link {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .form-container {
   display: flex;
   justify-content: center;
@@ -94,6 +107,9 @@ export default defineComponent({
   padding: 2rem;
   border-radius: 0.5rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  position: relative;
 }
 
 .form {
@@ -117,8 +133,13 @@ export default defineComponent({
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
   border: none;
-  background-color: #333333;
+  background-color: #007bff;
   color: white;
   cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.form button:hover {
+  background-color: #0056b3;
 }
 </style>
