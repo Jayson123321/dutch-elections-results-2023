@@ -252,10 +252,16 @@ export default {
           <div v-for="request in unbanRequests" :key="request.id" class="unban-request-card">
             <div class="request-header">
               <p><strong>Ticket Number:</strong> {{ request.id }}</p>
+
             </div>
             <div class="request-body">
               <p><strong>Username:</strong> {{ request.user.username }}</p>
               <p><strong>Message:</strong> {{ request.message }}</p>
+              <div class="request-actions">
+                <button @click="acceptUnbanRequest(request.id)" class="accept-button">Accept</button>
+                <button @click="rejectUnbanRequest(request.id)" class="reject-button">Reject</button>
+              </div>
+
             </div>
           </div>
         </div>
