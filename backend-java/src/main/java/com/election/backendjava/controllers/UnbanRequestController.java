@@ -33,5 +33,8 @@ public class UnbanRequestController {
         }
     }
 
-
+    @DeleteMapping("/{id}/reject")
+    public void rejectUnbanRequest(@PathVariable Long id) {
+        unbanRequestService.deleteUnbanRequest(id);
+    }
 }
