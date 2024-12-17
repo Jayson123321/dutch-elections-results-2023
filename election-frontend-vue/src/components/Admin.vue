@@ -228,7 +228,18 @@ export default {
           .catch(error => {
             console.error('An error occurred while unbanning the user:', error);
           });
+    },
+    rejectUnbanRequest(requestId) {
+      axios.delete(`http://localhost:8080/api/unban-requests/${requestId}/reject`)
+          .then(() => {
+            alert('Unban request rejected successfully.');
+            this.fetchUnbanRequests(); // Refresh de unban requests lijst
+          })
+          .catch(error => {
+            console.error('An error occurred while rejecting the unban request:', error);
+          });
     }
+
   }
 
 
