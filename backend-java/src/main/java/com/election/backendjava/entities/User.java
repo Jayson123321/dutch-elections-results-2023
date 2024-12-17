@@ -2,6 +2,8 @@ package com.election.backendjava.entities;
 
 import jakarta.persistence.*;
 
+import java.util.Collection;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -60,6 +62,18 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private Collection<UserForum> userForum;
+
+    public Collection<UserForum> getUserForum() {
+        return userForum;
+    }
+
+    public void setUserForum(Collection<UserForum> userForum) {
+        this.userForum = userForum;
     }
 
 }
