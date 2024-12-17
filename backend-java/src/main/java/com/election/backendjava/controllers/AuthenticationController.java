@@ -1,37 +1,53 @@
 package com.election.backendjava.controllers;
 
-import com.election.backendjava.dto.JWToken;
-import com.election.backendjava.dto.RegisterRequest;
 import com.election.backendjava.entities.User;
-import com.election.backendjava.repositories.UserRepository;
-import com.election.backendjava.APIconfig;
-import com.election.backendjava.services.AuthService;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.election.backendjava.services.AuthenticationService;
+import com.election.backendjava.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthenticationController {
 
     @Autowired
-    private APIconfig apiConfig;
+    private AuthenticationService authenticationService;
 
     @Autowired
-    private AuthService authService;
+    private JwtUtil jwtUtil;
 
     @PostMapping("/register")
-    public ResponseEntity <Void> register (@RequestBody RegisterRequest registerRequest){
-        authService.register(registerRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<?> register(@RequestBody User user) {
+        try {
+            authenticationService.register(user);
+            return ResponseEntity.ok("User registered successfully!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", e.getMessage()));
+        }
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody User user) {
+        try {
+            String username = authenticationService.login(user);
 
+            String token = jwtUtil.generateToken(username);
+
+            Map<String, String> response = new HashMap<>();
+            response.put("token", token);
+            response.put("username", username);
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", e.getMessage()));
+        }
+    }
 }

@@ -3,6 +3,7 @@
 //import com.election.backendjava.dto.LoginRequest;
 //import com.election.backendjava.entities.User;
 //import com.election.backendjava.repositories.UserRepository;
+//import com.election.backendjava.utils.JwtUtil;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.http.HttpHeaders;
 //import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@
 //    private UserRepository userRepository;
 //
 //    @Autowired
-//    private JwtService jwtService;
+//    private JwtUtil jwtService;
 //
 //    @PostMapping("/login")
 //    public ResponseEntity<String> login(@RequestBody LoginRequest userCredentials) {

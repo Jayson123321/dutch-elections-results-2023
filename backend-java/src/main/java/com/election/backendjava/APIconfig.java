@@ -10,27 +10,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class APIconfig implements WebMvcConfigurer {
 
-    @Value("${jwt.issuer}")
-    private String issuer;
-
-    @Value("${jwt.passphrase}")
-    private String passphrase;
-
-    @Value("${jwt.tokenDurationOfValidity}")
-    private int tokenDurationOfValidity;
-
-    public String getIssuer() {
-        return issuer;
-    }
-
-    public String getPassphrase() {
-        return passphrase;
-    }
-
-    public int getTokenDurationOfValidity() {
-        return tokenDurationOfValidity;
-    }
-
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
