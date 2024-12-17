@@ -64,6 +64,11 @@
 </template>
 
 <style>
+#input-0 {
+  background-color: transparent;
+  border: none;
+}
+
 #description-container {
   border: 1px solid #ddd;
   padding: 20px;
