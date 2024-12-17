@@ -25,10 +25,19 @@ export default defineComponent({
         });
 
         if (!response.ok) {
-          throw new Error('Registration failed');
+          const errorText = await response.text();
+          throw new Error(`Registration failed: ${errorText}`);
         }
 
-        const data = await response.json();
+        const contentType = response.headers.get('content-type');
+        let data;
+        if (contentType && contentType.includes('application/json')) {
+          data = await response.json();
+        } else {
+          const text = await response.text();
+          throw new Error(`Unexpected response format: ${text}`);
+        }
+
         console.log(data);
 
         localStorage.setItem('jwtToken', data.token);
