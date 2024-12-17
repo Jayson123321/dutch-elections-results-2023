@@ -249,14 +249,20 @@ export default {
       <div class="content-box">
         <h2 class="section-title">Unban Requests</h2>
         <div v-if="unbanRequests.length > 0">
-          <div v-for="request in unbanRequests" :key="request.id" class="unban-request">
-            <p><strong>Request by:</strong> {{ request.user.username }}</p>
-            <p><strong>Message:</strong> {{ request.message }}</p>
+          <div v-for="request in unbanRequests" :key="request.id" class="unban-request-card">
+            <div class="request-header">
+              <p><strong>Ticket Number:</strong> {{ request.id }}</p>
+            </div>
+            <div class="request-body">
+              <p><strong>Username:</strong> {{ request.user.username }}</p>
+              <p><strong>Message:</strong> {{ request.message }}</p>
+            </div>
           </div>
         </div>
         <p v-else class="placeholder-text">No unban requests available</p>
       </div>
     </div>
+
 
 
     <div class="content-container">
