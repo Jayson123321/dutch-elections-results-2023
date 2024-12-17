@@ -635,6 +635,36 @@ button {
 .request-body p {
   margin: 5px 0;
 }
+.request-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.accept-button, .reject-button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.accept-button {
+  background-color: #28a745;
+}
+
+.accept-button:hover {
+  background-color: #218838;
+}
+
+.reject-button {
+  background-color: #dc3545;
+}
+
+.reject-button:hover {
+  background-color: #c82333;
+}
 
 
 </style>
