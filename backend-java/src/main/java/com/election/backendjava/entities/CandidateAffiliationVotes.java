@@ -19,8 +19,14 @@ public class CandidateAffiliationVotes {
     @Column(name = "authority_identifier", nullable = false)
     private Long authorityIdentifier;
 
+    @Column(name = "authority_name", nullable = false)
+    private String authorityName;
+
     @Column(name = "valid_votes", nullable = false)
     private int validVotesAffiliation;
+
+    @Column (name = "registered_name", nullable = false)
+    private String registeredName;
 
     // Getters and Setters
     public Long getId() {
@@ -55,11 +61,27 @@ public class CandidateAffiliationVotes {
         this.authorityIdentifier = authorityIdentifier;
     }
 
+    public String getAuthorityName() {
+        return authorityName;
+    }
+
+    public void setAuthorityName(String authorityName) {
+        this.authorityName = authorityName;
+    }
+
     public int getValidVotes() {
         return validVotesAffiliation;
     }
 
     public void setValidVotes(int validVotes) {
         this.validVotesAffiliation = validVotes;
+    }
+
+    public String getRegisteredName() {
+        return registeredName;
+    }
+
+    public void setRegisteredName(String registeredName) {
+        this.registeredName = registeredName;
     }
 }

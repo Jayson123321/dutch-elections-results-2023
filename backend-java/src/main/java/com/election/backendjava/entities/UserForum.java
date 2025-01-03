@@ -1,6 +1,9 @@
 package com.election.backendjava.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class UserForum {
@@ -20,6 +23,10 @@ public class UserForum {
     @JoinColumn(name = "id" , nullable = false)
    @JsonBackReference
    private User user;
+
+    @OneToMany(mappedBy = "userForum", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Reply> replies;
 
     //getters and setters
     public Long getForumId() {
@@ -49,6 +56,14 @@ public class UserForum {
     }
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<Reply> getReplies() {
+        return replies;
+    }
+
+    public void setReplies(List<Reply> replies) {
+        this.replies = replies;
     }
 
 }

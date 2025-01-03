@@ -6,6 +6,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class APIconfig implements WebMvcConfigurer {
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -16,13 +17,13 @@ public class APIconfig implements WebMvcConfigurer {
                         "http://localhost:5177",
                         "http://localhost:5178",
                         "http://localhost:5179",
+                        "http://localhost:8080",
                         "http://demo-crazy.com",
                         "https://demo-crazy.com",
                         "http://*.hva.nl"
                 )
-                .allowedMethods("GET", "POST", "PUT", "DELETE");
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
 }
-
-
-
