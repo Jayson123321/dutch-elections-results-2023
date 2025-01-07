@@ -33,7 +33,7 @@ export default {
         <div class="flexbox">
           <h2>Test je kennis</h2>
           <p>Doe een quiz en ontdek hoeveel je weet over het Nederlandse politieke systeem.</p>
-          <router-link to="/quiz" class="cta-link">Start quiz</router-link>
+          <router-link to="/Quiz" class="cta-link">Start quiz</router-link>
         </div>
       </div>
     </div>
