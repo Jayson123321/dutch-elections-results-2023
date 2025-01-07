@@ -20,6 +20,7 @@ import PoliticalNews from "@/components/PoliticalNews.vue";
 import HeatMap from "@/components/HeatMap.vue";
 import Educativepage from "@/components/Educativepage.vue";
 import Quiz from "@/components/Quiz.vue";
+import verkiezingsuitleg from "@/components/verkiezingsuitleg.vue";
 
 const routes = [
     { path: '/', component: home },
@@ -43,6 +44,7 @@ const routes = [
     { path: '/Heatmap', component: HeatMap },
     { path: '/Educativepage', component: Educativepage },
     { path: '/Quiz', component: Quiz },
+    { path: '/verkiezingsuitleg', component: verkiezingsuitleg},
 
 ];
 
