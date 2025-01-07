@@ -19,6 +19,7 @@ import LocalAuthoritiesResults from "@/components/LocalAuthoritiesResults.vue";
 import PoliticalNews from "@/components/PoliticalNews.vue";
 import HeatMap from "@/components/HeatMap.vue";
 import Educativepage from "@/components/Educativepage.vue";
+import Quiz from "@/components/Quiz.vue";
 
 const routes = [
     { path: '/', component: home },
@@ -41,6 +42,7 @@ const routes = [
     { path : '/login', component: LoginPage },
     { path: '/Heatmap', component: HeatMap },
     { path: '/Educativepage', component: Educativepage },
+    { path: '/Quiz', component: Quiz },
 
 ];
 
