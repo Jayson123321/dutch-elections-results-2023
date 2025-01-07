@@ -187,3 +187,18 @@ data() {
 </script>
 
 ```
+As a user I want to be able to teach using this website so I want a page for eductational purposes where I can download a powerpoint presentation.
+https://gitlab.fdmci.hva.nl/semester-3-hbo-ict/onderwijs/student-projecten/2024-2025/out-p-se-ti/semester-1/wiipuujaamee42/-/issues/63
+
+This user story was made to create a page where the user can download a PowerPoint presentation about the elections. The user can click on the download button to download the PowerPoint presentation. The PowerPoint presentation was created by Seneca and contains information about the elections and how politics work in the Netherlands. The user can use this PowerPoint presentation to teach others about the elections and how politics work in the Netherlands.
+This user story is ethical because it provides educational resources to users and allows them to teach others about the elections and how politics work in the Netherlands.
+
+```vue
+ <div class="flexbox">
+          <h2>Download PowerPoint</h2>
+          <p>Download een PowerPoint-presentatie over verkiezingen.</p>
+          <p>Powerpoint gemaakt door Seneca.</p>
+          <a href="/educativepowerpoint.pptx" class="cta-link" download>Download PowerPoint</a>
+
+```
+
