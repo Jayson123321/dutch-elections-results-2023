@@ -4,7 +4,7 @@ As a user i want to navigate through the all candidates page per 30 candidates t
 https://gitlab.fdmci.hva.nl/semester-3-hbo-ict/onderwijs/student-projecten/2024-2025/out-p-se-ti/semester-1/wiipuujaamee42/-/issues/55
 
 This user story was made to improve loading times and save energy, by only loading 30 candidates at a time. This was done by adding a pagination system to the all candidates page. The page now shows 30 candidates at a time and the user can navigate through the pages by clicking on the next and previous buttons. The user can also see how many pages there are in total and which page they are currently on.
-This is made for ethics.
+
 
 ```java
 export default {
@@ -70,3 +70,7 @@ export default {
   }
 }
 ```
+
+As a user I want a page that will explain how elections work in the Netherlands and how this page will show you how to analyse the results.
+https://gitlab.fdmci.hva.nl/semester-3-hbo-ict/onderwijs/student-projecten/2024-2025/out-p-se-ti/semester-1/wiipuujaamee42/-/issues/61
+
