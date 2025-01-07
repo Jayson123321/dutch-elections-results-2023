@@ -47,7 +47,9 @@ export default {
   text-align: center;
   align-items: center;
   padding: 20px;
-  height: calc(100vh - 200px);
+  padding-bottom: 100px; /* Voeg extra padding toe aan de onderkant */
+  min-height: calc(100vh - 200px); /* Zorg ervoor dat de container minimaal de hoogte van het scherm heeft */
+  background-color: #f0f2f5; /* Lichtgrijze achtergrond */
 }
 
 .flexcontainer {
@@ -58,18 +60,24 @@ export default {
 }
 
 .flexbox {
-  background: #f8f9fa; /* Lichtgrijze achtergrond */
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: #ffffff; /* Witte achtergrond */
+  border-radius: 12px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
   width: 300px;
   margin: 15px;
   text-align: left;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.flexbox:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
 }
 
 .flexbox h2 {
-  color: #007bff; /* Blauwe tekstkleur */
-  font-size: 20px;
+  color: #ff6600; /* Oranje tekstkleur */
+  font-size: 22px;
   margin-bottom: 10px;
 }
 
@@ -83,14 +91,15 @@ export default {
   display: inline-block;
   padding: 10px 15px;
   color: #fff; /* Witte tekstkleur */
-  background: #007bff; /* Blauwe achtergrond */
+  background: #ff6600; /* Oranje achtergrond */
   border-radius: 5px;
   text-decoration: none;
   font-weight: bold;
-  transition: background 0.3s;
+  transition: background 0.3s, transform 0.3s;
 }
 
 .cta-link:hover {
-  background: #0056b3; /* Donkerdere blauwe achtergrond bij hover */
+  background: #cc5200; /* Donkerdere oranje achtergrond bij hover */
+  transform: translateY(-2px);
 }
 </style>
