@@ -27,6 +27,7 @@ export default {
         <div class="flexbox">
           <h2>Download PowerPoint</h2>
           <p>Download een PowerPoint-presentatie over verkiezingen.</p>
+          <p>Powerpoint gemaakt door Seneca.</p>
           <a href="/educativepowerpoint.pptx" class="cta-link" download>Download PowerPoint</a>
         </div>
         <div class="flexbox">
