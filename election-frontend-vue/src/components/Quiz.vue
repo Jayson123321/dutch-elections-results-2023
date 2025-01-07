@@ -30,7 +30,7 @@ export default {
         {
           question: "Wie was de leider van de partij GroenLinks tijdens de verkiezingen van 2023?",
           options: ["Jesse Klaver", "Tofik Dibi", "Lilian Marijnissen", "Frans Timmermans"],
-          answer: "Jesse Klaver"
+          answer: "Frans Timmermans"
         },
         {
           question: "Wat was het doel van de campagne van de partij DENK?",
