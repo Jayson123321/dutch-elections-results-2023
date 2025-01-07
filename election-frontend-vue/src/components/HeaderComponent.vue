@@ -14,6 +14,7 @@
             <li><router-link to="/">Home</router-link></li>
             <li><router-link to="/choose-results">Uitslagen</router-link></li>
             <li><router-link to="/partijenpagina">Partijen</router-link></li>
+            <li><router-link to="/Educativepage">Educative page</router-link></li>
             <li><router-link to="/login">Login</router-link></li>
           </ul>
         </div>

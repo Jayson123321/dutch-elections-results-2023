@@ -18,6 +18,7 @@ import kandidatenuitslag from "@/components/kandidatenuitslag.vue";
 import LocalAuthoritiesResults from "@/components/LocalAuthoritiesResults.vue";
 import PoliticalNews from "@/components/PoliticalNews.vue";
 import HeatMap from "@/components/HeatMap.vue";
+import Educativepage from "@/components/Educativepage.vue";
 
 const routes = [
     { path: '/', component: home },
@@ -39,6 +40,7 @@ const routes = [
     { path: '/politicalNews', component: PoliticalNews },
     { path : '/login', component: LoginPage },
     { path: '/Heatmap', component: HeatMap },
+    { path: '/Educativepage', component: Educativepage },
 
 ];
 
