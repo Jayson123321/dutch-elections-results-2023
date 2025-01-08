@@ -123,12 +123,10 @@ export default {
   margin-top: 100px;
   text-align: center;
   padding: 20px;
-  background-color: #f0f2f5;
   min-height: calc(100vh - 200px);
 }
 
 .quiz-question {
-  background: #ffffff;
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
@@ -178,7 +176,6 @@ export default {
 }
 
 .quiz-results {
-  background: #ffffff;
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
