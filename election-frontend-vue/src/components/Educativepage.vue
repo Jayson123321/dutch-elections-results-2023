@@ -49,7 +49,6 @@ export default {
   padding: 20px;
   padding-bottom: 100px; /* Voeg extra padding toe aan de onderkant */
   min-height: calc(100vh - 200px); /* Zorg ervoor dat de container minimaal de hoogte van het scherm heeft */
-  background-color: #f0f2f5; /* Lichtgrijze achtergrond */
 }
 
 .flexcontainer {
@@ -60,7 +59,6 @@ export default {
 }
 
 .flexbox {
-  background: #ffffff; /* Witte achtergrond */
   border-radius: 12px;
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
