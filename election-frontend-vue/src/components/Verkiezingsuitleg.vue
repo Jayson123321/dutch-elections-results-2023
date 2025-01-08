@@ -91,10 +91,8 @@ export default {
 .educatieve-pagina {
   margin-top: 100px;
   padding: 20px;
-  background-color: #f0f2f5;
   min-height: calc(100vh - 200px);
   font-family: 'Arial', sans-serif;
-  color: #333;
   text-align: center;
 }
 
@@ -115,7 +113,6 @@ h2 {
 p {
   font-size: 16px;
   line-height: 1.8;
-  color: #555;
 }
 
 ul {
@@ -131,7 +128,6 @@ ul li {
 
 button {
   background-color: #ff6600;
-  color: white;
   padding: 15px;
   border: none;
   border-radius: 8px;
@@ -147,7 +143,6 @@ button:hover {
 }
 
 .content-section {
-  background: #fff;
   padding: 20px;
   border-radius: 12px;
   margin-bottom: 30px;
@@ -156,7 +151,6 @@ button:hover {
 
 .summary-section {
   background-color: #ff6600;
-  color: white;
   padding: 20px;
   border-radius: 12px;
 }
