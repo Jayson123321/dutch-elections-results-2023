@@ -237,12 +237,17 @@ export default {
   --border-color: var(--border-color-dark);
 }
 
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
   font-family: Arial, sans-serif;
-  background-color: var(--background-color);
+  background-color: var(--element-background-color);
   color: var(--text-color);
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
