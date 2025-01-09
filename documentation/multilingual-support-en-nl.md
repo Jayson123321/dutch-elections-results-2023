@@ -14,13 +14,21 @@ Vue.js offers a robust library called Vue I18n, designed to simplify the integra
 3. **Integration**: Dynamic translations are applied to UI elements such as buttons and labels using `$t()` functions.
 4. **Language Switching**: Users can easily toggle between supported languages via a dropdown menu or buttons.
 5. **Fallback Mechanism**: If a translation is unavailable, the system defaults to a pre-defined language (e.g., English).
+---
 
-### Backend: Spring Boot
-Spring Boot utilizes the `MessageSource` bean to manage multilingual messages:
-1. **Message Files**: Language-specific properties files (e.g., `messages_en.properties`, `messages_nl.properties`) are created to store translations.
-2. **Language Detection**: The backend detects the user’s preferred language through the `Accept-Language` header or a specific parameter in API requests.
-3. **Response Localization**: API responses, including error messages, are localized and returned in the user’s selected language.
-4. **Scalability**: Spring Boot’s approach allows for the easy addition of new languages by updating the message files.
+## Why `i181n.js` Instead of an API
+
+You have chosen to use `i181n.js` instead of an API for the following reasons:
+
+1. **Privacy and Association**: Since this is a school project, we prefer not to use external APIs like those from Google. Using external APIs can lead to privacy issues and require API keys that are linked to your account.
+
+2. **Simplicity and Control**: By using `i181n.js`, you have full control over the translations and implementation. This makes it easier to make adjustments and manage translations without relying on an external service.
+
+3. **Cost**: External APIs can incur costs, especially as your project grows and requires more translations. By using `i181n.js`, you avoid these costs.
+
+4. **Offline Access**: `i181n.js` works entirely locally within your application, meaning translations are available even without an internet connection. This is not possible with an external API.
+
+5. **Speed**: Using local translations with `i181n.js` can be faster than making network requests to an external API, which benefits the performance of your application.
 
 ---
 
@@ -51,18 +59,18 @@ Spring Boot utilizes the `MessageSource` bean to manage multilingual messages:
 ## Ethical and Practical Benefits
 
 1. **Inclusivity and Accessibility**:
-    - Providing multilingual support ensures the application is accessible to users from diverse linguistic backgrounds.
-    - It fosters equality by allowing everyone to interact with the application regardless of language barriers.
+   - Providing multilingual support ensures the application is accessible to users from diverse linguistic backgrounds.
+   - It fosters equality by allowing everyone to interact with the application regardless of language barriers.
 
 2. **User Trust and Transparency**:
-    - Users are more likely to trust applications that communicate clearly in their preferred language.
-    - Multilingual support aligns with global standards and legal frameworks (e.g., GDPR), ensuring transparency in data usage.
+   - Users are more likely to trust applications that communicate clearly in their preferred language.
+   - Multilingual support aligns with global standards and legal frameworks (e.g., GDPR), ensuring transparency in data usage.
 
 3. **Scalability and Reach**:
-    - Applications with multilingual support can attract a global audience, expanding their user base and relevance.
+   - Applications with multilingual support can attract a global audience, expanding their user base and relevance.
 
 4. **Cultural Sensitivity**:
-    - Adapting to local languages reflects respect for cultural differences, enhancing user satisfaction.
+   - Adapting to local languages reflects respect for cultural differences, enhancing user satisfaction.
 
 ---
 
