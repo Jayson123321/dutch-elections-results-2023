@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UnbanRequestService {
@@ -15,5 +16,14 @@ public class UnbanRequestService {
 
     public List<UnbanRequest> getAllUnbanRequests() {
         return unbanRequestRepository.findAll();
+    }
+
+    public UnbanRequest findById(Long id) {
+        Optional<UnbanRequest> unbanRequest = unbanRequestRepository.findById(id);
+        return unbanRequest.orElse(null);
+    }
+
+    public void deleteUnbanRequest(Long id) {
+        unbanRequestRepository.deleteById(id);
     }
 }

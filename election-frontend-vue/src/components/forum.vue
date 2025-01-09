@@ -183,13 +183,16 @@ export default {
     },
 
     async deleteForum(forumId) {
-      try {
-        await axios.delete(`http://localhost:8080/api/usersforum/${forumId}`);
-        this.forums = this.forums.filter(forum => forum.forumId !== forumId);
-        alert('Forum succesvol verwijderd.');
-      } catch (error) {
-        console.error('Fout bij het verwijderen van het forum:', error);
-        alert('Er is een fout opgetreden bij het verwijderen van het forum.');
+      const confirmed = confirm("Weet je zeker dat je dit forum wilt verwijderen?");
+      if (confirmed) {
+        try {
+          await axios.delete(`http://localhost:8080/api/usersforum/${forumId}`);
+          this.forums = this.forums.filter(forum => forum.forumId !== forumId);
+          alert('Forum succesvol verwijderd.');
+        } catch (error) {
+          console.error('Fout bij het verwijderen van het forum:', error);
+          alert('Er is een fout opgetreden bij het verwijderen van het forum.');
+        }
       }
     },
 
