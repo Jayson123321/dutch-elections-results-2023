@@ -16,7 +16,7 @@
             <li><router-link to="/partijenpagina">Partijen</router-link></li>
             <li><router-link to="/Educativepage">Educative page</router-link></li>
             <li><router-link to="/login">Login</router-link></li>
-            <li><router-link to="/forum">forum</router-link></li>
+            <li><router-link to="/forum">Forum</router-link></li>
           </ul>
         </div>
       </nav>
