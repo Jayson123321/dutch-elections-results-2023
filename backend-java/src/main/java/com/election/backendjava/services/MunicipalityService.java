@@ -16,4 +16,8 @@ public class MunicipalityService {
     public List<Municipality> getAllMunicipalities() {
         return municipalityRepository.findAll();
     }
+
+    public Municipality getMunicipalityById(Long id) {
+        return municipalityRepository.findById(id).orElse(null);
+    }
 }
