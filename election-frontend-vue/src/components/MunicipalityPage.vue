@@ -36,13 +36,12 @@ onMounted(() => {
       <h2>Alle Gemeenten</h2>
       <div v-if="municipalities.length > 0">
         <div v-for="municipality in municipalities" :key="municipality.id" class="municipality-item">
-          <p><strong>Gemeente Identifier:</strong> {{ municipality.authorityIdentifier }}</p>
-          <p><strong>Gemeente Naam:</strong> {{ municipality.authorityName }}</p>
+          <p><strong>Gemeente id:</strong> {{ municipality.authorityIdentifier }}</p>
+          <p><strong>Gemeente:</strong> {{ municipality.authorityName }}</p>
         </div>
       </div>
       <p v-else class="no-municipalities">Geen gemeenten gevonden.</p>
     </div>
-    <FooterComponent />
     <FooterComponent />
   </div>
 </template>
@@ -55,8 +54,41 @@ onMounted(() => {
   min-height: 100vh;
   text-align: center;
 }
-.page-title {
-  font-size: 2em;
-  margin-bottom: 20px;
+
+#description-container {
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 5px;
+  background-color: #222;
+}
+
+#description-text {
+  font-size: 1.1em;
+  line-height: 1.6;
+}
+
+#titel {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.municipality-list {
+  margin: 20px 0;
+  text-align: left;
+  padding: 0 20px;
+}
+.municipality-item {
+  background-color: #222;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.no-municipalities {
+  color: #888;
+  font-size: 1.2em;
 }
 </style>
+
