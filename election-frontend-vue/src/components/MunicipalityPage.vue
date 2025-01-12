@@ -26,7 +26,12 @@ onMounted(() => {
 <template>
   <div class="municipality-page">
     <HeaderComponent />
-    <h2 class="page-title">Municipalities</h2>
+    <h2 class="page-title">Gemeente uitslagen vergelijken</h2>
+    <div id="description-container">
+      <p id="description-text">
+        Vergelijke alle gemeentelijke uitslagen met elkaar
+      </p>
+    </div>
     <FooterComponent />
   </div>
 </template>
