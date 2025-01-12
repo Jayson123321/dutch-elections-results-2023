@@ -202,3 +202,41 @@ This user story is ethical because it provides educational resources to users an
 
 ```
 
+
+As a user I want to be able to search for all candidates by using a search bar, I also want the search bar to be able to search on municipality's and political party's.
+https://gitlab.fdmci.hva.nl/semester-3-hbo-ict/onderwijs/student-projecten/2024-2025/out-p-se-ti/semester-1/wiipuujaamee42/-/issues/66
+
+This user story was made to create a search bar on the all candidates page. The user can enter a search query in the search bar and the page will filter the candidates based on the search query. The search bar can search for candidates by name, municipality, and political party. The search bar is case-insensitive and will show the candidates that match the search query. 
+
+```vue
+    <input type="text" v-model="searchTerm" placeholder="Zoek kandidaten..." class="search-bar" />
+```
+```java
+data() {
+    return {
+      candidates: [],
+      affiliations: [],
+      currentPage: 1,
+      itemsPerPage: 30,
+      searchTerm: ''
+    };
+  },
+  computed: {
+    filteredCandidates() {
+      const searchTermLower = this.searchTerm.toLowerCase();
+      return this.candidates.filter(candidate => {
+        return candidate.candidateName.toLowerCase().includes(searchTermLower) ||
+            candidate.qualifyingAddress.toLowerCase().includes(searchTermLower) ||
+            (candidate.affiliation && candidate.affiliation.registeredName.toLowerCase().includes(searchTermLower));
+      });
+    },
+    paginatedCandidates() {
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      const end = start + this.itemsPerPage;
+      return this.filteredCandidates.slice(start, end);
+    },
+    totalPages() {
+      return Math.ceil(this.filteredCandidates.length / this.itemsPerPage);
+    }
+  },
+```
