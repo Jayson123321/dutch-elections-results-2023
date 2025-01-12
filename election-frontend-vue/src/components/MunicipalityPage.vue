@@ -9,7 +9,7 @@ const municipalities = ref([]);
 // function o get municipalities
 const fetchMunicipalities = async () => {
   try {
-    const response = await axios.get('http://localhost:8080/api/municipalities');
+    const response = await axios.get('http://localhost:8080/api/managing-authorities/getAllAuthorities');
     municipalities.value = response.data;
   } catch (error) {
     console.error('Error fetching municipalities:', error);
