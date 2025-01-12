@@ -49,7 +49,6 @@ export default {
       const searchTermLower = this.searchTerm.toLowerCase();
       return this.candidates.filter(candidate => {
         return candidate.candidateName.toLowerCase().includes(searchTermLower) ||
-            candidate.gender.toLowerCase().includes(searchTermLower) ||
             candidate.qualifyingAddress.toLowerCase().includes(searchTermLower) ||
             (candidate.affiliation && candidate.affiliation.registeredName.toLowerCase().includes(searchTermLower));
       });
