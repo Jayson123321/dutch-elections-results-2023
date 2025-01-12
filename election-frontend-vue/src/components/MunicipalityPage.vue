@@ -12,17 +12,15 @@ const fetchMunicipalities = async () => {
     const response = await axios.get('http://localhost:8080/api/managing-authorities/getAllAuthorities');
     municipalities.value = response.data;
   } catch (error) {
-    console.error('Error fetching municipalities:', error);
-  }
-
-  // gets municipalities when page loads
-  onMounted(() => {
-    fetchMunicipalities();
-  });
+    console.error('Error fetching municipalities:', error);  }
 };
 
-
+// gets municipalities when page loads
+onMounted(() => {
+  fetchMunicipalities();
+});
 </script>
+
 
 
 <template>
