@@ -11,4 +11,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/municipalities")
 public class MunicipalityController {
+
+    @Autowired
+    private MunicipalityService municipalityService;
+
+    @GetMapping
+    public List<Municipality> getAllMunicipalities() {
+        return municipalityService.getAllMunicipalities();
+    }
 }
