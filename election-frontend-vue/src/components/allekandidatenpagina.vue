@@ -3,6 +3,7 @@
 
   <div class="container">
     <h1>Alle Kandidaten</h1>
+    <input type="text" v-model="searchTerm" placeholder="Zoek kandidaten..." class="search-bar" />
     <ul class="candidate-list">
       <li v-for="candidate in paginatedCandidates" :key="candidate.id" class="candidate-item">
         <router-link :to="{ name: 'kandidatenuitslag', params: { id: candidate.id } }">
@@ -21,7 +22,6 @@
     </div>
   </div>
   <FooterComponent />
-
 </template>
 
 <script>
@@ -41,16 +41,26 @@ export default {
       affiliations: [],
       currentPage: 1,
       itemsPerPage: 30,
+      searchTerm: ''
     };
   },
   computed: {
+    filteredCandidates() {
+      const searchTermLower = this.searchTerm.toLowerCase();
+      return this.candidates.filter(candidate => {
+        return candidate.candidateName.toLowerCase().includes(searchTermLower) ||
+            candidate.gender.toLowerCase().includes(searchTermLower) ||
+            candidate.qualifyingAddress.toLowerCase().includes(searchTermLower) ||
+            (candidate.affiliation && candidate.affiliation.registeredName.toLowerCase().includes(searchTermLower));
+      });
+    },
     paginatedCandidates() {
       const start = (this.currentPage - 1) * this.itemsPerPage;
       const end = start + this.itemsPerPage;
-      return this.candidates.slice(start, end);
+      return this.filteredCandidates.slice(start, end);
     },
     totalPages() {
-      return Math.ceil(this.candidates.length / this.itemsPerPage);
+      return Math.ceil(this.filteredCandidates.length / this.itemsPerPage);
     }
   },
   mounted() {
@@ -73,7 +83,7 @@ export default {
 
         this.candidates = candidates.map(candidate => {
           const affiliation = affiliations.find(aff => aff.affiliationId === candidate.affiliationId);
-          return { ...candidate, affiliation };
+          return {...candidate, affiliation};
         });
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -97,6 +107,7 @@ export default {
 h1 {
   text-align: center;
 }
+
 .container {
   max-width: 1200px;
   padding: 20px;
@@ -105,6 +116,15 @@ h1 {
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+.search-bar {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
 .candidate-list {
   list-style: none;
   padding: 0;
@@ -113,9 +133,11 @@ h1 {
   gap: 20px;
   justify-content: center;
 }
+
 .candidate-item {
   margin: 10px;
 }
+
 .candidate-card {
   background: #fff;
   border-radius: 8px;
@@ -123,23 +145,28 @@ h1 {
   padding: 20px;
   transition: transform 0.2s, box-shadow 0.2s;
 }
+
 .candidate-card:hover {
   transform: scale(1.05);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
+
 .candidate-card h2 {
   margin-top: 0;
   color: #000000;
 }
+
 .candidate-card p {
   margin: 5px 0;
   color: #555;
 }
+
 .pagination {
   margin-top: 20px;
   display: flex;
   gap: 10px;
 }
+
 .pagination button {
   padding: 10px 20px;
   border: none;
@@ -149,10 +176,12 @@ h1 {
   cursor: pointer;
   transition: background-color 0.3s;
 }
+
 .pagination button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
 }
+
 .pagination button:hover:not(:disabled) {
   background-color: #0056b3;
 }
