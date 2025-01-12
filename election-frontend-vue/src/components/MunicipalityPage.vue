@@ -20,5 +20,15 @@ export default {
 </template>
 
 <style scoped>
-
+.municipality-page {
+  padding: 20px;
+  background-color: #111;
+  color: #fff;
+  min-height: 100vh;
+  text-align: center;
+}
+.page-title {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
 </style>
