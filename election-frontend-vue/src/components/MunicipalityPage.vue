@@ -21,8 +21,6 @@ onMounted(() => {
 });
 </script>
 
-
-
 <template>
   <div class="municipality-page">
     <HeaderComponent />
@@ -32,6 +30,19 @@ onMounted(() => {
         Vergelijke alle gemeentelijke uitslagen met elkaar
       </p>
     </div>
+    <div id="titel">
+    </div>
+    <div class="municipality-list">
+      <h2>Alle Gemeenten</h2>
+      <div v-if="municipalities.length > 0">
+        <div v-for="municipality in municipalities" :key="municipality.id" class="municipality-item">
+          <p><strong>Gemeente Identifier:</strong> {{ municipality.authorityIdentifier }}</p>
+          <p><strong>Gemeente Naam:</strong> {{ municipality.authorityName }}</p>
+        </div>
+      </div>
+      <p v-else class="no-municipalities">Geen gemeenten gevonden.</p>
+    </div>
+    <FooterComponent />
     <FooterComponent />
   </div>
 </template>
