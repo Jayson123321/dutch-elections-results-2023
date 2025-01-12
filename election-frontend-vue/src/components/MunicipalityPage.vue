@@ -12,7 +12,11 @@ export default {
 </script>
 
 <template>
-
+  <div class="municipality-page">
+    <HeaderComponent />
+    <h2 class="page-title">Municipalities</h2>
+    <FooterComponent />
+  </div>
 </template>
 
 <style scoped>
