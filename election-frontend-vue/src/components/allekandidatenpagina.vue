@@ -119,10 +119,24 @@ h1 {
 
 .search-bar {
   width: 100%;
-  padding: 10px;
+  padding: 12px 20px;
   margin-bottom: 20px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 25px;
+  font-size: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.search-bar:focus {
+  border-color: #007bff;
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+  outline: none;
+}
+
+.search-bar::placeholder {
+  color: #999;
+  font-style: italic;
 }
 
 .candidate-list {
