@@ -211,3 +211,32 @@ This user story was made to create a search bar on the all candidates page. The 
 ```vue
     <input type="text" v-model="searchTerm" placeholder="Zoek kandidaten..." class="search-bar" />
 ```
+```java
+data() {
+    return {
+      candidates: [],
+      affiliations: [],
+      currentPage: 1,
+      itemsPerPage: 30,
+      searchTerm: ''
+    };
+  },
+  computed: {
+    filteredCandidates() {
+      const searchTermLower = this.searchTerm.toLowerCase();
+      return this.candidates.filter(candidate => {
+        return candidate.candidateName.toLowerCase().includes(searchTermLower) ||
+            candidate.qualifyingAddress.toLowerCase().includes(searchTermLower) ||
+            (candidate.affiliation && candidate.affiliation.registeredName.toLowerCase().includes(searchTermLower));
+      });
+    },
+    paginatedCandidates() {
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      const end = start + this.itemsPerPage;
+      return this.filteredCandidates.slice(start, end);
+    },
+    totalPages() {
+      return Math.ceil(this.filteredCandidates.length / this.itemsPerPage);
+    }
+  },
+```
