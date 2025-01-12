@@ -14,6 +14,11 @@ const fetchMunicipalities = async () => {
   } catch (error) {
     console.error('Error fetching municipalities:', error);
   }
+
+  // gets municipalities when page loads
+  onMounted(() => {
+    fetchMunicipalities();
+  });
 };
 
 
