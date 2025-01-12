@@ -22,7 +22,6 @@ import Educativepage from "@/components/Educativepage.vue";
 import Quiz from "@/components/Quiz.vue";
 import verkiezingsuitleg from "@/components/verkiezingsuitleg.vue";
 import MunicipalityPage from "@/components/MunicipalityPage.vue";
-import component from "*.vue";
 
 const routes = [
     { path: '/', component: home },
@@ -48,6 +47,7 @@ const routes = [
     { path: '/Quiz', component: Quiz },
     { path: '/verkiezingsuitleg', component: verkiezingsuitleg},
     { path: '/MunicipalityPage', component: MunicipalityPage },
+
 
 ];
 
