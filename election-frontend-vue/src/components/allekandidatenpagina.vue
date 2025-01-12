@@ -1,6 +1,7 @@
 <template>
+  <HeaderComponent />
+
   <div class="container">
-    <HeaderComponent />
     <h1>Alle Kandidaten</h1>
     <ul class="candidate-list">
       <li v-for="candidate in paginatedCandidates" :key="candidate.id" class="candidate-item">
@@ -18,8 +19,9 @@
       <button @click="prevPage" :disabled="currentPage === 1">Vorige</button>
       <button @click="nextPage" :disabled="currentPage === totalPages">Volgende</button>
     </div>
-    <FooterComponent />
   </div>
+  <FooterComponent />
+
 </template>
 
 <script>
