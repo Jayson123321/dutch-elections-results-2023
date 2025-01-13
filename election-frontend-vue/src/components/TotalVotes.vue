@@ -1,10 +1,10 @@
 <template>
   <div>
     <HeaderComponent />
-    <h1 class="titel">Tweede kamer uitslagen</h1>
+0    <h1 class="titel">{{ $t('totalResults.tweede_kamer_uitslagen') }}</h1>
     <div class="totalResults">
       <div class="chartContainer">
-            <canvas id="electionResults" ref="electionResults"></canvas>
+        <canvas id="electionResults" ref="electionResults"></canvas>
       </div>
       <table>
         <tbody>
@@ -17,7 +17,7 @@
       </table>
     </div>
     <div class="politicalComponent">
-      <PoliticalNews/>
+      <PoliticalNews />
     </div>
     <FooterComponent />
   </div>
@@ -80,7 +80,7 @@ export default defineComponent({
           labels: this.results.map(result => result.affiliationName),
           datasets: [{
             label: 'Valid Votes',
-            data: this.results.map(result => result.totalVotes) ,
+            data: this.results.map(result => result.totalVotes),
             backgroundColor: colors,
             borderColor: colors.map(color => color.replace('0.2', '1')),
             borderWidth: 1
@@ -99,11 +99,9 @@ export default defineComponent({
                   const totalVotesForResult = context.raw;
                   const percentage = ((totalVotesForResult / totalVotes) * 100).toFixed(2);
                   return `${result}: ${percentage}% (${totalVotesForResult}) Stemmen`;
-                  // return '';
                 }
               }
             },
-
           }
         }
       });
