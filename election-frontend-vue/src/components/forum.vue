@@ -33,7 +33,7 @@
         <div v-for="forum in forums" :key="forum.forumId" class="forum-item">
           <h3 @click="goToQuestionDetails(forum.forumId)">{{ forum.title }}</h3>
           <p>{{ forum.description }}</p>
-
+          <p><strong>Posted by: {{ forum.username }}</strong></p>
 
           <form @submit.prevent="submitReply(forum.forumId)">
             <div v-for="reply in forum.replies" :key="reply.replyId" class="reply-item">
@@ -41,10 +41,10 @@
             </div>
             <br>
             <textarea
-      v-model="forum.newReply.replyText"
-      placeholder="Beantwoord dit vraag"
-      required
-  ></textarea>
+                v-model="forum.newReply.replyText"
+                placeholder="Beantwoord dit vraag"
+                required
+            ></textarea>
             <button type="submit">Antwoord Posten</button>
           </form>
           <button class="delete-button" @click="deleteForum(forum.forumId)">Verwijder post</button>
@@ -148,8 +148,6 @@ export default {
           }
         });
 
-      // try {
-      //   const response = await axios.post('http://localhost:8080/api/usersforum', this.newForum);
         const createdForum = response.data;
 
         this.forums.unshift({
@@ -158,16 +156,16 @@ export default {
           newReply: { replyText: '' }, // Voeg een lege newReply toe voor consistentie
         });
 
-       this.newForum = {
-        title: '',
-       description: '',
-        user: { id: '' },
-      };
+        this.newForum = {
+          title: '',
+          description: '',
+          user: { id: '' },
+        };
 
-       this.successMessage = "Forum succesvol geplaatst!";
+        this.successMessage = createdForum; // Display the response message
         setTimeout(() => {
-        this.successMessage = '';
-       }, 3000);
+          this.successMessage = '';
+        }, 3000);
 
       } catch (error) {
         console.error('Fout bij het toevoegen van een forum:', error);
