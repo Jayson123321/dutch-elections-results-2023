@@ -58,6 +58,16 @@ const messages = {
             votes: 'Votes',
             show_votes_per_candidate: 'Show votes per candidate',
         },
+        alleKandidaten: {
+            title: 'All Candidates',
+            searchPlaceholder: 'Search candidates...',
+            gender: 'Gender',
+            address: 'Address',
+            party: 'Party',
+            unknown: 'Unknown',
+            prev: 'Previous',
+            next: 'Next'
+        }
     },
     nl: {
         common: {
@@ -115,6 +125,16 @@ const messages = {
             votes: 'Stemmen',
             show_votes_per_candidate: 'Toon stemmen per kandidaat',
         },
+        alleKandidaten: {
+            title: 'Alle Kandidaten',
+            searchPlaceholder: 'Zoek kandidaten...',
+            gender: 'Geslacht',
+            address: 'Adres',
+            party: 'Partij',
+            unknown: 'Onbekend',
+            prev: 'Vorige',
+            next: 'Volgende'
+        }
     }
 };
 

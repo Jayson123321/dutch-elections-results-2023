@@ -2,23 +2,23 @@
   <HeaderComponent />
 
   <div class="container">
-    <h1>Alle Kandidaten</h1>
-    <input type="text" v-model="searchTerm" placeholder="Zoek kandidaten..." class="search-bar" />
+    <h1>{{ $t('alleKandidaten.title') }}</h1>
+    <input type="text" v-model="searchTerm" :placeholder="$t('alleKandidaten.searchPlaceholder')" class="search-bar" />
     <ul class="candidate-list">
       <li v-for="candidate in paginatedCandidates" :key="candidate.id" class="candidate-item">
         <router-link :to="{ name: 'kandidatenuitslag', params: { id: candidate.id } }">
           <div class="candidate-card">
             <h2>{{ candidate.candidateName }}</h2>
-            <p>Gender: {{ candidate.gender }}</p>
-            <p>Adres: {{ candidate.qualifyingAddress }}</p>
-            <p>Partij: {{ candidate.affiliation ? candidate.affiliation.registeredName : 'Onbekend' }}</p>
+            <p>{{ $t('alleKandidaten.gender') }}: {{ candidate.gender }}</p>
+            <p>{{ $t('alleKandidaten.address') }}: {{ candidate.qualifyingAddress }}</p>
+            <p>{{ $t('alleKandidaten.party') }}: {{ candidate.affiliation ? candidate.affiliation.registeredName : $t('alleKandidaten.unknown') }}</p>
           </div>
         </router-link>
       </li>
     </ul>
     <div class="pagination">
-      <button @click="prevPage" :disabled="currentPage === 1">Vorige</button>
-      <button @click="nextPage" :disabled="currentPage === totalPages">Volgende</button>
+      <button @click="prevPage" :disabled="currentPage === 1">{{ $t('alleKandidaten.prev') }}</button>
+      <button @click="nextPage" :disabled="currentPage === totalPages">{{ $t('alleKandidaten.next') }}</button>
     </div>
   </div>
   <FooterComponent />
