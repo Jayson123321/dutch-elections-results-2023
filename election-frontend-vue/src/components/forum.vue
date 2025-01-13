@@ -249,9 +249,9 @@ export default {
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  background-color: var(--background-color);
+  //background-color: var(--background-color);
   font-family: Arial, sans-serif;
-  color: var(--text-color);
+  //color: var(--text-color);
   min-height: 100vh;
 }
 
@@ -282,7 +282,7 @@ export default {
   border: none;
   border-radius: 5px;
   background-color: #ff4500;
-  color: var(--button-text-color);
+  //color: var(--button-text-color);
   cursor: pointer;
   font-size: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
