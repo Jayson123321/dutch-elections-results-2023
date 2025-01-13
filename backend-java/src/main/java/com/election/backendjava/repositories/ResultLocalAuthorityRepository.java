@@ -9,4 +9,6 @@ public interface ResultLocalAuthorityRepository extends JpaRepository<AuthorityT
     List<AuthorityTotalVote> findByAuthorityId(String authorityId);
     // Get all the votes for a specific authority sorted by votes
     List<AuthorityTotalVote> findByAuthorityIdOrderByValidVotesDesc(String authorityId);
+
+    List<AuthorityTotalVote> findByAuthorityIdOrderByAffiliation(String authorityId);
 }

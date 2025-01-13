@@ -18,8 +18,17 @@ public class ResultLocalAuthorityService {
     public List<AuthorityTotalVote> findByAuthorityId(String authorityId) {
         return resultLocalAuthorityRepository.findByAuthorityId(authorityId);
     }
-
+    // functie: soteert op validVotes
     public List<AuthorityTotalVote> findByAuthorityIdOrderByValidVotesDesc(String authorityId) {
         return resultLocalAuthorityRepository.findByAuthorityIdOrderByValidVotesDesc(authorityId);
+    }
+    // functie: soteert op naam
+    public List<AuthorityTotalVote> findByAuthorityIdOrderByAffiliation(String authorityId) {
+        return resultLocalAuthorityRepository.findByAuthorityIdOrderByAffiliation(authorityId);
+    }
+    // functie: berekent het totaal aantal stemmen voor een gemeente
+    public int calculateTotalValidVotes(String authorityId) {
+        List<AuthorityTotalVote> authorityTotalVotesList = resultLocalAuthorityRepository.findByAuthorityId(authorityId);
+        return authorityTotalVotesList.stream().mapToInt(AuthorityTotalVote::getValidVotes).sum();
     }
 }
