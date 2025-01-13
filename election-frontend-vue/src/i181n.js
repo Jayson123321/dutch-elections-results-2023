@@ -57,6 +57,7 @@ const messages = {
             total_votes: 'Total votes',
             votes: 'Votes',
             show_votes_per_candidate: 'Show votes per candidate',
+            party_name: 'Party Name',
         },
         alleKandidaten: {
             title: 'All Candidates',
@@ -67,6 +68,37 @@ const messages = {
             unknown: 'Unknown',
             prev: 'Previous',
             next: 'Next'
+        },
+        partijenPagina: {
+            title: 'Parties and Candidates',
+            allCandidates: 'All candidates'
+        },
+        kandidaatUitslag: {
+            title: 'Candidate Result',
+            name: 'Name',
+            totalVotes: 'Total votes',
+            selectAuthority: 'Select an authority',
+            resultsFor: 'Results for',
+            votesForAuthority: 'Votes for authority',
+            noVotesForAuthority: 'No votes found for this authority.',
+            selectReportingUnit: 'Select a reporting unit',
+            resultsForReportingUnit: 'Results for reporting unit',
+            votesForReportingUnit: 'Votes for reporting unit',
+            noVotesForReportingUnit: 'No votes found for this reporting unit.'
+        },
+        forum: {
+            title: 'Forum',
+            titlePlaceholder: 'Title',
+            descriptionPlaceholder: 'Description',
+            submitButton: 'Submit Forum',
+            postedForums: 'Posted Forums',
+            replyPlaceholder: 'Reply to this question',
+            submitReplyButton: 'Submit Reply',
+            deleteButton: 'Delete Post',
+            prevPage: 'Previous',
+            nextPage: 'Next',
+            page: 'Page',
+            of: 'of'
         }
     },
     nl: {
@@ -124,6 +156,8 @@ const messages = {
             total_votes: 'Totaal aantal stemmen',
             votes: 'Stemmen',
             show_votes_per_candidate: 'Toon stemmen per kandidaat',
+            party_name: 'Partij Naam',
+
         },
         alleKandidaten: {
             title: 'Alle Kandidaten',
@@ -134,6 +168,37 @@ const messages = {
             unknown: 'Onbekend',
             prev: 'Vorige',
             next: 'Volgende'
+        },
+        partijenPagina: {
+            title: 'Partijen en Kandidaten',
+            allCandidates: 'Alle kandidaten'
+        },
+        kandidaatUitslag: {
+            title: 'Resultaat Kandidaat',
+            name: 'Naam',
+            totalVotes: 'Totale stemmen',
+            selectAuthority: 'Kies een gemeente',
+            resultsFor: 'Resultaten voor',
+            votesForAuthority: 'Stemmen gemeente',
+            noVotesForAuthority: 'Geen stemmen gevonden voor deze gemeente.',
+            selectReportingUnit: 'Kies een rapportage-eenheid',
+            resultsForReportingUnit: 'Resultaten voor rapportage-eenheid',
+            votesForReportingUnit: 'Stemmen rapportage-eenheid',
+            noVotesForReportingUnit: 'Geen stemmen gevonden voor deze rapportage-eenheid.'
+        },
+        forum: {
+            title: 'Forum',
+            titlePlaceholder: 'Titel',
+            descriptionPlaceholder: 'Beschrijving',
+            submitButton: 'Forum Posten',
+            postedForums: 'Geposte Forums',
+            replyPlaceholder: 'Beantwoord dit vraag',
+            submitReplyButton: 'Antwoord Posten',
+            deleteButton: 'Verwijder post',
+            prevPage: 'Vorige',
+            nextPage: 'Volgende',
+            page: 'Pagina',
+            of: 'van'
         }
     }
 };
