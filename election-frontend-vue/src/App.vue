@@ -1,16 +1,18 @@
 <script setup lang="ts">
-if (!localStorage.getItem('theme')) {
-  document.documentElement.setAttribute('data-theme', 'dark');
-}
+import { useI18n } from 'vue-i18n';
+
+const { locale, t } = useI18n();
+
+const toggleLocale = () => {
+  locale.value = locale.value === 'en' ? 'nl' : 'en';
+};
 </script>
 
 <template>
-  <header>
-  </header>
-
-  <main>
-    <router-view />
-  </main>
+  <div>
+    <button @click="toggleLocale">{{ t('common.toggle_button') }}</button>
+    <router-view></router-view>
+  </div>
 </template>
 
 <style scoped>

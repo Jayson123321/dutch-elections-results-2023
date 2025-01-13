@@ -202,6 +202,21 @@ This user story is ethical because it provides educational resources to users an
 
 ```
 
+## Uitleg over Verkiezingen  
+- Beschrijving: Een pagina die uitlegt hoe verkiezingen in Nederland werken en hoe gebruikers de resultaten kunnen analyseren.
+- Ethische Impact: Door gebruikers te informeren over het verkiezingsproces, bevordert deze user story transparantie en begrip van democratische processen. Dit draagt bij aan een beter geïnformeerde bevolking die bewustere keuzes kan maken tijdens verkiezingen.
+Kennisquiz over Verkiezingen  
+- Beschrijving: Een quiz die de kennis van gebruikers over verkiezingen test, met feedback over correcte en incorrecte antwoorden.
+- Ethische Impact: Deze user story stimuleert educatie en betrokkenheid bij het politieke systeem. Door gebruikers, inclusief kinderen, te betrekken bij een interactieve leerervaring, wordt hun interesse in politiek en democratie vergroot. Dit kan leiden tot een meer betrokken en geïnformeerde burgerij.
+Downloadbare Educatieve PowerPoint  
+- Beschrijving: Een pagina waar gebruikers een PowerPoint-presentatie over verkiezingen kunnen downloaden voor educatieve doeleinden.
+- Ethische Impact: Het beschikbaar stellen van educatieve middelen zoals een PowerPoint-presentatie ondersteunt leraren, ouders en andere opvoeders bij het onderwijzen over verkiezingen. Dit bevordert de verspreiding van kennis en draagt bij aan de educatie van toekomstige generaties.
+### Conclusie
+- Deze drie user stories dragen gezamenlijk bij aan een beter geïnformeerde en betrokken samenleving. Door transparantie te bevorderen, educatie te stimuleren en educatieve middelen beschikbaar te stellen, ondersteunen deze functionaliteiten de democratische waarden en dragen ze bij aan een ethisch verantwoorde maatschappij. Het project helpt gebruikers niet alleen om beter geïnformeerde kiezers te worden, maar ook om anderen te onderwijzen over het belang van verkiezingen en politieke betrokkenheid.
+
+
+
+
 
 As a user I want to be able to search for all candidates by using a search bar, I also want the search bar to be able to search on municipality's and political party's.
 https://gitlab.fdmci.hva.nl/semester-3-hbo-ict/onderwijs/student-projecten/2024-2025/out-p-se-ti/semester-1/wiipuujaamee42/-/issues/66

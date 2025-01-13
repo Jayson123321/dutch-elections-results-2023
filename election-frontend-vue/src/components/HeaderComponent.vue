@@ -3,24 +3,20 @@
     <div class="header-container">
       <div class="logo">
       </div>
-      <button class="hamburger" @click="toggleMenu">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-      </button>
-      <nav class="nav" :class="{ 'is-active': isMenuOpen }">
-        <div class="header-section links">
-          <ul>
-            <li><router-link to="/">Home</router-link></li>
-            <li><router-link to="/choose-results">Uitslagen</router-link></li>
-            <li><router-link to="/partijenpagina">Partijen</router-link></li>
-            <li><router-link to="/Educativepage">Educative page</router-link></li>
-            <li><router-link to="/login">Login</router-link></li>
-            <li><router-link to="/forum">Forum</router-link></li>
-          </ul>
-        </div>
+      <nav :class="{ 'is-active': isMenuOpen }" class="nav">
+        <ul>
+          <li><router-link to="/">{{ $t('common.home') }}</router-link></li>
+          <li><router-link to="/choose-results">{{ $t('common.results') }}</router-link></li>
+          <li><router-link to="/partijenpagina">{{ $t('common.parties') }}</router-link></li>
+          <li><router-link to="/login">{{ $t('common.login') }}</router-link></li>
+        </ul>
       </nav>
-
+      <div class="search-container">
+        <input type="text" class="search-input" :placeholder="$t('common.search')">
+        <button class="search-button">
+          <svg>...</svg>
+        </button>
+      </div>
       <div class="account">
         <router-link to="/account"><i class="fas fa-user"></i></router-link>
       </div>
@@ -33,15 +29,24 @@
 </template>
 
 <script>
-import PoliticalNews from "@/components/PoliticalNews.vue";
+import {useI18n} from "vue-i18n";
 
 export default {
   name: "HeaderComponent",
-  components: {PoliticalNews},
+  setup() {
+    const { locale } = useI18n();
+
+    const toggleLocale = () => {
+      locale.value = locale.value === 'en' ? 'nl' : 'en';
+    };
+
+    return {
+      toggleLocale
+    };
+  },
   data() {
     return {
       isDarkMode: false,
-      showPoliticalNews: false,
       isMenuOpen: false
     };
   },
