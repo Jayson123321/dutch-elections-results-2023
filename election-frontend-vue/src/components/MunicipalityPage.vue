@@ -5,6 +5,10 @@ import HeaderComponent from '../components/HeaderComponent.vue';
 import FooterComponent from '../components/FooterComponent.vue';
 
 const municipalities = ref([]);
+const selectedMunicipality1 = ref(null);
+const selectedMunicipality2 = ref(null);
+const selectedParty = ref(null);
+const partyVotes = ref([]);
 
 // function o get municipalities
 const fetchMunicipalities = async () => {
@@ -14,6 +18,8 @@ const fetchMunicipalities = async () => {
   } catch (error) {
     console.error('Error fetching municipalities:', error);  }
 };
+
+
 
 // gets municipalities when page loads
 onMounted(() => {
