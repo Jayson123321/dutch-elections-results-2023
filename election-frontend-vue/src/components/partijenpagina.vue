@@ -55,8 +55,18 @@ export default {
 
 <style>
 /* Algemene stijlen voor de container */
+
+html, body, .container {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+
 .container {
-  max-width: 1200px;
+  width: 100%;
+  height: 100%;
   padding: 20px;
   font-family: Arial, sans-serif;
   margin: 50px auto 100px auto;
