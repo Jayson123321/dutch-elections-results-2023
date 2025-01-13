@@ -51,6 +51,7 @@ const fetchPartyVotes = async () => {
 // gets municipalities when page loads
 onMounted(() => {
   fetchMunicipalities();
+  fetchParties();
 });
 </script>
 
