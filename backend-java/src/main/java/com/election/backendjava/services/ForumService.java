@@ -63,6 +63,7 @@ import com.election.backendjava.entities.Reply;
 import com.election.backendjava.entities.UserForum;
 import com.election.backendjava.repositories.PostForumRepository;
 import com.election.backendjava.repositories.ReplyRepository;
+import com.election.backendjava.utils.JwtUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,6 +85,9 @@ public class ForumService {
 
     @Autowired
     private ReplyRepository replyRepository;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     public UserForum save(UserForum form) {
         return postForumRepository.save(form);
@@ -120,5 +124,17 @@ public class ForumService {
         replyRepository.deleteByUserForum_ForumId(forumId);
         postForumRepository.deleteById(forumId);
         logger.info("Forum with ID {} and its replies have been deleted.", forumId);
+    }
+
+    public String generateTokenForUser(String userId) {
+        return jwtUtil.generateToken(userId);
+    }
+
+    public boolean validateToken(String token) {
+        return jwtUtil.validateToken(token);
+    }
+
+    public String extractUserIdFromToken(String token) {
+        return jwtUtil.extractUserId(token);
     }
 }
