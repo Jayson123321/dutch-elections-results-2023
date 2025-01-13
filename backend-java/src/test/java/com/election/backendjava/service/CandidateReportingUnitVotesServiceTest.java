@@ -41,4 +41,18 @@ public class CandidateReportingUnitVotesServiceTest {
 
         assertEquals(expectedVotes, actualVotes);
     }
+
+    @Test
+    public void testFindByMunicipalityName() {
+        String municipalityName = "Amsterdam";
+        candidate_reporting_unit_votes vote1 = new candidate_reporting_unit_votes();
+        candidate_reporting_unit_votes vote2 = new candidate_reporting_unit_votes();
+        List<candidate_reporting_unit_votes> expectedVotes = Arrays.asList(vote1, vote2);
+
+        when(repository.findByMunicipalityNameIgnoreCase(municipalityName)).thenReturn(expectedVotes);
+
+        List<candidate_reporting_unit_votes> actualVotes = service.findByMunicipalityName(municipalityName);
+
+        assertEquals(expectedVotes, actualVotes);
+    }
 }
