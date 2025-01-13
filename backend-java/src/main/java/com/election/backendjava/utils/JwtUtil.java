@@ -49,7 +49,9 @@ public class JwtUtil {
     // Validate JWT token
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder().setSigningKey(key()).build().parseClaimsJws(token);
+//            Jwts.parserBuilder().setSigningKey(key()).build().parseClaimsJws(token);
+            byte[] keyByte = Base64.getDecoder().decode(SECRET_KEY);
+            SecretKeySpec keySpec = new SecretKeySpec(keyByte, "HmacSHA256");
             return true;
 
         } catch (JwtException | IllegalArgumentException e) {
