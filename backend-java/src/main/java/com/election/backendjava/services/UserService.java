@@ -2,6 +2,7 @@ package com.election.backendjava.services;
 
 import com.election.backendjava.entities.User;
 import com.election.backendjava.repositories.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,6 +63,11 @@ public class UserService {
             userToUnban.setRole("user");
             userRepository.save(userToUnban);
         }
+    }
+
+    public User findById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + id));
     }
 
 
