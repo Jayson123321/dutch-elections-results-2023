@@ -34,4 +34,5 @@ public class TotalVoteWithPercentageDTO {
     public void setPercentage(Double percentage) {
         this.percentage = percentage;
     }
+    // test
 }
