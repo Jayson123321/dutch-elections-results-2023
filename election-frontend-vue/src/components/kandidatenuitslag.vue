@@ -229,6 +229,16 @@ export default {
   --border-color: var(--border-color-dark);
 }
 
+[data-theme="light"] select {
+  background-color: var(--element-background-color-light);
+  color: black;
+}
+
+[data-theme="dark"] select {
+  background-color: black;
+  color: white;
+}
+
 body {
   background-color: var(--background-color);
   color: var(--text-color);
