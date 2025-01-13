@@ -21,8 +21,9 @@ public class JwtUtil {
     }
 
     public JwtUtil() {
-
-//        this.key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+                if (SECRET_KEY == null || SECRET_KEY.isEmpty()) {
+            throw new IllegalArgumentException("JWT_SECRET_KEY is not specified!");
+        }
     }
 
     // Generate JWT token
