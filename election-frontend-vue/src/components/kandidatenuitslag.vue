@@ -1,57 +1,58 @@
 <template>
-  <div class="container">
+  <div>
     <HeaderComponent />
+    <div class="container">
+      <h1>Resultaat Kandidaat</h1>
 
-    <h1>Resultaat Kandidaat</h1>
+      <div v-if="candidate">
+        <h2>Naam: {{ candidate.candidateName }}</h2>
+        <p>Totale stemmen: {{ candidateVotes }}</p>
+      </div>
 
-    <div v-if="candidate">
-      <h2>Naam: {{ candidate.candidateName }}</h2>
-      <p>Totale stemmen: {{ candidateVotes }}</p>
+      <div>
+        <label for="authority-select">Kies een gemeente:</label>
+        <select id="authority-select" v-model="selectedAuthority" @change="filterVotesByAuthority">
+          <option value="" disabled>Kies een gemeente</option>
+          <option v-for="vote in votesPerAuthority" :key="vote.authorityName" :value="vote.authorityName">
+            {{ vote.authorityName }}
+          </option>
+        </select>
+      </div>
+
+      <div v-if="selectedAuthority">
+        <h3>Resultaten voor {{ selectedAuthority }}</h3>
+        <table v-if="filteredVotes.length > 0">
+          <tr v-for="vote in filteredVotes" :key="vote.id">
+            <td>Naam: {{ candidate.candidateName }}</td>
+            <td>Stemmen gemeente: {{ vote.validVotes }}</td>
+          </tr>
+        </table>
+        <p v-else>Geen stemmen gevonden voor deze gemeente.</p>
+      </div>
+
+      <div v-if="selectedAuthority">
+        <label for="reporting-unit-select">Kies een rapportage-eenheid:</label>
+        <select id="reporting-unit-select" v-model="selectedReportingUnit" @change="fetchVotesForReportingUnit(selectedReportingUnit)">
+          <option value="" disabled>Kies een rapportage-eenheid</option>
+          <option v-for="unit in reportingUnits" :key="unit.reportingUnitId" :value="unit.reportingUnitId">
+            {{ unit.reportingUnitName }}
+          </option>
+        </select>
+      </div>
+
+      <div v-if="selectedReportingUnit">
+        <h3>Resultaten voor rapportage-eenheid {{ selectedReportingUnit }}</h3>
+        <table v-if="filteredReportingUnitVotes.length > 0">
+          <tr v-for="vote in filteredReportingUnitVotes" :key="vote.id">
+            <td>Naam: {{ candidate.candidateName }}</td>
+            <td>Stemmen rapportage-eenheid: {{ vote.validVotes }}</td>
+          </tr>
+        </table>
+        <p v-else>Geen stemmen gevonden voor deze rapportage-eenheid.</p>
+      </div>
+
+      <div v-if="error" class="error">{{ error }}</div>
     </div>
-
-    <div>
-      <label for="authority-select">Kies een gemeente:</label>
-      <select id="authority-select" v-model="selectedAuthority" @change="filterVotesByAuthority">
-        <option value="" disabled>Kies een gemeente</option>
-        <option v-for="vote in votesPerAuthority" :key="vote.authorityName" :value="vote.authorityName">
-          {{ vote.authorityName }}
-        </option>
-      </select>
-    </div>
-
-    <div v-if="selectedAuthority">
-      <h3>Resultaten voor {{ selectedAuthority }}</h3>
-      <table v-if="filteredVotes.length > 0">
-        <tr v-for="vote in filteredVotes" :key="vote.id">
-          <td>Naam: {{ candidate.candidateName }}</td>
-          <td>Stemmen gemeente: {{ vote.validVotes }}</td>
-        </tr>
-      </table>
-      <p v-else>Geen stemmen gevonden voor deze gemeente.</p>
-    </div>
-
-    <div v-if="selectedAuthority">
-      <label for="reporting-unit-select">Kies een rapportage-eenheid:</label>
-      <select id="reporting-unit-select" v-model="selectedReportingUnit" @change="fetchVotesForReportingUnit(selectedReportingUnit)">
-        <option value="" disabled>Kies een rapportage-eenheid</option>
-        <option v-for="unit in reportingUnits" :key="unit.reportingUnitId" :value="unit.reportingUnitId">
-          {{ unit.reportingUnitName }}
-        </option>
-      </select>
-    </div>
-
-    <div v-if="selectedReportingUnit">
-      <h3>Resultaten voor rapportage-eenheid {{ selectedReportingUnit }}</h3>
-      <table v-if="filteredReportingUnitVotes.length > 0">
-        <tr v-for="vote in filteredReportingUnitVotes" :key="vote.id">
-          <td>Naam: {{ candidate.candidateName }}</td>
-          <td>Stemmen rapportage-eenheid: {{ vote.validVotes }}</td>
-        </tr>
-      </table>
-      <p v-else>Geen stemmen gevonden voor deze rapportage-eenheid.</p>
-    </div>
-
-    <div v-if="error" class="error">{{ error }}</div>
     <FooterComponent />
   </div>
 </template>
@@ -99,7 +100,6 @@ export default {
     }
   },
   methods: {
-
     async fetchVotesForReportingUnit(reportingUnitId) {
       if (!reportingUnitId) {
         console.warn("Geen rapportage-eenheid geselecteerd.");
@@ -115,9 +115,7 @@ export default {
       } catch (error) {
         console.error("Error fetching votes for reporting unit:", error);
       }
-    }
-    ,
-
+    },
     async fetchReportingUnitsByMunicipality(municipalityName) {
       if (this.cache[municipalityName]) {
         this.reportingUnits = this.cache[municipalityName];
@@ -147,7 +145,6 @@ export default {
         this.reportingUnits = [];
       }
     },
-
     async fetchCandidateVotesByAuthority() {
       try {
         const response = await fetch(`http://localhost:8080/api/candidate-authority-votes/candidate/${this.id}`);
@@ -159,7 +156,6 @@ export default {
         this.error = "Failed to fetch candidate votes per authority.";
       }
     },
-
     filterVotesByReportingUnit() {
       if (!this.selectedReportingUnit || !this.candidate) {
         console.warn("Geen rapportage-eenheid of kandidaat beschikbaar.");
@@ -171,9 +167,7 @@ export default {
               unit.reportingUnitId === this.selectedReportingUnit &&
               unit.candidate?.id === this.candidate.id
       );
-    }
-    ,
-
+    },
     async fetchFilteredVotes(candidateId, reportingUnitId) {
       try {
         const response = await fetch(
@@ -185,8 +179,6 @@ export default {
         console.error("Error fetching filtered votes:", error);
       }
     },
-
-
     async fetchCandidateData() {
       try {
         const response = await fetch(`http://localhost:8080/api/candidate-votes/votes/${this.id}`);
@@ -198,7 +190,6 @@ export default {
         this.error = "Failed to fetch candidate data.";
       }
     },
-
     async findCandidateVotesById() {
       try {
         const response = await fetch(`http://localhost:8080/api/candidate/${this.id}`);
@@ -211,6 +202,7 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 :root {
   --background-color-light: #f9f9f9;
@@ -237,13 +229,27 @@ export default {
   --border-color: var(--border-color-dark);
 }
 
+[data-theme="light"] select {
+  background-color: var(--element-background-color-light);
+  color: black;
+}
+
+[data-theme="dark"] select {
+  background-color: black;
+  color: white;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
   font-family: Arial, sans-serif;
-  background-color: var(--background-color);
-  color: var(--text-color);
+  background-color: var(--element-background-color);
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: grid;
