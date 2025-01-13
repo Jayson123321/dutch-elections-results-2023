@@ -8,6 +8,7 @@ export default defineComponent({
     const router = useRouter();
     const email = ref('');
     const password = ref('');
+    const username = ref(''); // Add username ref
 
     const login = async () => {
       try {
@@ -18,7 +19,8 @@ export default defineComponent({
           },
           body: JSON.stringify({
             email: email.value,
-            password: password.value
+            password: password.value,
+            username: username.value // Include username in the request body
           }),
         });
 
@@ -31,10 +33,14 @@ export default defineComponent({
         const data = await response.json();
         console.log(data);
 
-        localStorage.setItem('jwtToken', data.token);
-        localStorage.setItem('username', data.username); // Store the username in localStorage
-        console.log(`Logged in as: ${data.username}`); // Log the username to the console
-        await router.push('/');
+        if (data.username) {
+          localStorage.setItem('jwtToken', data.token);
+          localStorage.setItem('username', data.username); // Store the username in localStorage
+          console.log(`Logged in as: ${data.username}`); // Log the username to the console
+          await router.push('/');
+        } else {
+          console.error('Username is missing in the response');
+        }
       } catch (error) {
         console.error('Error:', error);
       }
@@ -52,6 +58,7 @@ export default defineComponent({
     return {
       email,
       password,
+      username, // Return username ref
       login
     };
   }
@@ -61,17 +68,19 @@ export default defineComponent({
 <template>
   <div>
     <router-link to="/" class="home-link">Home</router-link>
-      <div class="form-box">
-        <h1>Login</h1>
-        <form @submit.prevent="login" class="form">
-          <label for="email">Email</label>
-          <input type="email" id="email" v-model="email" required>
-          <label for="password">Password</label>
-          <input type="password" id="password" v-model="password" required>
-          <button type="submit">Login</button>
-        </form>
-        <p>Don't have an account? <router-link to="/registration">Register here</router-link></p>
-      </div>
+    <div class="form-box">
+      <h1>Login</h1>
+      <form @submit.prevent="login" class="form">
+        <label for="username">Username</label>
+        <input type="text" id="username" v-model="username" required> <!-- Add username input field -->
+        <label for="email">Email</label>
+        <input type="email" id="email" v-model="email" required>
+        <label for="password">Password</label>
+        <input type="password" id="password" v-model="password" required>
+        <button type="submit">Login</button>
+      </form>
+      <p>Don't have an account? <router-link to="/registration">Register here</router-link></p>
+    </div>
   </div>
 </template>
 
