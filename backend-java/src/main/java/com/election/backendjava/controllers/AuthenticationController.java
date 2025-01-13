@@ -38,14 +38,15 @@ public class AuthenticationController {
             Long userid = authenticationService.login(user);
 
             String token = jwtUtil.generateToken(String.valueOf(userid));
+            String username = user.getUsername();
 
             Map<String, String> response = new HashMap<>();
             response.put("token", token);
             response.put("userid", String.valueOf(userid));
+            response.put("username", username);
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", e.getMessage()));
         }
     }
-}

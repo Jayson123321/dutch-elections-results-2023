@@ -32,6 +32,8 @@ export default defineComponent({
         console.log(data);
 
         localStorage.setItem('jwtToken', data.token);
+        localStorage.setItem('username', data.username); // Store the username in localStorage
+        console.log(`Logged in as: ${data.username}`); // Log the username to the console
         await router.push('/');
       } catch (error) {
         console.error('Error:', error);
