@@ -46,4 +46,11 @@ public class Municipality {
     public void setName(String name) {
         this.name = name;
     }
+
+    public void setMunicipalityName(String gemeenteA) {
+    }
+
+    public String getMunicipalityName() {
+        return "";
+    }
 }
