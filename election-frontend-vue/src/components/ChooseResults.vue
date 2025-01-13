@@ -36,11 +36,21 @@ export default defineComponent({
 
 <style scoped>
 .flexbox {
-
-  background-color: var(--flexbox-background-color);
-  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 20px;
-  height: 136.484px;
-  width: 533.75px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  width: 600px;
+  height: 156px;
+  margin: 10px;
+  background-color: var(--flexbox-background-color);
+}
+
+.flexbox:hover {
+  background-color: var(--vt-c-white-soft);
+  color: var(--vt-c-black);
 }
 </style>
