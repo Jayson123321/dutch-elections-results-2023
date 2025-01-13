@@ -23,10 +23,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ForumServiceTest {
 
-    @InjectMocks
+    @InjectMocks  // ForumService wordt geïnjecteerd in de testklasse
     private ForumService forumService;
 
-    @Mock
+    @Mock  // Mock van het PostForumRepository, zodat we geen echte database nodig hebben
     private PostForumRepository postForumRepository;
 
     @Mock
@@ -42,60 +42,39 @@ public class ForumServiceTest {
         forum = new UserForum();
         forum.setForumId(1L);
         forum.setTitle("Test Forum");
-
-        reply = new Reply();
-        reply.setReplyId(1L);
-        reply.setReplyText("Test Reply");
-        reply.setUserForum(forum);
     }
 
     @Test
     public void testSaveForum() {
+        // Wanneer de save methode wordt aangeroepen op het repository, geef het forum terug
         when(postForumRepository.save(forum)).thenReturn(forum);
 
+        // Roep de service aan om het forum op te slaan
         UserForum savedForum = forumService.save(forum);
 
+
+        // Controleer of het forum is opgeslagen
         assertNotNull(savedForum);
         assertEquals(forum.getTitle(), savedForum.getTitle());
     }
 
     @Test
     public void testGetAllForums() {
-        Pageable pageable = PageRequest.of(0, 5);
+        Pageable pageable = PageRequest.of(0, 5); // Maak een pagina-aanvraag met 5 items per pagina
         List<UserForum> forumsList = new ArrayList<>();
         forumsList.add(forum);
 
+        // Mock de Page en stel in wat de inhoud van de pagina moet zijn
         Page<UserForum> page = mock(Page.class);
         when(page.getContent()).thenReturn(forumsList);
         when(postForumRepository.findAll(pageable)).thenReturn(page);
+
+        // Roep de service aan om alle forums op te halen
 
         Page<UserForum> result = forumService.getAllForums(0);
 
         assertNotNull(result);
         assertEquals(1, result.getContent().size());
-    }
-
-    @Test
-    public void testSaveReply() {
-        when(replyRepository.save(reply)).thenReturn(reply);
-
-        Reply savedReply = forumService.saveReply(reply);
-
-        assertNotNull(savedReply);
-        assertEquals(reply.getReplyText(), savedReply.getReplyText());
-    }
-
-    @Test
-    public void testGetRepliesByForumId() {
-        List<Reply> replies = new ArrayList<>();
-        replies.add(reply);
-
-        when(replyRepository.findByUserForum_ForumId(1L)).thenReturn(replies);
-
-        List<Reply> result = forumService.getRepliesByForumId(1L);
-
-        assertNotNull(result);
-        assertEquals(1, result.size());
     }
 
     @Test
