@@ -198,10 +198,21 @@ export default {
     },
 
     async deleteForum(forumId) {
+      const token = localStorage.getItem('jwtToken');
+
+      if(!token) {
+        alert("Je moet ingelogd zijn om een forum te kunnen verwijderen.")
+        return;
+      }
+
       const confirmed = confirm("Weet je zeker dat je dit forum wilt verwijderen?");
       if (confirmed) {
         try {
-          await axios.delete(`http://localhost:8080/api/usersforum/${forumId}`);
+          await axios.delete(`http://localhost:8080/api/usersforum/${forumId}`, {
+            headers: {
+              'Authorization': `Bearer ${token}`  // Pass the token in the request header
+            }
+          });
           this.forums = this.forums.filter(forum => forum.forumId !== forumId);
           alert('Forum succesvol verwijderd.');
         } catch (error) {
