@@ -34,13 +34,14 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
         try {
-            String username = authenticationService.login(user);
+            System.out.println(user.getUsername());
+            Long userid = authenticationService.login(user);
 
-            String token = jwtUtil.generateToken(username);
+            String token = jwtUtil.generateToken(String.valueOf(userid));
 
             Map<String, String> response = new HashMap<>();
             response.put("token", token);
-            response.put("username", username);
+            response.put("userid", String.valueOf(userid));
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
