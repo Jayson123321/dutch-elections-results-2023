@@ -3,7 +3,7 @@
 
   <div class="container">
     <h1>Alle Kandidaten</h1>
-    <input type="text" v-model="searchTerm" placeholder="Zoek kandidaten..." class="search-bar" />
+    <input type="text" v-model="searchTerm" @input="fetchData" placeholder="Zoek kandidaten..." class="search-bar" />
     <ul class="candidate-list">
       <li v-for="candidate in paginatedCandidates" :key="candidate.id" class="candidate-item">
         <router-link :to="{ name: 'kandidatenuitslag', params: { id: candidate.id } }">
@@ -70,7 +70,8 @@ export default {
       try {
         const [candidatesResponse, affiliationsResponse] = await Promise.all([
           fetch(`${config.apiBaseUrl}/candidate/all`),
-          fetch(`${config.apiBaseUrl}/affiliations`)
+          fetch(`${config.apiBaseUrl}/affiliations`),
+          fetch(`${config.apiBaseUrl}/candidate/search?searchTerm=${this.searchTerm}`)
         ]);
 
         if (!candidatesResponse.ok || !affiliationsResponse.ok) {
