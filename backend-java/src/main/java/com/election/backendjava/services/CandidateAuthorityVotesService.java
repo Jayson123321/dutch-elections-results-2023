@@ -15,4 +15,12 @@ public class CandidateAuthorityVotesService {
     public List<CandidateAuthorityVotes> getVotesByCandidate(Long candidateId) {
         return candidateAuthorityVotesRepository.findByCandidateId(candidateId);
     }
+
+    public List<CandidateAuthorityVotes> findByAffiliationIdAndAuthorityIdentifier(Long affiliationId, String authorityId) {
+        return candidateAuthorityVotesRepository.findByAffiliationIdAndAuthorityIdentifier(affiliationId, authorityId);
+    }
+
+    public List<CandidateAuthorityVotes> findByAffiliationIdAndAuthorityIdentifierOrderByValidVotesDesc(Long affiliationId, String authorityId) {
+        return candidateAuthorityVotesRepository.findByAffiliationIdAndAuthorityIdentifierOrderByValidVotesDesc(affiliationId, authorityId);
+    }
 }
