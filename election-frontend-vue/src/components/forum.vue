@@ -61,73 +61,47 @@
 </template>
 
 <script>
+import axios from 'axios';
 import HeaderComponent from './HeaderComponent.vue';
 import FooterComponent from './FooterComponent.vue';
-import axios from 'axios';
 
 export default {
-  name: "ForumComponent",
+  name: 'Forum',
   components: {
     HeaderComponent,
-    FooterComponent,
+    FooterComponent
   },
   data() {
     return {
       newForum: {
         title: '',
         description: '',
-        user: {
-          id: '', // Dummy user ID
-        },
+        user: { id: '' },
       },
       forums: [],
-      currentPage: 0,
-      totalPages: 0,
       errors: {},
       successMessage: '',
-      newReply: {
-        username: '',
-        replyText: ''
-      }
+      currentPage: 0,
+      totalPages: 0,
     };
   },
   methods: {
-    async fetchForums(page = 0) {
-      try {
-        console.log("Ophalen van forums...");
-        const response = await fetch(`http://localhost:8080/api/usersforum?page=${page}&size=5`);
-        if (!response.ok) {
-          throw new Error(`Server error: ${response.status} - ${response.statusText}`);
-        }
-        const data = await response.json();
-        console.log(response.json())
-        this.forums = data.content;
-        this.totalPages = data.totalPages;
-        this.currentPage = data.number;
-
-        // Fetch replies for each forum and initialize newReply for each forum
-        for (let forum of this.forums) {
-          const repliesResponse = await fetch(`http://localhost:8080/api/usersforum/${forum.forumId}/replies`);
-          if (repliesResponse.ok) {
-            forum.replies = await repliesResponse.json();
-          } else {
-            forum.replies = [];
-          }
-          forum.newReply = { replyText: '' };
-        }
-      } catch (error) {
-        console.error('Fout bij het ophalen van forums:', error);
-      }
-    },
-
     validateField(field) {
-      if (!this.newForum[field]?.trim()) {
-        this.errors[field] = 'Vul dit veld in';
+      if (!this.newForum[field]) {
+        this.$set(this.errors, field, 'This field is required.');
       } else {
-        delete this.errors[field];
+        this.$delete(this.errors, field);
       }
     },
-
+    async fetchForums(page) {
+      try {
+        const response = await axios.get(`http://localhost:8080/api/usersforum?page=${page}`);
+        this.forums = response.data.content;
+        this.totalPages = response.data.totalPages;
+      } catch (error) {
+        console.error('Error fetching forums:', error);
+      }
+    },
     async submitForum() {
       this.validateField('title');
       this.validateField('description');
@@ -136,43 +110,46 @@ export default {
       const token = localStorage.getItem('jwtToken');
 
       if (!token) {
-        alert('Je moet ingelogd zijn om een forum te plaatsen.');
+        alert('You must be logged in to post a forum.');
         return;
       }
-      console.log('JWT Token:', token);
-      // Haal de token op uit localStorage
+
       try {
         const response = await axios.post('http://localhost:8080/api/usersforum', this.newForum, {
           headers: {
-            'Authorization': `Bearer ${token}` // Voeg de token toe aan de headers
+            'Authorization': `Bearer ${token}`
           }
         });
 
-        const createdForum = response.data;
+        if (response.data && response.data.forum && response.data.username) {
+          const createdForum = response.data.forum;
+          createdForum.username = response.data.username; // Add the username to the created forum
 
-        this.forums.unshift({
-          ...createdForum,
-          replies: [], // Initialiseer lege replies voor het nieuwe forum
-          newReply: { replyText: '' }, // Voeg een lege newReply toe voor consistentie
-        });
+          this.forums.unshift({
+            ...createdForum,
+            replies: [],
+            newReply: { replyText: '' },
+          });
 
-        this.newForum = {
-          title: '',
-          description: '',
-          user: { id: '' },
-        };
+          this.newForum = {
+            title: '',
+            description: '',
+            user: { id: '' },
+          };
 
-        this.successMessage = createdForum; // Display the response message
-        setTimeout(() => {
-          this.successMessage = '';
-        }, 3000);
+          this.successMessage = 'Forum posted successfully!';
+          setTimeout(() => {
+            this.successMessage = '';
+          }, 3000);
+        } else {
+          throw new Error('Invalid response structure');
+        }
 
       } catch (error) {
-        console.error('Fout bij het toevoegen van een forum:', error);
-        alert('Er is een fout opgetreden bij het plaatsen van het forum.');
+        console.error('Error posting forum:', error);
+        alert('An error occurred while posting the forum.');
       }
     },
-
     async submitReply(forumId) {
       try {
         const forum = this.forums.find(f => f.forumId === forumId);
@@ -194,7 +171,6 @@ export default {
     goToQuestionDetails(forumId) {
       this.$router.push({ name: 'forum', params: { forumId } });
     },
-
     async deleteForum(forumId) {
       const confirmed = confirm("Weet je zeker dat je dit forum wilt verwijderen?");
       if (confirmed) {
@@ -208,20 +184,27 @@ export default {
         }
       }
     },
-
     goToPage(page) {
       if (page >= 0 && page < this.totalPages) {
         this.fetchForums(page);
       }
     }
-
   },
   mounted() {
-    this.fetchForums(this.currentPage);
+    const token = localStorage.getItem('jwtToken');
+    const username = localStorage.getItem('username');
+    const password = localStorage.getItem('password');
+
+    if (token && username && password) {
+      console.log('User is logged in:', { token, username, password });
+      this.fetchForums(this.currentPage);
+    } else {
+      console.log('User is not logged in.');
+      this.$router.push({ name: 'login' });
+    }
   },
 };
 </script>
-
 <style>
 
 .success-message {
