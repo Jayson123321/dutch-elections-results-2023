@@ -11,7 +11,7 @@ import java.util.List;
 public class MunicipalityService {
 
     @Autowired
-    private MunicipalityRepository municipalityRepository;
+    MunicipalityRepository municipalityRepository;
 
     public List<Municipality> getAllMunicipalities() {
         return municipalityRepository.findAll();
