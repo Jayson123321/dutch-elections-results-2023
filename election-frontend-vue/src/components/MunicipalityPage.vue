@@ -27,6 +27,7 @@ const fetchParties = async () => {
   try {
     const response = await axios.get('http://localhost:8080/api/parties');
     parties.value = response.data;
+    console.log("Fetched parties:", parties.value); // log to check the parties
   } catch (error) {
     console.error('Error fetching parties:', error);
   }
