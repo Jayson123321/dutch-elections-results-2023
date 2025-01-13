@@ -35,5 +35,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.flexbox {
 
+  background-color: var(--flexbox-background-color);
+  margin: 10px;
+  padding: 20px;
+  height: 136.484px;
+  width: 533.75px;
+}
 </style>

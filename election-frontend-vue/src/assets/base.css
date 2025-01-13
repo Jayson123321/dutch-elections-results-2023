@@ -21,7 +21,6 @@
   --vt-c-text-dark-1: var(--vt-c-white);
   --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
   --table-border-color-orange: rgb(144, 48, 15);
-
 }
 
 /* semantic color variables for this project */
@@ -53,6 +52,16 @@
   --color-border-hover: var(--vt-c-divider-light-1);
   --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-2);
+  --background-color: #f0f0f0; /* Light grey background */
+  --box-background-color: #ffffff; /* White box background */
+  --text-color: #333333;
+  --input-border-color: #cccccc;
+  --button-background-color: #007bff;
+  --button-text-color: #ffffff;
+  --button-hover-background-color: #0056b3;
+  --link-color: #007bff;
+  --header-background-color: #f0f0f0; /* Light grey header background */
+  --flexbox-background-color: #f0f0f0; /* Light grey flexbox background */
 }
 
 :root[data-theme='dark'] {
@@ -63,19 +72,31 @@
   --color-border-hover: var(--vt-c-divider-dark-1);
   --color-heading: var(--vt-c-text-dark-1);
   --color-text: var(--vt-c-text-dark-2);
+  --background-color: #121212;
+  --box-background-color: #1e1e1e;
+  --text-color: #ffffff;
+  --input-border-color: #444444;
+  --button-background-color: #1a73e8;
+  --button-text-color: #ffffff;
+  --button-hover-background-color: #135abf;
+  --link-color: #8ab4f8;
+  --header-background-color: #353535; /* Dark header background */
+  --flexbox-background-color: #353535; /* Dark flexbox background */
 }
+
 :root {
   --link-color-light: #000000;
   --link-color-dark: #ffffff;
 }
 
-[data-theme="light"] .header-section.links a{
+[data-theme="light"] .header-section.links a {
   color: var(--link-color-light);
 }
 
 [data-theme="dark"] .header-section.links a {
   color: var(--link-color-dark);
 }
+
 [data-theme="light"] .footer-section.links a {
   color: var(--link-color-light);
 }
@@ -83,6 +104,7 @@
 [data-theme="dark"] .footer-section.links a {
   color: var(--link-color-dark);
 }
+
 *,
 *::before,
 *::after {
@@ -95,23 +117,9 @@ body {
   min-height: 100vh;
   color: var(--color-text);
   background: var(--color-background);
-  transition:
-    color 0.5s,
-    background-color 0.5s;
+  transition: color 0.5s, background-color 0.5s;
   line-height: 1.6;
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    'Fira Sans',
-    'Droid Sans',
-    'Helvetica Neue',
-    sans-serif;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-size: 15px;
   text-rendering: optimizeLegibility;
   -moz-osx-font-smoothing: grayscale;

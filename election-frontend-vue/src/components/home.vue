@@ -73,6 +73,9 @@ body {
   width: 600px;
   height: 600px;
   margin: 10px;
+  background-color: var(--flexbox-background-color);
+  padding: 20px;
+
 }
 
 .flexbox:hover {

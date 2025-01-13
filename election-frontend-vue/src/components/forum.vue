@@ -240,7 +240,7 @@ export default {
   --input-background-color: #ffffff;
   --button-text-color: #ffffff;
   --reply-background-color: #f9f9f9;
-  --link-color: #ff4500;
+  --link-color: #007bff;
   --border-color: #cccccc;
 }
 
@@ -261,7 +261,7 @@ export default {
   margin-bottom: 20px;
   background-color: var(--card-background-color);
   padding: 20px;
-  border: 2px solid #ff4500;
+  border: 2px solid #007bff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -281,7 +281,7 @@ export default {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  background-color: #ff4500;
+  background-color: #007bff;
   //color: var(--button-text-color);
   cursor: pointer;
   font-size: 16px;
@@ -366,7 +366,7 @@ form button {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  background-color: #ff0000;
+  background-color: #007bff;
   color: #ffffff;
   cursor: pointer;
   font-size: 16px;
@@ -375,7 +375,7 @@ form button {
   margin: 10px auto;
 }
 .forum-item button:hover {
-  background-color: #cc0000;
+  background-color: #0056b3;
 }
 
 .pagination button{

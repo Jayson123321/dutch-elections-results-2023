@@ -68,6 +68,7 @@ export default {
 
 <style>
 .header {
+  background-color: var(--header-background-color);
   padding: 10px 0;
   width: 100%;
   top: 0;
@@ -219,7 +220,7 @@ export default {
 }
 
 input:checked + .slider {
-  background-color: #353535;
+  background-color: black;
 }
 
 input:checked + .slider:before {
