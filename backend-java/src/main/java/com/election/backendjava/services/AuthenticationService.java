@@ -14,7 +14,7 @@ public class AuthenticationService {
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public String login(User user) throws Exception {
+    public Long login(User user) throws Exception {
         if (user.getEmail() == null || user.getEmail().isEmpty()) {
             throw new Exception("Email cannot be null or empty.");
         }
@@ -26,7 +26,7 @@ public class AuthenticationService {
             throw new Exception("Invalid credentials");
         }
 
-        return existingUser.getUsername();
+        return existingUser.getId();
     }
 
     public void register(User user) throws Exception {
