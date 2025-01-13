@@ -9,6 +9,8 @@ const selectedMunicipality1 = ref(null);
 const selectedMunicipality2 = ref(null);
 const selectedParty = ref(null);
 const partyVotes = ref([]);
+const parties = ref([]);
+
 
 // function o get municipalities
 const fetchMunicipalities = async () => {
@@ -43,6 +45,7 @@ onMounted(() => {
 
 
 <template>
+
   <div class="municipality-page">
     <HeaderComponent />
     <h2 class="page-title">Gemeente uitslagen vergelijken</h2>
