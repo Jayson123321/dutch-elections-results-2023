@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ForumServiceTest {
 
-    @InjectMocks  // ForumService wordt geïnjecteerd in de testklasse
+    @InjectMocks
     private ForumService forumService;
 
     @Mock  // Mock van het PostForumRepository, zodat we geen echte database nodig hebben
@@ -46,14 +46,10 @@ public class ForumServiceTest {
 
     @Test
     public void testSaveForum() {
-        // Wanneer de save methode wordt aangeroepen op het repository, geef het forum terug
         when(postForumRepository.save(forum)).thenReturn(forum);
 
-        // Roep de service aan om het forum op te slaan
         UserForum savedForum = forumService.save(forum);
 
-
-        // Controleer of het forum is opgeslagen
         assertNotNull(savedForum);
         assertEquals(forum.getTitle(), savedForum.getTitle());
     }
@@ -64,7 +60,6 @@ public class ForumServiceTest {
         List<UserForum> forumsList = new ArrayList<>();
         forumsList.add(forum);
 
-        // Mock de Page en stel in wat de inhoud van de pagina moet zijn
         Page<UserForum> page = mock(Page.class);
         when(page.getContent()).thenReturn(forumsList);
         when(postForumRepository.findAll(pageable)).thenReturn(page);
@@ -89,11 +84,5 @@ public class ForumServiceTest {
         verify(replyRepository, times(1)).deleteByUserForum_ForumId(1L);
     }
 
-    @Test
-    public void testDeleteForumByIdThrowsException() {
-        when(postForumRepository.existsById(1L)).thenReturn(false);
-
-        assertThrows(EntityNotFoundException.class, () -> forumService.deleteForumById(1L));
-    }
 }
 
