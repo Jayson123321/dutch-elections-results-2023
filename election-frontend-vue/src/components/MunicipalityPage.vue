@@ -19,6 +19,25 @@ const fetchMunicipalities = async () => {
     console.error('Error fetching municipalities:', error);  }
 };
 
+const selectedMunicipality1 = ref(null);
+const selectedMunicipality2 = ref(null);
+const selectedParty = ref(null);
+const partyVotes = ref([]);
+
+// function to get parties and votes
+const fetchPartyVotes = async () => {
+  if (!selectedMunicipality1.value || !selectedMunicipality2.value || !selectedParty.value) {
+    console.error('Selecteer beide gemeentes en een partij.');
+    return;
+  }
+
+  try {
+    const response = await axios.get(`http://localhost:8080/api/votes?municipality1=${selectedMunicipality1.value}&municipality2=${selectedMunicipality2.value}&party=${selectedParty.value}`);
+    partyVotes.value = response.data;
+  } catch (error) {
+    console.error('Error fetching party votes:', error);
+  }
+};
 
 
 // gets municipalities when page loads
