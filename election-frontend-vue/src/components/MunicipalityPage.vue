@@ -57,30 +57,58 @@ onMounted(() => {
 
 
 <template>
-
   <div class="municipality-page">
     <HeaderComponent />
     <h2 class="page-title">Gemeente uitslagen vergelijken</h2>
     <div id="description-container">
       <p id="description-text">
-        Vergelijke alle gemeentelijke uitslagen met elkaar
+        Vergelijk de gemeentelijke uitslagen met elkaar door twee gemeenten en een partij te selecteren.
       </p>
     </div>
-    <div id="titel">
-    </div>
-    <div class="municipality-list">
-      <h2>Alle Gemeenten</h2>
-      <div v-if="municipalities.length > 0">
-        <div v-for="municipality in municipalities" :key="municipality.id" class="municipality-item">
-          <p><strong>Gemeente id:</strong> {{ municipality.authorityIdentifier }}</p>
-          <p><strong>Gemeente:</strong> {{ municipality.authorityName }}</p>
-        </div>
+    <div id="selectors-container">
+      <div class="municipality-selection">
+        <h3>Selecteer de eerste gemeente</h3>
+        <select v-model="selectedMunicipality1">
+          <option value="" disabled>Selecteer een gemeente</option>
+          <option v-for="municipality in municipalities" :key="municipality.id" :value="municipality.id">
+            {{ municipality.authorityName }}
+          </option>
+        </select>
       </div>
-      <p v-else class="no-municipalities">Geen gemeenten gevonden.</p>
+      <div class="municipality-selection">
+        <h3>Selecteer de tweede gemeente</h3>
+        <select v-model="selectedMunicipality2">
+          <option value="" disabled>Selecteer een gemeente</option>
+          <option v-for="municipality in municipalities" :key="municipality.id" :value="municipality.id">
+            {{ municipality.authorityName }}
+          </option>
+        </select>
+      </div>
+      <div class="party-selection">
+        <h3>Selecteer een partij</h3>
+        <select v-model="selectedParty">
+          <option value="" disabled>Selecteer een partij</option>
+          <option v-for="party in parties" :key="party.id" :value="party.id">
+            {{ party.name }}
+          </option>
+        </select>
+      </div>
     </div>
+    <button class="compare-button" @click="fetchPartyVotes">Vergelijk stemmen</button>
+    <div class="party-votes" v-if="partyVotes.length > 0">
+      <h3>Resultaten voor de partij</h3>
+      <div v-for="vote in partyVotes" :key="vote.municipalityId" class="vote-item">
+        <p><strong>Gemeente:</strong> {{ vote.municipalityName }}</p>
+        <p><strong>Stemmen:</strong> {{ vote.votes }}</p>
+      </div>
+    </div>
+    <p v-else-if="partyVotes.length === 0 && selectedMunicipality1 && selectedMunicipality2 && selectedParty">
+      Geen stemmen gevonden voor de geselecteerde partij in de geselecteerde gemeenten.
+    </p>
     <FooterComponent />
   </div>
 </template>
+
 
 <style scoped>
 .municipality-page {
