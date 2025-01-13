@@ -16,13 +16,9 @@ const fetchMunicipalities = async () => {
     const response = await axios.get('http://localhost:8080/api/managing-authorities/getAllAuthorities');
     municipalities.value = response.data;
   } catch (error) {
-    console.error('Error fetching municipalities:', error);  }
+    console.error('Error fetching municipalities:', error);
+  }
 };
-
-const selectedMunicipality1 = ref(null);
-const selectedMunicipality2 = ref(null);
-const selectedParty = ref(null);
-const partyVotes = ref([]);
 
 // function to get parties and votes
 const fetchPartyVotes = async () => {
@@ -39,12 +35,12 @@ const fetchPartyVotes = async () => {
   }
 };
 
-
 // gets municipalities when page loads
 onMounted(() => {
   fetchMunicipalities();
 });
 </script>
+
 
 <template>
   <div class="municipality-page">
