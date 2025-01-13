@@ -2,36 +2,36 @@
   <div>
     <HeaderComponent/>
     <div id="description-container">
-      <p id="description-text">Deze pagina toont de verkiezingsresultaten per gemeente voor 2023. Selecteer een gemeente en vervolgens een stembureau om de resultaten te bekijken. Alleen kandidaten die stemmen hebben ontvangen worden weergegeven.</p>
+      <p id="description-text">{{ $t('managingAuthority.description') }}</p>
     </div>
     <div id="titel">
-      <h1>Score per stembureau</h1>
-      <h1>Verkiezingen 2023 gemeente {{ selectedAuthority?.authorityName }}</h1>
+      <h1>{{ $t('managingAuthority.score_per_stembureau') }}</h1>
+      <h1>{{ $t('managingAuthority.verkiezingen') }} 2023 {{ selectedAuthority?.authorityName }}</h1>
     </div>
     <canvas id="partyVotesChart"></canvas>
     <div class="filter">
-      <H2 id="h2filter">Filter</H2>
-      <span class="authority-select"><label for="authority-select">Selecteer een gemeente</label></span>
+      <h2 id="h2filter">{{ $t('managingAuthority.filter') }}</h2>
+      <span class="authority-select"><label for="authority-select">{{ $t('managingAuthority.select_authority') }}</label></span>
       <select id="authority-select" v-model="selectedAuthorityId" @change="showAllSelectedAuthorityVotes">
-        <option value="" disabled>Selecteer een gemeente</option>
+        <option value="" disabled>{{ $t('managingAuthority.select_authority') }}</option>
         <option v-for="authority in authorities" :key="authority.id" :value="authority.id">
           {{ authority.authorityName }}
         </option>
       </select>
-      <span class="reportingUnit-select"><label for="reportingUnit-select">Selecteer een stembureau</label></span>
+      <span class="reportingUnit-select"><label for="reportingUnit-select">{{ $t('managingAuthority.select_reporting_unit') }}</label></span>
       <div class="autocomplete-container">
         <v-autocomplete
             v-model="selectedReportingUnitId"
             :items="reportingUnits"
             item-title="name"
             item-value="id"
-            placeholder="Zoek een stembureau"
+            :placeholder="$t('managingAuthority.search_reporting_unit')"
             persistent-placeholder
             clearable
             transition="scale-transition"
         ></v-autocomplete>
       </div>
-      <button v-if="selectedReportingUnitId" @click="fetchPartyVotesByReportingUnitAndAuthorityNumber">Bekijk stemmen</button>
+      <button v-if="selectedReportingUnitId" @click="fetchPartyVotesByReportingUnitAndAuthorityNumber">{{ $t('managingAuthority.view_votes') }}</button>
     </div>
     <div v-if="partyVotes.length > 0">
       <div id="StembureauName">
@@ -39,15 +39,15 @@
         <table>
           <tbody>
           <tr class="affiliationVote" v-for="(vote, index) in partyVotes" :key="vote.id">
-              <td class="affiliation-name">{{ index + 1 }}. {{ vote.affiliation.registeredName }}</td>
-            <td id="totalStemmen">Totaal: {{ vote.validVotes }} stemmen</td>
-            <td><button class="show-candidates-button" @click="toggleCandidates(vote)">Toon stemmen per kandidaat</button></td>
+            <td class="affiliation-name">{{ index + 1 }}. {{ vote.affiliation.registeredName }}</td>
+            <td id="totalStemmen">{{ $t('managingAuthority.total_votes') }}: {{ vote.validVotes }} {{ $t('managingAuthority.votes') }}</td>
+            <td><button class="show-candidates-button" @click="toggleCandidates(vote)">{{ $t('managingAuthority.show_votes_per_candidate') }}</button></td>
             <div v-if="vote.showCandidates">
               <table>
                 <tbody>
                 <tr v-for="(candidateVote, index) in vote.candidateVotes" :key="index">
                   <td>{{ candidateVote.candidateName }}</td>
-                  <td id="votes">{{ candidateVote.validVotes }} stemmen</td>
+                  <td id="votes">{{ candidateVote.validVotes }} {{ $t('managingAuthority.votes') }}</td>
                 </tr>
                 </tbody>
               </table>
@@ -58,7 +58,7 @@
       </div>
     </div>
     <div class="politicalComponent">
-      <political-news/>
+      <PoliticalNews/>
     </div>
   </div>
 </template>
@@ -79,6 +79,7 @@
 #description-text {
   font-size: 1.1em;
   line-height: 1.6;
+  text-align: center;
 }
 table {
   border-collapse: collapse;
