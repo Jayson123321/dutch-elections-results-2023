@@ -12,7 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/usersforum")
@@ -46,7 +48,11 @@ public class PostForumController {
         UserForum savedForum = forumService.save(userForum);
 
         // Create a response with the username
-        return ResponseEntity.status(HttpStatus.CREATED).body("Forum posted by: " + user.getUsername());
+        Map<String, Object> response = new HashMap<>();
+        response.put("forum", savedForum);
+        response.put("username", user.getUsername());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
@@ -54,6 +60,7 @@ public class PostForumController {
         Page<UserForum> forums = forumService.getAllForums(page);
         return ResponseEntity.ok(forums);
     }
+
 
     @PostMapping("/{forumId}/replies")
     public Reply saveReply(@PathVariable Long forumId, @RequestBody Reply reply) {
