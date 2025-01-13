@@ -22,6 +22,17 @@ const fetchMunicipalities = async () => {
   }
 };
 
+// get the parties
+const fetchParties = async () => {
+  try {
+    const response = await axios.get('http://localhost:8080/api/parties');
+    parties.value = response.data;
+  } catch (error) {
+    console.error('Error fetching parties:', error);
+  }
+};
+
+
 // function to get parties and votes
 const fetchPartyVotes = async () => {
   if (!selectedMunicipality1.value || !selectedMunicipality2.value || !selectedParty.value) {
