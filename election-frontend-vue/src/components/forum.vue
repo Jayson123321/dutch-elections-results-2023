@@ -77,7 +77,7 @@ export default {
         title: '',
         description: '',
         user: {
-          id: '1', // Dummy user ID
+          id: '', // Dummy user ID
         },
       },
       forums: [],
@@ -133,8 +133,23 @@ export default {
       this.validateField('description');
       if (Object.keys(this.errors).length > 0) return;
 
+      const token = localStorage.getItem('jwtToken');
+
+      if (!token) {
+        alert('Je moet ingelogd zijn om een forum te plaatsen.');
+        return;
+      }
+      console.log('JWT Token:', token);
+      // Haal de token op uit localStorage
       try {
-        const response = await axios.post('http://localhost:8080/api/usersforum', this.newForum);
+        const response = await axios.post('http://localhost:8080/api/usersforum', this.newForum, {
+          headers: {
+            'Authorization': `Bearer ${token}` // Voeg de token toe aan de headers
+          }
+        });
+
+      // try {
+      //   const response = await axios.post('http://localhost:8080/api/usersforum', this.newForum);
         const createdForum = response.data;
 
         this.forums.unshift({
@@ -146,7 +161,7 @@ export default {
        this.newForum = {
         title: '',
        description: '',
-        user: { id: '1' },
+        user: { id: '' },
       };
 
        this.successMessage = "Forum succesvol geplaatst!";
