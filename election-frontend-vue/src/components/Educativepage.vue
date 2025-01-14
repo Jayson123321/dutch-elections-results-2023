@@ -16,24 +16,24 @@ export default {
   <div>
     <HeaderComponent />
     <div class="educatieve-pagina">
-      <h1>Educatieve Ondersteuning</h1>
-      <p>Leer meer over verkiezingen, politieke processen en hoe je stem invloed heeft.</p>
+      <h1>{{ $t('educativePage.title') }}</h1>
+      <p>{{ $t('educativePage.description') }}</p>
       <div class="flexcontainer">
         <div class="flexbox">
-          <h2>Uitleg over verkiezingen</h2>
-          <p>Lees meer over hoe verkiezingen werken en hoe politieke partijen hun zetels winnen.</p>
-          <router-link to="/verkiezingsuitleg" class="cta-link">Lees meer</router-link>
+          <h2>{{ $t('educativePage.electionExplanation') }}</h2>
+          <p>{{ $t('educativePage.electionExplanationDesc') }}</p>
+          <router-link to="/verkiezingsuitleg" class="cta-link">{{ $t('educativePage.readMore') }}</router-link>
         </div>
         <div class="flexbox">
-          <h2>Download PowerPoint</h2>
-          <p>Download een PowerPoint-presentatie over verkiezingen.</p>
-          <p>Powerpoint gemaakt door Seneca.</p>
-          <a href="/educativepowerpoint.pptx" class="cta-link" download>Download PowerPoint</a>
+          <h2>{{ $t('educativePage.downloadPowerPoint') }}</h2>
+          <p>{{ $t('educativePage.downloadPowerPointDesc') }}</p>
+          <p>{{ $t('educativePage.madeBy') }}</p>
+          <a href="/educativepowerpoint.pptx" class="cta-link" download>{{ $t('educativePage.downloadPowerPoint') }}</a>
         </div>
         <div class="flexbox">
-          <h2>Test je kennis</h2>
-          <p>Doe een quiz en ontdek hoeveel je weet over het Nederlandse politieke systeem.</p>
-          <router-link to="/Quiz" class="cta-link">Start quiz</router-link>
+          <h2>{{ $t('educativePage.testYourKnowledge') }}</h2>
+          <p>{{ $t('educativePage.testYourKnowledgeDesc') }}</p>
+          <router-link to="/Quiz" class="cta-link">{{ $t('educativePage.startQuiz') }}</router-link>
         </div>
       </div>
     </div>
