@@ -9,14 +9,10 @@
           <li><router-link to="/choose-results">{{ $t('common.results') }}</router-link></li>
           <li><router-link to="/partijenpagina">{{ $t('common.parties') }}</router-link></li>
           <li><router-link to="/login">{{ $t('common.login') }}</router-link></li>
+          <li><router-link to="/Educativepage">{{ $t('Educativepage') }}</router-link></li>
         </ul>
       </nav>
-      <div class="search-container">
-        <input type="text" class="search-input" :placeholder="$t('common.search')">
-        <button class="search-button">
-          <svg>...</svg>
-        </button>
-      </div>
+
       <div class="account">
         <router-link to="/account"><i class="fas fa-user"></i></router-link>
       </div>
