@@ -182,13 +182,10 @@ public class PostForumController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 
-
         String userId = jwtUtil.extractUserId(token.replace("Bearer ", ""));
         Page<UserForum> forums = forumService.getForumsByUserId(Long.parseLong(userId), page);
-        System.out.println(token);
         return ResponseEntity.ok(forums);
 
     }
-
 
 }
