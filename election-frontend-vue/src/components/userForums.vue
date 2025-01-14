@@ -1,4 +1,5 @@
 <template>
+  <HeaderComponent />
   <div>
     <h1>Your Forums</h1>
     <div v-if="forums.length === 0">No forums to display.</div>
@@ -25,8 +26,10 @@
 
 <script>
 import axios from 'axios';
+import HeaderComponent from "@/components/HeaderComponent.vue";
 
 export default {
+  components: {HeaderComponent},
   data() {
     return {
       forums: [],
