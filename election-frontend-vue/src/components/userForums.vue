@@ -64,18 +64,20 @@ export default {
         return;
       }
 
-      try {
-        await axios.delete(`http://localhost:8080/api/usersforum/${forumId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        this.forums = this.forums.filter(forum => forum.forumId !== forumId);
-        alert('Forum deleted successfully.');
-      } catch (error) {
-        console.error("Error deleting forum:", error);
-        alert('Failed to delete forum.');
+      const confirmed = confirm("Weet je zeker dat je dit forum wilt verwijderen?");
+      if (confirmed) {
+        try {
+          await axios.delete(`http://localhost:8080/api/usersforum/${forumId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`  // Pass the token in the request header
+            }
+          });
+          this.forums = this.forums.filter(forum => forum.forumId !== forumId);
+          alert('Forum succesvol verwijderd.');
+        } catch (error) {
+          console.error('Fout bij het verwijderen van het forum:', error);
+          alert('Er is een fout opgetreden bij het verwijderen van het forum.');
+        }
       }
     },
     loadMore() {
