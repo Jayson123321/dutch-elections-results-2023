@@ -20,7 +20,7 @@
         </div>
       </div>
     </div>
-    <button @click="loadMore">Meer laden</button>
+    <button class="loadmore" @click="loadMore">Meer laden</button>
   </div>
   <FooterComponent />
 </template>
@@ -94,13 +94,65 @@ export default {
 </script>
 
 <style scoped>
-.forum-card {
-  border: 1px solid #ddd;
-  padding: 10px;
-  margin-bottom: 10px;
+ .forum-card {
+   border: 1px solid #ddd;
+   border-radius: 8px;
+   padding: 15px;
+   margin-bottom: 15px;
+   transition: box-shadow 0.3s ease-in-out;
+   background-color: white;
+ }
+
+.forum-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.forum-card h3 {
+  margin: 0;
+  font-size: 1.5em;
+  color: #333;
+}
+
+.forum-card p {
+  font-size: 1em;
+  color: #666;
+  margin: 10px 0;
 }
 
 button {
-  margin-top: 20px;
+  padding: 10px 15px;
+  font-size: 1em;
+  background-color: #AD0000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
+.replies {
+  margin-top: 15px;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.replies h4 {
+  margin-bottom: 10px;
+  font-size: 1.2em;
+  color: #444;
+}
+
+.replies ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.replies li {
+  padding: 5px 0;
+  font-size: 1em;
+  color: #555;
+}
+
+.loadmore {
+  background-color: #117CEE;
+}
+
 </style>
