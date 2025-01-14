@@ -9,7 +9,6 @@ const selectedMunicipality1Id = ref(null);
 const selectedMunicipality2Id = ref(null);
 const municipality1Votes = ref([]);
 const municipality2Votes = ref([]);
-const sortOrder = ref('votes');
 
 // Haal alle gemeenten op
 const fetchMunicipalities = async () => {
@@ -29,14 +28,9 @@ const fetchVotesForMunicipality = async (municipalityId, targetVotesRef) => {
 
   if (selectedMunicipality) {
     try {
-      const endpoint =
-          sortOrder.value === 'votes'
-              ? `http://localhost:8080/api/result-local-authority/sortedByVotes/${selectedMunicipality.authorityIdentifier}`
-              : `http://localhost:8080/api/result-local-authority/${selectedMunicipality.authorityIdentifier}`;
+      const endpoint = `http://localhost:8080/api/result-local-authority/${selectedMunicipality.authorityIdentifier}`;
       const response = await axios.get(endpoint);
-      targetVotesRef.value = sortOrder.value === 'name'
-          ? response.data.sort((a, b) => a.affiliation.registeredName.localeCompare(b.affiliation.registeredName))
-          : response.data.sort((a, b) => b.validVotes - a.validVotes);
+      targetVotesRef.value = response.data;
     } catch (error) {
       console.error('Error fetching municipality votes:', error);
     }
@@ -64,7 +58,7 @@ onMounted(() => {
     <HeaderComponent />
     <div id="description-container">
       <p id="description-text">
-        Selecteer twee gemeenten om de resultaten te vergelijken en sorteer de stemmen op partijnaam of aantal stemmen.
+        Selecteer twee gemeenten om de resultaten te vergelijken.
       </p>
     </div>
     <div id="selectors-container">
@@ -86,13 +80,6 @@ onMounted(() => {
           </option>
         </select>
       </div>
-    </div>
-    <div id="sort-bar">
-      <label for="sort">Sorteren op:</label>
-      <select id="sort" v-model="sortOrder" @change="fetchBothMunicipalityVotes">
-        <option value="votes">Stemmen</option>
-        <option value="name">Partij naam</option>
-      </select>
     </div>
     <div id="results-container">
       <div class="results" v-if="municipality1Votes.length > 0">
