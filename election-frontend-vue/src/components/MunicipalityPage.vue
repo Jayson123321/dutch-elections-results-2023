@@ -25,6 +25,18 @@ const compareMunicipalities = async () => {
     console.error('Selecteer beide gemeenten.');
     return;
   }
+  try {
+    const response1 = await axios.get(`http://localhost:8080/api/managing-authorities/${selectedMunicipality1.value}`);
+    const response2 = await axios.get(`http://localhost:8080/api/managing-authorities/${selectedMunicipality2.value}`);
+
+    municipalityResults.value = [
+      { municipality: response1.data, id: selectedMunicipality1.value },
+      { municipality: response2.data, id: selectedMunicipality2.value }
+    ];
+  } catch (error) {
+    console.error('Error fetching municipality data:', error);
+  }
+};
 
 // gets municipalities when page loads
 onMounted(() => {
