@@ -53,6 +53,7 @@ onMounted(() => {
         </select>
       </div>
     </div>
+    <button class="compare-button">Vergelijk Gemeenten</button>
     <FooterComponent />
   </div>
 </template>
