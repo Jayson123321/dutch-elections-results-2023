@@ -125,8 +125,9 @@ public class ForumService {
 
     public Page<UserForum> getForumsByUserId(Long userId, int page) {
         Pageable pageable = PageRequest.of(page, 10);
-        System.out.println(userId);
-        return postForumRepository.findByUserId(userId, pageable);
+        Page<UserForum> forums = postForumRepository.findByUserId(userId, pageable);
+        forums.forEach(forum -> forum.getReplies().size()); // Load replies
+        return forums;
     }
 
 }
