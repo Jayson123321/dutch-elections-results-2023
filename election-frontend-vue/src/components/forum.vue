@@ -266,7 +266,7 @@ export default {
   --input-background-color: #ffffff;
   --button-text-color: #ffffff;
   --reply-background-color: #f9f9f9;
-  --link-color: #ff4500;
+  --link-color: #0b4f99;
   --border-color: #cccccc;
 }
 
@@ -287,7 +287,7 @@ export default {
   margin-bottom: 20px;
   background-color: var(--card-background-color);
   padding: 20px;
-  border: 2px solid #ff4500;
+  border: 5px solid #117CEE;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -307,7 +307,7 @@ export default {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  background-color: #ff4500;
+  background-color: #117CEE;
   //color: var(--button-text-color);
   cursor: pointer;
   font-size: 16px;
@@ -381,7 +381,7 @@ form button {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  background-color: #7a7a7a;
+  background-color: #0B54A2;
   color: var(--button-text-color);
   cursor: pointer;
   font-size: 16px;
@@ -392,7 +392,7 @@ form button {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  background-color: #ff0000;
+  background-color: #AD0000;
   color: #ffffff;
   cursor: pointer;
   font-size: 16px;
@@ -400,21 +400,34 @@ form button {
   display: block;
   margin: 10px auto;
 }
-.forum-item button:hover {
-  background-color: #cc0000;
+.forum-item .delete-button:hover {
+  background-color: #700000;
 }
 
+.forum-item button:hover {
+  background-color: #0B4F99;
+}
 .pagination button{
   color:var(--button-text-color) ;
   padding: 5px 10px;
   border: none;
   border-radius: 5px;
-  background-color: #7a7a7a;
+  background-color: #117CEE;
   color: var(--button-text-color);
   cursor: pointer;
   font-size: 15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 
+}
+
+h1{
+  color: #117CEE;
+}
+h2{
+  color: #117CEE;
+}
+h3{
+  color: #0B54A2;
 }
 </style>
 
