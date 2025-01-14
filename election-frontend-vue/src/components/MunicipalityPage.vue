@@ -7,12 +7,8 @@ import FooterComponent from '../components/FooterComponent.vue';
 const municipalities = ref([]);
 const selectedMunicipality1 = ref(null);
 const selectedMunicipality2 = ref(null);
-const selectedParty = ref(null);
-const partyVotes = ref([]);
-const parties = ref([]);
 
-
-// function o get municipalities
+// function to get municipalities
 const fetchMunicipalities = async () => {
   try {
     const response = await axios.get('http://localhost:8080/api/managing-authorities/getAllAuthorities');
@@ -22,40 +18,11 @@ const fetchMunicipalities = async () => {
   }
 };
 
-// get the parties
-const fetchParties = async () => {
-  try {
-    const response = await axios.get('http://localhost:8080/api/parties');
-    parties.value = response.data;
-    console.log("Fetched parties:", parties.value); // log to check the parties
-  } catch (error) {
-    console.error('Error fetching parties:', error);
-  }
-};
-
-
-// function to get parties and votes
-const fetchPartyVotes = async () => {
-  if (!selectedMunicipality1.value || !selectedMunicipality2.value || !selectedParty.value) {
-    console.error('Selecteer beide gemeentes en een partij.');
-    return;
-  }
-
-  try {
-    const response = await axios.get(`http://localhost:8080/api/votes?municipality1=${selectedMunicipality1.value}&municipality2=${selectedMunicipality2.value}&party=${selectedParty.value}`);
-    partyVotes.value = response.data;
-  } catch (error) {
-    console.error('Error fetching party votes:', error);
-  }
-};
-
 // gets municipalities when page loads
 onMounted(() => {
   fetchMunicipalities();
-  fetchParties();
 });
 </script>
-
 
 <template>
   <div class="municipality-page">
@@ -63,7 +30,7 @@ onMounted(() => {
     <h2 class="page-title">Gemeente uitslagen vergelijken</h2>
     <div id="description-container">
       <p id="description-text">
-        Vergelijk de gemeentelijke uitslagen met elkaar door twee gemeenten en een partij te selecteren.
+        Vergelijk de gemeentelijke uitslagen met elkaar door twee gemeenten te selecteren.
       </p>
     </div>
     <div id="selectors-container">
@@ -85,27 +52,7 @@ onMounted(() => {
           </option>
         </select>
       </div>
-      <div class="party-selection">
-        <h3>Selecteer een partij</h3>
-        <select v-model="selectedParty">
-          <option value="" disabled>Selecteer een partij</option>
-          <option v-for="party in parties" :key="party.id" :value="party.id">
-            {{ party.name }}
-          </option>
-        </select>
-      </div>
     </div>
-    <button class="compare-button" @click="fetchPartyVotes">Vergelijk stemmen</button>
-    <div class="party-votes" v-if="partyVotes.length > 0">
-      <h3>Resultaten voor de partij</h3>
-      <div v-for="vote in partyVotes" :key="vote.municipalityId" class="vote-item">
-        <p><strong>Gemeente:</strong> {{ vote.municipalityName }}</p>
-        <p><strong>Stemmen:</strong> {{ vote.votes }}</p>
-      </div>
-    </div>
-    <p v-else-if="partyVotes.length === 0 && selectedMunicipality1 && selectedMunicipality2 && selectedParty">
-      Geen stemmen gevonden voor de geselecteerde partij in de geselecteerde gemeenten.
-    </p>
     <FooterComponent />
   </div>
 </template>
