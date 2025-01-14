@@ -9,7 +9,8 @@
           <li><router-link to="/choose-results">{{ $t('common.results') }}</router-link></li>
           <li><router-link to="/partijenpagina">{{ $t('common.parties') }}</router-link></li>
           <li><router-link to="/login">{{ $t('common.login') }}</router-link></li>
-          <li><router-link to="/userForums.vue">{{ $t('My forums') }}</router-link></li>
+          <li><router-link to="/forum">{{ $t('Forums') }}</router-link></li>
+          <li><router-link to="/userForums">{{ ('My forums') }}</router-link></li>
 
         </ul>
       </nav>
