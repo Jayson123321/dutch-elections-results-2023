@@ -162,20 +162,16 @@ public class PostForumController {
         if (token == null || !jwtUtil.validateToken(token)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You must be logged in to delete a forum.");
         }
-
         // Extract user ID from the token
         String userId = jwtUtil.extractUserId(token.replace("Bearer ", ""));
         User user = userService.findById(Long.parseLong(userId));
-
         try {
             // Retrieve the forum by ID
             UserForum forum = forumService.getForumById(forumId);
-
             // Check if the user is the owner of the forum
             if (!forum.getUser().getId().equals(user.getId())) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to delete this forum.");
             }
-
             // Proceed with deleting the forum if the user is the owner
             forumService.deleteForumById(forumId);
             return ResponseEntity.noContent().build();
@@ -185,6 +181,24 @@ public class PostForumController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+
+    @GetMapping("/api/user")
+    public ResponseEntity<Page<UserForum>> getUserForums(
+            @RequestHeader(value = "Authorization", required = false) String token,
+            @RequestParam(value = "page", defaultValue = "0") int page) {
+
+        if (token == null || !jwtUtil.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+
+        String userId = jwtUtil.extractUserId(token.replace("Bearer ", ""));
+        Page<UserForum> forums = forumService.getForumsByUserId(Long.parseLong(userId), page);
+        System.out.println(token);
+        return ResponseEntity.ok(forums);
+
     }
 
 
