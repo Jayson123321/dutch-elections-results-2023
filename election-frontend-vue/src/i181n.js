@@ -11,6 +11,14 @@ const messages = {
             search: 'Search...',
             toggle_button: 'En'
         },
+        home: {
+            party: 'Party',
+            party_description: 'Discover the political parties in the Netherlands and their candidates.',
+            results: 'Results',
+            results_description: 'View the results of the 2023 elections in the Netherlands.',
+            forum: 'Forum',
+            forum_description: 'Ask questions and discuss topics with other users.',
+        },
         header: {
             home: 'Home',
             results: 'Results',
@@ -148,6 +156,14 @@ const messages = {
         }
     },
     nl: {
+        home: {
+            party: 'Partij',
+            party_description: 'Ontdek de politieke partijen in Nederland en hun kandidaten.',
+            results: 'Resultaten',
+            results_description: 'Bekijk de resultaten van de verkiezingen van 2023 in Nederland.',
+            forum: 'Forum',
+            forum_description: 'Stel vragen en bespreek onderwerpen met andere gebruikers.',
+        },
         common: {
             home: 'Home',
             results: 'Resultaten',
