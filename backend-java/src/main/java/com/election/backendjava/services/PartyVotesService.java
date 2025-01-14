@@ -19,4 +19,17 @@ public class PartyVotesService {
     public List<PartyVotes> findByReportingUnitIdAndManagingAuthorityNumber(String reportingUnitId, String authorityIdentifier) {
         return partyVotesRepository.findByReportingUnitIdAndManagingAuthorityNumber(reportingUnitId, authorityIdentifier);
     }
+    // functie: soteert op validVotes
+    public List<PartyVotes> findByReportingUnitIdOrderByValidVotesDesc(String reportingUnitId) {
+        return partyVotesRepository.findByReportingUnitIdOrderByValidVotesDesc(reportingUnitId);
+    }
+    // Nieuwe methode: berekent het totaal aantal geldige stemmen voor een reportingUnitId
+    public int calculateTotalValidVotes(String reportingUnitId) {
+        List<PartyVotes> partyVotesList = partyVotesRepository.findByReportingUnitId(reportingUnitId);
+        return partyVotesList.stream().mapToInt(PartyVotes::getValidVotes).sum();
+    }
+
+    public List<PartyVotes> findByReportingUnitIdOrderByAffiliation(String reportingUnitId) {
+        return partyVotesRepository.findByReportingUnitIdOrderByAffiliation(reportingUnitId);
+    }
 }

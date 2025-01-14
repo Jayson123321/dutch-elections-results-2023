@@ -2,60 +2,53 @@ package com.election.backendjava.controllers;
 
 import com.election.backendjava.dto.TotalVoteWithPercentageDTO;
 import com.election.backendjava.entities.TotalVote;
-import com.election.backendjava.repositories.TotalVoteRepository;
+import com.election.backendjava.services.TotalVoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
+/**
+ * Controller class to handle API endpoints related to TotalVotes.
+ * Delegates the business logic to the TotalVoteService.
+ */
 @RestController
 @RequestMapping("/api/results")
 public class TotalVoteController {
 
-    private final TotalVoteRepository totalVoteRepository;
+    private final TotalVoteService totalVoteService;
 
     @Autowired
-    public TotalVoteController(TotalVoteRepository totalVoteRepository) {
-        this.totalVoteRepository = totalVoteRepository;
+    public TotalVoteController(TotalVoteService totalVoteService) {
+        this.totalVoteService = totalVoteService;
     }
-    // Sorteer de resultaten op naam van de partij.
+
+    /**
+     * Endpoint to fetch all votes sorted by affiliation name.
+     * @return List of TotalVote sorted alphabetically by affiliation name.
+     */
     @GetMapping("/sortedByName")
     public List<TotalVote> getAllVotesSortedByAffiliationName() {
-        return totalVoteRepository.findAll().stream()
-                .sorted((a, b) -> a.getAffiliationName().compareToIgnoreCase(b.getAffiliationName()))
-                .collect(Collectors.toList());
+        return totalVoteService.getAllVotesSortedByAffiliationName();
     }
-    // Sorteer de resultaten op aantal stemmen.
+
+    /**
+     * Endpoint to fetch all votes sorted by the number of total votes in descending order.
+     * @return List of TotalVote sorted by vote count.
+     */
     @GetMapping("/sortedByVotes")
     public List<TotalVote> getAllVotesSortedByTotalVotes() {
-        return totalVoteRepository.findAll().stream()
-                .sorted((a, b) -> b.getTotalVotes().compareTo(a.getTotalVotes()))
-                .collect(Collectors.toList());
+        return totalVoteService.getAllVotesSortedByTotalVotes();
     }
 
+    /**
+     * Endpoint to fetch all votes along with their percentages.
+     * @return List of TotalVoteWithPercentageDTO containing vote data and percentages.
+     */
     @GetMapping
     public List<TotalVoteWithPercentageDTO> getAllTotalVotes() {
-        List<TotalVote> totalVotes = totalVoteRepository.findAll();
-
-        // Bereken het totaal aantal stemmen
-        int sumVotes = totalVotes.stream().mapToInt(TotalVote::getTotalVotes).sum();
-
-        // Maak een lijst van DTO's met percentages
-        List<TotalVoteWithPercentageDTO> result = new ArrayList<>();
-        for (TotalVote vote : totalVotes) {
-            double percentage = sumVotes > 0 ? (double) vote.getTotalVotes() / sumVotes * 100 : 0;
-            result.add(new TotalVoteWithPercentageDTO(vote.getAffiliationName(), vote.getTotalVotes(), percentage));
-        }
-
-        return result;
+        return totalVoteService.getAllTotalVotesWithPercentage();
     }
-
 }
-
-//    public List<TotalVote> getAllTotalVotes() {
-//        return totalVoteRepository.findAll();
-//    }

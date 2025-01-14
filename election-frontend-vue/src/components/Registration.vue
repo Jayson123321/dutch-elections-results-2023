@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 export default defineComponent({
@@ -53,6 +53,15 @@ export default defineComponent({
       }
     };
 
+    onMounted(() => {
+      const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
+      if (isDarkMode) {
+        document.body.classList.add('dark-mode');
+      } else {
+        document.body.classList.remove('dark-mode');
+      }
+    });
+
     return {
       username,
       password,
@@ -66,7 +75,6 @@ export default defineComponent({
 <template>
   <div>
     <router-link to="/" class="home-link">Home</router-link>
-    <main class="form-container">
       <div class="form-box">
         <h1>Registration</h1>
         <form @submit.prevent="register" class="form">
@@ -80,36 +88,28 @@ export default defineComponent({
           <p>Already have an account? <router-link to="/login">Log in here</router-link></p>
         </form>
       </div>
-    </main>
   </div>
 </template>
 
 <style scoped>
-.home-link {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  color: #007bff;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.form-container {
+body {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f0f0f0;
+  margin: 0;
 }
 
 .form-box {
-  background-color: #ffffff;
+  background-color: var(--box-background-color);
   padding: 2rem;
   border-radius: 0.5rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   max-width: 400px;
   width: 100%;
-  position: relative;
+  position:absolute;
+  margin-left:690px;
+  margin-top: 150px;
 }
 
 .form {
@@ -120,26 +120,37 @@ export default defineComponent({
 
 .form label {
   font-weight: bold;
-  color: #333333;
+  color: var(--text-color);
 }
 
 .form input {
   padding: 0.5rem;
   border-radius: 0.25rem;
-  border: 1px solid #cccccc;
+  border: 1px solid var(--input-border-color);
 }
 
 .form button {
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
   border: none;
-  background-color: #007bff;
-  color: white;
+  background-color: var(--button-background-color);
+  color: var(--button-text-color);
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 .form button:hover {
-  background-color: #0056b3;
+  background-color: var(--button-hover-background-color);
+}
+
+p {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+router-link {
+  color: var(--link-color);
+  text-decoration: underline;
+  cursor: pointer;
 }
 </style>

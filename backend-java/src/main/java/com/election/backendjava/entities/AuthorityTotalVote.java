@@ -19,6 +19,16 @@ public class AuthorityTotalVote {
     @Column(name = "valid_votes")
     private Integer validVotes;
 
+    public AuthorityTotalVote(String authorityId, int i) {
+    }
+
+    public AuthorityTotalVote() {
+
+    }
+
+    public AuthorityTotalVote(String auth123, String candidate2, int i) {
+    }
+
     public Long getId() {
         return id;
     }

@@ -34,13 +34,21 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
         try {
-            String username = authenticationService.login(user);
+            // Ensure the username is correctly retrieved from the User object
+            String username = user.getUsername();
+            if (username == null || username.isEmpty()) {
+                throw new IllegalArgumentException("Username is missing");
+            }
 
-            String token = jwtUtil.generateToken(username);
+            System.out.println(username);
+            Long userid = authenticationService.login(user);
+
+            String token = jwtUtil.generateToken(String.valueOf(userid));
 
             Map<String, String> response = new HashMap<>();
             response.put("token", token);
-            response.put("username", username);
+            response.put("userid", String.valueOf(userid));
+            response.put("username", username); // Add the username to the response
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
