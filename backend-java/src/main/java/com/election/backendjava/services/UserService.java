@@ -4,6 +4,7 @@ import com.election.backendjava.entities.User;
 import com.election.backendjava.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -69,6 +70,14 @@ public class UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + id));
     }
+
+//    public Long findUserIdByUsername(String username) {
+//        User user = userRepository.findByUsername(username);
+//        if (user != null) {
+//            return user.getId();
+//        }
+//        throw new UsernameNotFoundException("User not found");
+//    }
 
 
 }
