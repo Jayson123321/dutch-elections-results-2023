@@ -5,11 +5,13 @@ import HeaderComponent from '../components/HeaderComponent.vue';
 import FooterComponent from '../components/FooterComponent.vue';
 
 const municipalities = ref([]);
-const selectedMunicipality1 = ref(null);
-const selectedMunicipality2 = ref(null);
-const municipalityResults = ref([]);
+const selectedMunicipality1Id = ref(null);
+const selectedMunicipality2Id = ref(null);
+const municipality1Votes = ref([]);
+const municipality2Votes = ref([]);
+const sortOrder = ref('votes');
 
-// function to get municipalities
+// Haal alle gemeenten op
 const fetchMunicipalities = async () => {
   try {
     const response = await axios.get('http://localhost:8080/api/managing-authorities/getAllAuthorities');
@@ -19,26 +21,39 @@ const fetchMunicipalities = async () => {
   }
 };
 
-// function to compare municipalities
-const compareMunicipalities = async () => {
-  if (!selectedMunicipality1.value || !selectedMunicipality2.value) {
-    console.error('Selecteer beide gemeenten.');
-    return;
-  }
-  try {
-    const response1 = await axios.get(`http://localhost:8080/api/managing-authorities/${selectedMunicipality1.value}`);
-    const response2 = await axios.get(`http://localhost:8080/api/managing-authorities/${selectedMunicipality2.value}`);
+// Haal de stemresultaten op voor een specifieke gemeente
+const fetchVotesForMunicipality = async (municipalityId, targetVotesRef) => {
+  const selectedMunicipality = municipalities.value.find(
+      (municipality) => municipality.id === municipalityId
+  );
 
-    municipalityResults.value = [
-      { municipality: response1.data, id: selectedMunicipality1.value },
-      { municipality: response2.data, id: selectedMunicipality2.value }
-    ];
-  } catch (error) {
-    console.error('Error fetching municipality data:', error);
+  if (selectedMunicipality) {
+    try {
+      const endpoint =
+          sortOrder.value === 'votes'
+              ? `http://localhost:8080/api/result-local-authority/sortedByVotes/${selectedMunicipality.authorityIdentifier}`
+              : `http://localhost:8080/api/result-local-authority/${selectedMunicipality.authorityIdentifier}`;
+      const response = await axios.get(endpoint);
+      targetVotesRef.value = sortOrder.value === 'name'
+          ? response.data.sort((a, b) => a.affiliation.registeredName.localeCompare(b.affiliation.registeredName))
+          : response.data.sort((a, b) => b.validVotes - a.validVotes);
+    } catch (error) {
+      console.error('Error fetching municipality votes:', error);
+    }
   }
 };
 
-// gets municipalities when page loads
+// Haal beide stemresultaten op
+const fetchBothMunicipalityVotes = () => {
+  if (selectedMunicipality1Id.value) {
+    fetchVotesForMunicipality(selectedMunicipality1Id.value, municipality1Votes);
+  }
+  if (selectedMunicipality2Id.value) {
+    fetchVotesForMunicipality(selectedMunicipality2Id.value, municipality2Votes);
+  }
+};
+
+// Mount de initiële data
 onMounted(() => {
   fetchMunicipalities();
 });
@@ -47,16 +62,15 @@ onMounted(() => {
 <template>
   <div class="municipality-page">
     <HeaderComponent />
-    <h2 class="page-title">Gemeente uitslagen vergelijken</h2>
     <div id="description-container">
       <p id="description-text">
-        Vergelijk de gemeentelijke uitslagen met elkaar door twee gemeenten te selecteren.
+        Selecteer twee gemeenten om de resultaten te vergelijken en sorteer de stemmen op partijnaam of aantal stemmen.
       </p>
     </div>
     <div id="selectors-container">
       <div class="municipality-selection">
-        <h3>Selecteer de eerste gemeente</h3>
-        <select v-model="selectedMunicipality1">
+        <label for="authority-select-1">Selecteer de eerste gemeente</label>
+        <select id="authority-select-1" v-model="selectedMunicipality1Id" @change="fetchBothMunicipalityVotes">
           <option value="" disabled>Selecteer een gemeente</option>
           <option v-for="municipality in municipalities" :key="municipality.id" :value="municipality.id">
             {{ municipality.authorityName }}
@@ -64,8 +78,8 @@ onMounted(() => {
         </select>
       </div>
       <div class="municipality-selection">
-        <h3>Selecteer de tweede gemeente</h3>
-        <select v-model="selectedMunicipality2">
+        <label for="authority-select-2">Selecteer de tweede gemeente</label>
+        <select id="authority-select-2" v-model="selectedMunicipality2Id" @change="fetchBothMunicipalityVotes">
           <option value="" disabled>Selecteer een gemeente</option>
           <option v-for="municipality in municipalities" :key="municipality.id" :value="municipality.id">
             {{ municipality.authorityName }}
@@ -73,55 +87,122 @@ onMounted(() => {
         </select>
       </div>
     </div>
-    <button class="compare-button">Vergelijk Gemeenten</button>
+    <div id="sort-bar">
+      <label for="sort">Sorteren op:</label>
+      <select id="sort" v-model="sortOrder" @change="fetchBothMunicipalityVotes">
+        <option value="votes">Stemmen</option>
+        <option value="name">Partij naam</option>
+      </select>
+    </div>
+    <div id="results-container">
+      <div class="results" v-if="municipality1Votes.length > 0">
+        <h3>Stemresultaten voor Gemeente 1</h3>
+        <table>
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>Partij</th>
+            <th>Stemmen</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="(vote, index) in municipality1Votes" :key="vote.id">
+            <td>{{ index + 1 }}</td>
+            <td>{{ vote.affiliation.registeredName }}</td>
+            <td>{{ vote.validVotes }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="results" v-if="municipality2Votes.length > 0">
+        <h3>Stemresultaten voor Gemeente 2</h3>
+        <table>
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>Partij</th>
+            <th>Stemmen</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="(vote, index) in municipality2Votes" :key="vote.id">
+            <td>{{ index + 1 }}</td>
+            <td>{{ vote.affiliation.registeredName }}</td>
+            <td>{{ vote.validVotes }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
     <FooterComponent />
   </div>
 </template>
 
 
+
+
+
+
 <style scoped>
 .municipality-page {
+  font-family: Arial, sans-serif;
   padding: 20px;
-  background-color: #111;
-  color: #fff;
-  min-height: 100vh;
-  text-align: center;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 #description-container {
-  border: 1px solid #ddd;
-  padding: 20px;
-  margin: 20px 0;
-  border-radius: 5px;
-  background-color: #222;
-}
-
-#description-text {
-  font-size: 1.1em;
-  line-height: 1.6;
-}
-
-#titel {
+  margin-bottom: 20px;
   text-align: center;
-  margin: 20px 0;
 }
 
-.municipality-list {
-  margin: 20px 0;
+#selectors-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.municipality-selection {
+  flex: 1;
+  margin: 0 10px;
+}
+
+#sort-bar {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#results-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.results {
+  flex: 1;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th,
+table td {
+  border: 1px solid #ddd;
+  padding: 8px;
   text-align: left;
-  padding: 0 20px;
-}
-.municipality-item {
-  background-color: #222;
-  padding: 15px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-.no-municipalities {
-  color: #888;
-  font-size: 1.2em;
+table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
 }
+
+h3 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
 </style>
 
