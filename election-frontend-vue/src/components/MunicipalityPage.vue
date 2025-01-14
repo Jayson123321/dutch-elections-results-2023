@@ -84,7 +84,7 @@ onMounted(() => {
     <div class="results-container">
       <div class="results" v-if="municipality1Votes.length > 0">
         <h3>Gemeente 1</h3>
-        <ul>
+        <ul class="results-table">
           <li v-for="vote in municipality1Votes" :key="vote.id">
             <span>Partij: {{ vote.affiliation.registeredName }}</span>
             <span>Stemmen: {{ vote.validVotes }}</span>
@@ -93,7 +93,7 @@ onMounted(() => {
       </div>
       <div class="results" v-if="municipality2Votes.length > 0">
         <h3>Gemeente 2</h3>
-        <ul>
+        <ul class="results-table">
           <li v-for="vote in municipality2Votes" :key="vote.id">
             <span>Partij: {{ vote.affiliation.registeredName }}</span>
             <span>Stemmen: {{ vote.validVotes }}</span>
@@ -109,7 +109,6 @@ onMounted(() => {
 .municipality-page {
   font-family: Arial, sans-serif;
   padding: 20px;
-  max-width: 800px;
   margin: 0 auto;
   color: #333;
 }
@@ -156,6 +155,13 @@ select {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.results-table {
+  max-width: 400px;
+  margin: 0 auto;
+  list-style: none;
+  padding: 0;
+}
+
 h3 {
   margin-bottom: 10px;
   font-size: 1.2rem;
@@ -164,7 +170,6 @@ h3 {
 }
 
 ul {
-  list-style: none;
   padding: 0;
 }
 
@@ -183,5 +188,3 @@ span {
   font-size: 1rem;
 }
 </style>
-
-
