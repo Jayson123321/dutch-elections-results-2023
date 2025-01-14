@@ -179,6 +179,8 @@ import HeaderComponent from "@/components/HeaderComponent.vue";
 import PoliticalNews from "@/components/PoliticalNews.vue";
 import { Chart, BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend } from 'chart.js';
 import config from "@/config.ts";
+import i18n from "@/i181n.js";
+
 
 Chart.register(BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
 
