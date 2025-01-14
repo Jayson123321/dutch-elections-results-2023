@@ -121,12 +121,6 @@ onMounted(() => {
   </div>
 </template>
 
-
-
-
-
-
-
 <style scoped>
 .municipality-page {
   font-family: Arial, sans-serif;
