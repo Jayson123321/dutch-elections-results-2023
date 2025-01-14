@@ -3,9 +3,17 @@
     <h1>Your Forums</h1>
     <div v-if="forums.length === 0">No forums to display.</div>
     <div v-else>
-      <div v-for="forum in forums" :key="forum.id" class="forum-card">
+      <div v-for="forum in forums" :key="forum.forumId" class="forum-card">
         <h3>{{ forum.title }}</h3>
         <p>{{ forum.description }}</p>
+        <div v-if="forum.replies.length > 0" class="replies">
+          <h4>Replies:</h4>
+          <ul>
+            <li v-for="reply in forum.replies" :key="reply.id">
+              {{ reply.replyText }}
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
     <button @click="loadMore">Load More</button>
