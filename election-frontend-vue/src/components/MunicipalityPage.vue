@@ -56,15 +56,15 @@ onMounted(() => {
 <template>
   <div class="municipality-page">
     <HeaderComponent />
-    <div id="description-container">
-      <p id="description-text">
-        Selecteer twee gemeenten om de resultaten te vergelijken.
+    <div class="description-container">
+      <p class="description-text">
+        Vergelijk de resultaten van twee gemeenten hieronder.
       </p>
     </div>
-    <div id="selectors-container">
+    <div class="selectors-container">
       <div class="municipality-selection">
-        <label for="authority-select-1">Selecteer de eerste gemeente</label>
-        <select id="authority-select-1" v-model="selectedMunicipality1Id" @change="fetchBothMunicipalityVotes">
+        <label for="municipality-select-1">Gemeente:</label>
+        <select id="municipality-select-1" v-model="selectedMunicipality1Id" @change="fetchBothMunicipalityVotes">
           <option value="" disabled>Selecteer een gemeente</option>
           <option v-for="municipality in municipalities" :key="municipality.id" :value="municipality.id">
             {{ municipality.authorityName }}
@@ -72,8 +72,8 @@ onMounted(() => {
         </select>
       </div>
       <div class="municipality-selection">
-        <label for="authority-select-2">Selecteer de tweede gemeente</label>
-        <select id="authority-select-2" v-model="selectedMunicipality2Id" @change="fetchBothMunicipalityVotes">
+        <label for="municipality-select-2">Gemeente:</label>
+        <select id="municipality-select-2" v-model="selectedMunicipality2Id" @change="fetchBothMunicipalityVotes">
           <option value="" disabled>Selecteer een gemeente</option>
           <option v-for="municipality in municipalities" :key="municipality.id" :value="municipality.id">
             {{ municipality.authorityName }}
@@ -81,40 +81,24 @@ onMounted(() => {
         </select>
       </div>
     </div>
-    <div id="results-container">
+    <div class="results-container">
       <div class="results" v-if="municipality1Votes.length > 0">
-        <h3>Stemresultaten voor Gemeente 1</h3>
-        <table>
-          <thead>
-          <tr>
-            <th>Partij</th>
-            <th>Stemmen</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="vote in municipality1Votes" :key="vote.id">
-            <td>{{ vote.affiliation.registeredName }}</td>
-            <td>{{ vote.validVotes }}</td>
-          </tr>
-          </tbody>
-        </table>
+        <h3>Gemeente 1</h3>
+        <ul>
+          <li v-for="vote in municipality1Votes" :key="vote.id">
+            <span>Partij: {{ vote.affiliation.registeredName }}</span>
+            <span>Stemmen: {{ vote.validVotes }}</span>
+          </li>
+        </ul>
       </div>
       <div class="results" v-if="municipality2Votes.length > 0">
-        <h3>Stemresultaten voor Gemeente 2</h3>
-        <table>
-          <thead>
-          <tr>
-            <th>Partij</th>
-            <th>Stemmen</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="vote in municipality2Votes" :key="vote.id">
-            <td>{{ vote.affiliation.registeredName }}</td>
-            <td>{{ vote.validVotes }}</td>
-          </tr>
-          </tbody>
-        </table>
+        <h3>Gemeente 2</h3>
+        <ul>
+          <li v-for="vote in municipality2Votes" :key="vote.id">
+            <span>Partij: {{ vote.affiliation.registeredName }}</span>
+            <span>Stemmen: {{ vote.validVotes }}</span>
+          </li>
+        </ul>
       </div>
     </div>
     <FooterComponent />
@@ -125,32 +109,40 @@ onMounted(() => {
 .municipality-page {
   font-family: Arial, sans-serif;
   padding: 20px;
-  max-width: 1200px;
+  max-width: 800px;
   margin: 0 auto;
+  color: #333;
 }
 
-#description-container {
+.description-container {
   margin-bottom: 20px;
   text-align: center;
 }
 
-#selectors-container {
+.selectors-container {
   display: flex;
-  justify-content: space-between;
+  gap: 10px;
   margin-bottom: 20px;
 }
 
 .municipality-selection {
   flex: 1;
-  margin: 0 10px;
+  display: flex;
+  flex-direction: column;
 }
 
-#sort-bar {
-  text-align: center;
-  margin-bottom: 20px;
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
 }
 
-#results-container {
+select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.results-container {
   display: flex;
   justify-content: space-between;
   gap: 20px;
@@ -158,29 +150,38 @@ onMounted(() => {
 
 .results {
   flex: 1;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-table th,
-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
-
-table th {
-  background-color: #f4f4f4;
-  font-weight: bold;
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 h3 {
-  text-align: center;
   margin-bottom: 10px;
+  font-size: 1.2rem;
+  color: #555;
+  text-align: center;
 }
 
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+li:last-child {
+  border-bottom: none;
+}
+
+span {
+  font-size: 1rem;
+}
 </style>
+
 
