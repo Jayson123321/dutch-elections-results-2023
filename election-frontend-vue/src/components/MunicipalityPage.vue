@@ -100,14 +100,12 @@ onMounted(() => {
         <table>
           <thead>
           <tr>
-            <th>#</th>
             <th>Partij</th>
             <th>Stemmen</th>
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(vote, index) in municipality1Votes" :key="vote.id">
-            <td>{{ index + 1 }}</td>
+          <tr v-for="vote in municipality1Votes" :key="vote.id">
             <td>{{ vote.affiliation.registeredName }}</td>
             <td>{{ vote.validVotes }}</td>
           </tr>
@@ -119,14 +117,12 @@ onMounted(() => {
         <table>
           <thead>
           <tr>
-            <th>#</th>
             <th>Partij</th>
             <th>Stemmen</th>
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(vote, index) in municipality2Votes" :key="vote.id">
-            <td>{{ index + 1 }}</td>
+          <tr v-for="vote in municipality2Votes" :key="vote.id">
             <td>{{ vote.affiliation.registeredName }}</td>
             <td>{{ vote.validVotes }}</td>
           </tr>
@@ -137,6 +133,7 @@ onMounted(() => {
     <FooterComponent />
   </div>
 </template>
+
 
 
 
