@@ -237,6 +237,7 @@ export default {
 </script>
 
 <style>
+
 .success-message {
   color: green;
   font-weight: bold;
@@ -254,7 +255,11 @@ export default {
   font-size: 14px;
   margin: 5px 0;
 }
-
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin: 5px 0;
+}
 :root {
   --background-color: #f0f0f0;
   --text-color: #333333;
@@ -262,7 +267,7 @@ export default {
   --input-background-color: #ffffff;
   --button-text-color: #ffffff;
   --reply-background-color: #f9f9f9;
-  --link-color: #ff4500;
+  --link-color: #007bff;
   --border-color: #cccccc;
 }
 
@@ -271,9 +276,9 @@ export default {
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  background-color: var(--background-color);
+  //background-color: var(--background-color);
   font-family: Arial, sans-serif;
-  color: var(--text-color);
+  //color: var(--text-color);
   min-height: 100vh;
 }
 
@@ -283,7 +288,7 @@ export default {
   margin-bottom: 20px;
   background-color: var(--card-background-color);
   padding: 20px;
-  border: 2px solid #ff4500;
+  border: 2px solid #007bff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -303,8 +308,8 @@ export default {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  background-color: #ff4500;
-  color: var(--button-text-color);
+  background-color: #007bff;
+  //color: var(--button-text-color);
   cursor: pointer;
   font-size: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -388,7 +393,7 @@ form button {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  background-color: #ff0000;
+  background-color: #007bff;
   color: #ffffff;
   cursor: pointer;
   font-size: 16px;
@@ -396,13 +401,12 @@ form button {
   display: block;
   margin: 10px auto;
 }
-
 .forum-item button:hover {
-  background-color: #cc0000;
+  background-color: #0056b3;
 }
 
-.pagination button {
-  color: var(--button-text-color);
+.pagination button{
+  color:var(--button-text-color) ;
   padding: 5px 10px;
   border: none;
   border-radius: 5px;
@@ -411,5 +415,8 @@ form button {
   cursor: pointer;
   font-size: 15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
 }
 </style>
+
+
