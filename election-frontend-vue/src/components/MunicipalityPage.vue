@@ -19,6 +19,13 @@ const fetchMunicipalities = async () => {
   }
 };
 
+// function to compare municipalities
+const compareMunicipalities = async () => {
+  if (!selectedMunicipality1.value || !selectedMunicipality2.value) {
+    console.error('Selecteer beide gemeenten.');
+    return;
+  }
+
 // gets municipalities when page loads
 onMounted(() => {
   fetchMunicipalities();
