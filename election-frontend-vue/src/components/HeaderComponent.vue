@@ -134,6 +134,7 @@ export default {
   text-decoration: none;
   font-size: 18px;
   transition: color 0.3s;
+  color: #117CEE;
 }
 
 .search-container {
@@ -228,6 +229,7 @@ input:checked + .slider {
 input:checked + .slider:before {
   transform: translateX(26px);
 }
+
 
 @media (max-width: 768px) {
   .header-container {
