@@ -7,6 +7,7 @@ import FooterComponent from '../components/FooterComponent.vue';
 const municipalities = ref([]);
 const selectedMunicipality1 = ref(null);
 const selectedMunicipality2 = ref(null);
+const municipalityResults = ref([]);
 
 // function to get municipalities
 const fetchMunicipalities = async () => {
