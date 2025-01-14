@@ -22,14 +22,16 @@
     </div>
     <button @click="loadMore">Load More</button>
   </div>
+  <FooterComponent />
 </template>
 
 <script>
 import axios from 'axios';
 import HeaderComponent from "@/components/HeaderComponent.vue";
+import FooterComponent from "@/components/FooterComponent.vue";
 
 export default {
-  components: {HeaderComponent},
+  components: {FooterComponent, HeaderComponent},
   data() {
     return {
       forums: [],
