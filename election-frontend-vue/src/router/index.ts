@@ -47,7 +47,7 @@ const routes = [
     { path: '/Quiz', component: Quiz },
     { path: '/verkiezingsuitleg', component: verkiezingsuitleg},
     { path: '/MunicipalityPage', component: MunicipalityPage },
-
+    // { path: '', component: :}
 
 ];
 

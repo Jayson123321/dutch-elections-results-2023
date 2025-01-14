@@ -10,6 +10,9 @@
           <li><router-link to="/partijenpagina">{{ $t('common.parties') }}</router-link></li>
           <li><router-link to="/login">{{ $t('common.login') }}</router-link></li>
           <li><router-link to="/Educativepage">{{ $t('Educativepage') }}</router-link></li>
+          <li><router-link to="/forum">{{ $t('Forums') }}</router-link></li>
+          <li><router-link to="/userForums">{{ ('My forums') }}</router-link></li>
+
         </ul>
       </nav>
 
