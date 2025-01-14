@@ -5,7 +5,7 @@
     <div v-else>
       <div v-for="forum in forums" :key="forum.id" class="forum-card">
         <h3>{{ forum.title }}</h3>
-        <p>{{ forum.content }}</p>
+        <p>{{ forum.description }}</p>
       </div>
     </div>
     <button @click="loadMore">Load More</button>
