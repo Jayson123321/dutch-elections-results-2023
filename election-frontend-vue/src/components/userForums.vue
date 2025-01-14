@@ -6,6 +6,8 @@
       <div v-for="forum in forums" :key="forum.forumId" class="forum-card">
         <h3>{{ forum.title }}</h3>
         <p>{{ forum.description }}</p>
+        <button @click="deleteForum(forum.forumId)">Delete Forum</button>
+
         <div v-if="forum.replies.length > 0" class="replies">
           <h4>Replies:</h4>
           <ul>
@@ -13,6 +15,7 @@
               {{ reply.replyText }}
             </li>
           </ul>
+
         </div>
       </div>
     </div>
@@ -54,11 +57,32 @@ export default {
         console.error("Error fetching user forums:", error);
       }
     },
+    async deleteForum(forumId) {
+      const token = localStorage.getItem('jwtToken');
+      if (!token) {
+        this.$router.push('/login');
+        return;
+      }
+
+      try {
+        await axios.delete(`http://localhost:8080/api/usersforum/${forumId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        this.forums = this.forums.filter(forum => forum.forumId !== forumId);
+        alert('Forum deleted successfully.');
+      } catch (error) {
+        console.error("Error deleting forum:", error);
+        alert('Failed to delete forum.');
+      }
+    },
     loadMore() {
       this.currentPage++;
       this.fetchUserForums();
-    }
-  }
+    },
+  },
 };
 </script>
 
