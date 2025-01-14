@@ -44,6 +44,11 @@ public class CandidateController {
         }
     }
 
+    @GetMapping("/search")
+    public List<Candidate> searchCandidates(@RequestParam String searchTerm) {
+        return candidateService.searchCandidates(searchTerm);
+    }
+
 
 
 
