@@ -69,7 +69,7 @@ export default {
         try {
           await axios.delete(`http://localhost:8080/api/usersforum/${forumId}`, {
             headers: {
-              Authorization: `Bearer ${token}`  // Pass the token in the request header
+              Authorization: `Bearer ${token}`
             }
           });
           this.forums = this.forums.filter(forum => forum.forumId !== forumId);
