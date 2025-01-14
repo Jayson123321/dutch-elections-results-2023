@@ -20,7 +20,7 @@
         </div>
       </div>
     </div>
-    <button @click="loadMore">Laad meer</button>
+    <button @click="loadMore">Meer laden</button>
   </div>
   <FooterComponent />
 </template>
