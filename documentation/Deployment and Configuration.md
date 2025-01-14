@@ -12,11 +12,28 @@ The application is divided into two main components: frontend and backend. Both 
 ### Frontend
 - **Dockerfile**: The Dockerfile for the frontend is used to build the Docker image.
 - **Docker Image**: The built Docker image is pushed to DockerHub.
+- **Dockerfile**: The Dockerfile for the frontend is used to build the Docker image.
 
+```dockerfile
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+EXPOSE 80
+CMD ["npx", "serve", "dist"]
+```
 ### Backend
 - **Dockerfile**: The Dockerfile for the backend is used to build the Docker image.
-- **Docker Image**: The built Docker image is pushed to DockerHub.
-
+  - **Docker Image**: The built Docker image is pushed to DockerHub.
+```dockerfile
+FROM openjdk:17-jdk-alpine
+WORKDIR /app
+COPY ../target/elections-0.0.1-SNAPSHOT.jar /app/backend-app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "/app/backend-app.jar"]
+```
 ## Deployment Process
 The deployment process involves the following steps:
 
@@ -27,45 +44,41 @@ The deployment process involves the following steps:
 ### Step-by-Step Deployment
 
 1. **Build Docker Images**:
-   - Navigate to the frontend directory and build the Docker image:
-     ```sh
-     docker build -t your-dockerhub-username/frontend:latest .
-     ```
-   - Navigate to the backend directory and build the Docker image:
-     ```sh
-     docker build -t your-dockerhub-username/backend:latest .
-     ```
+    - Navigate to the frontend directory and build the Docker image:
+      ```sh
+      docker build -t your-dockerhub-username/frontend:latest .
+      ```
+    - Navigate to the backend directory and build the Docker image:
+      ```sh
+      docker build -t your-dockerhub-username/backend:latest .
+      ```
 
 2. **Push to DockerHub**:
-   - Push the frontend Docker image to DockerHub:
-     ```sh
-     docker push your-dockerhub-username/frontend:latest
-     ```
-   - Push the backend Docker image to DockerHub:
-     ```sh
-     docker push your-dockerhub-username/backend:latest
-     ```
+    - Push the frontend Docker image to DockerHub:
+      ```sh
+      docker push your-dockerhub-username/frontend:latest
+      ```
+    - Push the backend Docker image to DockerHub:
+      ```sh
+      docker push your-dockerhub-username/backend:latest
+      ```
 
 3. **Deploy to Render**:
-   - Log in to Render account.
-   - Create a new web service for the frontend and configure it to pull the Docker image from DockerHub.
-   - Create a new web service for the backend and configure it to pull the Docker image from DockerHub.
+    - Log in to Render account.
+    - Create a new web service for the frontend and configure it to pull the Docker image from DockerHub.
+    - Create a new web service for the backend and configure it to pull the Docker image from DockerHub.
 
 ## Configuration Parameters
 The application requires several configuration parameters, such as environment variables and database settings.
 
 ### Environment Variables
-- **FRONTEND_ENV**: The environment for the frontend (e.g., `staging`, `production`).
-- **BACKEND_ENV**: The environment for the backend (e.g., `staging`, `production`).
-- **DATABASE_URL**: The URL of the database.
-- **API_BASE_URL**: The base URL for the API.
+- **DATABASE_URL**: jdbc:mysql://oege.ie.hva.nl:3306/zhaverkj3
+- **API_BASE_URL**: https://wiipuujaamee42-frontend.onrender.com
 
 ### Database Settings
 - **DB_HOST**: The hostname of the database server.
-- **DB_PORT**: The port number of the database server.
-- **DB_USER**: The username for the database.
-- **DB_PASSWORD**: The password for the database.
-- **DB_NAME**: The name of the database.
+- **DB_PORT**: 3306
+- **DB_NAME**: Oege
 
 ## Deployment Diagram
 Below is a deployment diagram illustrating the deployment architecture:
