@@ -70,7 +70,8 @@ export default {
       try {
         const [candidatesResponse, affiliationsResponse] = await Promise.all([
           fetch(`${config.apiBaseUrl}/candidate/all`),
-          fetch(`${config.apiBaseUrl}/affiliations`)
+          fetch(`${config.apiBaseUrl}/affiliations`),
+          fetch(`${config.apiBaseUrl}/candidate/search?searchTerm=${this.searchTerm}`)
         ]);
 
         if (!candidatesResponse.ok || !affiliationsResponse.ok) {

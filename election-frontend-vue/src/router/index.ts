@@ -21,7 +21,7 @@ import HeatMap from "@/components/HeatMap.vue";
 import Educativepage from "@/components/Educativepage.vue";
 import Quiz from "@/components/Quiz.vue";
 import verkiezingsuitleg from "@/components/verkiezingsuitleg.vue";
-import userForums from "@/components/userForums.vue";
+import MunicipalityPage from "@/components/MunicipalityPage.vue";
 
 const routes = [
     { path: '/', component: home },
@@ -46,7 +46,8 @@ const routes = [
     { path: '/Educativepage', component: Educativepage },
     { path: '/Quiz', component: Quiz },
     { path: '/verkiezingsuitleg', component: verkiezingsuitleg},
-    { path: '/userForums', component: userForums},
+    { path: '/MunicipalityPage', component: MunicipalityPage },
+
 
 ];
 

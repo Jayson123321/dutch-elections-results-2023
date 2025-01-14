@@ -18,6 +18,8 @@ public class Reply {
     @JsonBackReference
     private UserForum userForum;
 
+    private String username;
+
     // Getters and setters
     public Long getReplyId() {
         return replyId;
@@ -41,5 +43,13 @@ public class Reply {
 
     public void setUserForum(UserForum userForum) {
         this.userForum = userForum;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

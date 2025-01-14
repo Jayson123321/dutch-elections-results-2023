@@ -2,17 +2,17 @@
   <div>
     <HeaderComponent />
     <div class="container">
-      <h1>Resultaat Kandidaat</h1>
+      <h1>{{ $t('kandidaatUitslag.title') }}</h1>
 
       <div v-if="candidate">
-        <h2>Naam: {{ candidate.candidateName }}</h2>
-        <p>Totale stemmen: {{ candidateVotes }}</p>
+        <h2>{{ $t('kandidaatUitslag.name') }}: {{ candidate.candidateName }}</h2>
+        <p>{{ $t('kandidaatUitslag.totalVotes') }}: {{ candidateVotes }}</p>
       </div>
 
       <div>
-        <label for="authority-select">Kies een gemeente:</label>
+        <label for="authority-select">{{ $t('kandidaatUitslag.selectAuthority') }}:</label>
         <select id="authority-select" v-model="selectedAuthority" @change="filterVotesByAuthority">
-          <option value="" disabled>Kies een gemeente</option>
+          <option value="" disabled>{{ $t('kandidaatUitslag.selectAuthority') }}</option>
           <option v-for="vote in votesPerAuthority" :key="vote.authorityName" :value="vote.authorityName">
             {{ vote.authorityName }}
           </option>
@@ -20,20 +20,20 @@
       </div>
 
       <div v-if="selectedAuthority">
-        <h3>Resultaten voor {{ selectedAuthority }}</h3>
+        <h3>{{ $t('kandidaatUitslag.resultsFor') }} {{ selectedAuthority }}</h3>
         <table v-if="filteredVotes.length > 0">
           <tr v-for="vote in filteredVotes" :key="vote.id">
-            <td>Naam: {{ candidate.candidateName }}</td>
-            <td>Stemmen gemeente: {{ vote.validVotes }}</td>
+            <td>{{ $t('kandidaatUitslag.name') }}: {{ candidate.candidateName }}</td>
+            <td>{{ $t('kandidaatUitslag.votesForAuthority') }}: {{ vote.validVotes }}</td>
           </tr>
         </table>
-        <p v-else>Geen stemmen gevonden voor deze gemeente.</p>
+        <p v-else>{{ $t('kandidaatUitslag.noVotesForAuthority') }}</p>
       </div>
 
       <div v-if="selectedAuthority">
-        <label for="reporting-unit-select">Kies een rapportage-eenheid:</label>
+        <label for="reporting-unit-select">{{ $t('kandidaatUitslag.selectReportingUnit') }}:</label>
         <select id="reporting-unit-select" v-model="selectedReportingUnit" @change="fetchVotesForReportingUnit(selectedReportingUnit)">
-          <option value="" disabled>Kies een rapportage-eenheid</option>
+          <option value="" disabled>{{ $t('kandidaatUitslag.selectReportingUnit') }}</option>
           <option v-for="unit in reportingUnits" :key="unit.reportingUnitId" :value="unit.reportingUnitId">
             {{ unit.reportingUnitName }}
           </option>
@@ -41,14 +41,14 @@
       </div>
 
       <div v-if="selectedReportingUnit">
-        <h3>Resultaten voor rapportage-eenheid {{ selectedReportingUnit }}</h3>
+        <h3>{{ $t('kandidaatUitslag.resultsForReportingUnit') }} {{ selectedReportingUnit }}</h3>
         <table v-if="filteredReportingUnitVotes.length > 0">
           <tr v-for="vote in filteredReportingUnitVotes" :key="vote.id">
-            <td>Naam: {{ candidate.candidateName }}</td>
-            <td>Stemmen rapportage-eenheid: {{ vote.validVotes }}</td>
+            <td>{{ $t('kandidaatUitslag.name') }}: {{ candidate.candidateName }}</td>
+            <td>{{ $t('kandidaatUitslag.votesForReportingUnit') }}: {{ vote.validVotes }}</td>
           </tr>
         </table>
-        <p v-else>Geen stemmen gevonden voor deze rapportage-eenheid.</p>
+        <p v-else>{{ $t('kandidaatUitslag.noVotesForReportingUnit') }}</p>
       </div>
 
       <div v-if="error" class="error">{{ error }}</div>

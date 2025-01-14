@@ -9,17 +9,10 @@
           <li><router-link to="/choose-results">{{ $t('common.results') }}</router-link></li>
           <li><router-link to="/partijenpagina">{{ $t('common.parties') }}</router-link></li>
           <li><router-link to="/login">{{ $t('common.login') }}</router-link></li>
-          <li><router-link to="/forum">{{ $t('Forums') }}</router-link></li>
-          <li><router-link to="/userForums">{{ ('My forums') }}</router-link></li>
-
+          <li><router-link to="/Educativepage">{{ $t('Educativepage') }}</router-link></li>
         </ul>
       </nav>
-      <div class="search-container">
-        <input type="text" class="search-input" :placeholder="$t('common.search')">
-        <button class="search-button">
-          <svg>...</svg>
-        </button>
-      </div>
+
       <div class="account">
         <router-link to="/account"><i class="fas fa-user"></i></router-link>
       </div>
@@ -71,6 +64,7 @@ export default {
 
 <style>
 .header {
+  background-color: var(--header-background-color);
   padding: 10px 0;
   width: 100%;
   top: 0;
@@ -134,7 +128,6 @@ export default {
   text-decoration: none;
   font-size: 18px;
   transition: color 0.3s;
-  color: #117CEE;
 }
 
 .search-container {
@@ -223,13 +216,12 @@ export default {
 }
 
 input:checked + .slider {
-  background-color: #353535;
+  background-color: black;
 }
 
 input:checked + .slider:before {
   transform: translateX(26px);
 }
-
 
 @media (max-width: 768px) {
   .header-container {

@@ -35,5 +35,22 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.flexbox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  width: 600px;
+  height: 156px;
+  margin: 10px;
+  background-color: var(--flexbox-background-color);
+}
 
+.flexbox:hover {
+  background-color: var(--vt-c-white-soft);
+  color: var(--vt-c-black);
+}
 </style>
