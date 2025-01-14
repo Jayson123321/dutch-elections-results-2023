@@ -21,8 +21,8 @@
       <div class="forum-list">
         <h2>Geposte Forums</h2>
         <div v-for="forum in forums" :key="forum.forumId" class="forum-item">
-          <h3 @click="goToQuestionDetails(forum.forumId)">{{ forum.title }}</h3>
-          <p><strong>{{ forum.username }}:</strong> {{ forum.description }}</p>
+          <h3> <strong>{{ forum.username }}:</strong> {{ forum.title }}</h3>
+          <p> {{ forum.description }}</p>
 
           <form @submit.prevent="submitReply(forum.forumId)">
             <div v-for="reply in forum.replies" :key="reply.replyId" class="reply-item">
