@@ -60,6 +60,7 @@
 package com.election.backendjava.services;
 
 import com.election.backendjava.entities.Reply;
+import com.election.backendjava.entities.User;
 import com.election.backendjava.entities.UserForum;
 import com.election.backendjava.repositories.PostForumRepository;
 import com.election.backendjava.repositories.ReplyRepository;
@@ -121,4 +122,11 @@ public class ForumService {
         postForumRepository.deleteById(forumId);
         logger.info("Forum with ID {} and its replies have been deleted.", forumId);
     }
+
+    public Page<UserForum> getForumsByUserId(Long userId, int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        System.out.println(userId);
+        return postForumRepository.findByUserId(userId, pageable);
+    }
+
 }
