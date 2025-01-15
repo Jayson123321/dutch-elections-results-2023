@@ -1,9 +1,11 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import HeaderComponent from "@/components/HeaderComponent.vue";
 
 export default defineComponent({
   name: "LoginComponent",
+  components: {HeaderComponent},
   setup() {
     const router = useRouter();
     const email = ref('');
@@ -66,6 +68,7 @@ export default defineComponent({
 </script>
 
 <template>
+  <HeaderComponent />
   <div>
     <router-link to="/" class="home-link">Home</router-link>
     <div class="form-box">
