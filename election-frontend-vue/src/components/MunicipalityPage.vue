@@ -1,19 +1,34 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, type Ref } from 'vue';
 import axios from 'axios';
 import HeaderComponent from '../components/HeaderComponent.vue';
 import FooterComponent from '../components/FooterComponent.vue';
+import config from "@/config.ts";
 
-const municipalities = ref([]);
-const selectedMunicipality1Id = ref(null);
-const selectedMunicipality2Id = ref(null);
-const municipality1Votes = ref([]);
-const municipality2Votes = ref([]);
+interface Municipality {
+  id: number;
+  authorityName: string;
+  authorityIdentifier: string;
+}
+
+interface Vote {
+  id: number;
+  affiliation: {
+    registeredName: string;
+  };
+  validVotes: number;
+}
+
+const municipalities = ref<Municipality[]>([]);
+const selectedMunicipality1Id = ref<number | null>(null);
+const selectedMunicipality2Id = ref<number | null>(null);
+const municipality1Votes = ref<Vote[]>([]);
+const municipality2Votes = ref<Vote[]>([]);
 
 // Haal alle gemeenten op
 const fetchMunicipalities = async () => {
   try {
-    const response = await axios.get('http://localhost:8080/api/managing-authorities/getAllAuthorities');
+    const response = await axios.get(`${config.apiBaseUrl}/managing-authorities/getAllAuthorities`);
     municipalities.value = response.data;
   } catch (error) {
     console.error('Error fetching municipalities:', error);
@@ -21,14 +36,14 @@ const fetchMunicipalities = async () => {
 };
 
 // Haal de stemresultaten op voor een specifieke gemeente
-const fetchVotesForMunicipality = async (municipalityId, targetVotesRef) => {
+const fetchVotesForMunicipality = async (municipalityId: number, targetVotesRef: Ref<Vote[]>) => {
   const selectedMunicipality = municipalities.value.find(
       (municipality) => municipality.id === municipalityId
   );
 
   if (selectedMunicipality) {
     try {
-      const endpoint = `http://localhost:8080/api/result-local-authority/${selectedMunicipality.authorityIdentifier}`;
+      const endpoint = `${config.apiBaseUrl}/result-local-authority/${selectedMunicipality.authorityIdentifier}`;
       const response = await axios.get(endpoint);
       targetVotesRef.value = response.data;
     } catch (error) {
@@ -58,23 +73,23 @@ onMounted(() => {
     <HeaderComponent />
     <div class="description-container">
       <p class="description-text">
-        Vergelijk de resultaten van twee gemeenten hieronder.
+        {{ $t('municipalityPage.description') }}
       </p>
     </div>
     <div class="selectors-container">
       <div class="municipality-selection">
-        <label for="municipality-select-1">Gemeente:</label>
+        <label for="municipality-select-1">{{ $t('municipalityPage.selectMunicipality') }}:</label>
         <select id="municipality-select-1" v-model="selectedMunicipality1Id" @change="fetchBothMunicipalityVotes">
-          <option value="" disabled>Selecteer een gemeente</option>
+          <option value="" disabled>{{ $t('municipalityPage.selectMunicipalityPlaceholder') }}</option>
           <option v-for="municipality in municipalities" :key="municipality.id" :value="municipality.id">
             {{ municipality.authorityName }}
           </option>
         </select>
       </div>
       <div class="municipality-selection">
-        <label for="municipality-select-2">Gemeente:</label>
+        <label for="municipality-select-2">{{ $t('municipalityPage.selectMunicipality') }}:</label>
         <select id="municipality-select-2" v-model="selectedMunicipality2Id" @change="fetchBothMunicipalityVotes">
-          <option value="" disabled>Selecteer een gemeente</option>
+          <option value="" disabled>{{ $t('municipalityPage.selectMunicipalityPlaceholder') }}</option>
           <option v-for="municipality in municipalities" :key="municipality.id" :value="municipality.id">
             {{ municipality.authorityName }}
           </option>
@@ -83,20 +98,20 @@ onMounted(() => {
     </div>
     <div class="results-container">
       <div class="results" v-if="municipality1Votes.length > 0">
-        <h3>Gemeente 1</h3>
+        <h3>{{ $t('municipalityPage.municipality1') }}</h3>
         <ul class="results-table">
           <li v-for="vote in municipality1Votes" :key="vote.id">
-            <span>Partij: {{ vote.affiliation.registeredName }}</span>
-            <span>Stemmen: {{ vote.validVotes }}</span>
+            <span>{{ $t('municipalityPage.party') }}: {{ vote.affiliation.registeredName }}</span>
+            <span>{{ $t('municipalityPage.votes') }}: {{ vote.validVotes }}</span>
           </li>
         </ul>
       </div>
       <div class="results" v-if="municipality2Votes.length > 0">
-        <h3>Gemeente 2</h3>
+        <h3>{{ $t('municipalityPage.municipality2') }}</h3>
         <ul class="results-table">
           <li v-for="vote in municipality2Votes" :key="vote.id">
-            <span>Partij: {{ vote.affiliation.registeredName }}</span>
-            <span>Stemmen: {{ vote.validVotes }}</span>
+            <span>{{ $t('municipalityPage.party') }}: {{ vote.affiliation.registeredName }}</span>
+            <span>{{ $t('municipalityPage.votes') }}: {{ vote.validVotes }}</span>
           </li>
         </ul>
       </div>
