@@ -6,7 +6,6 @@
       <div class="footer-section links">
         <h3>Links</h3>
         <ul>
-          <li><a href="#">Home</a></li>
           <li><a href="#">Over Ons</a></li>
           <li><a href="#">Contact</a></li>
         </ul>
