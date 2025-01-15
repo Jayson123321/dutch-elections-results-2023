@@ -5,6 +5,8 @@ https://gitlab.fdmci.hva.nl/semester-3-hbo-ict/onderwijs/student-projecten/2024-
 
 This user story was made to improve loading times and save energy, by only loading 30 candidates at a time. This was done by adding a pagination system to the all candidates page. The page now shows 30 candidates at a time and the user can navigate through the pages by clicking on the next and previous buttons. The user can also see how many pages there are in total and which page they are currently on.
 
+In the data section, there is an array with candidates and parties. There is a variable for the current page and the number of items per page. In the computed section, a calculation is made for the current page and the number of items per page. The total number of pages is also calculated. In the mounted section, the data is fetched. In the methods section, the data is fetched and a function is created for the next and previous pages.
+```vue
 
 ```java
 export default {
@@ -73,6 +75,8 @@ export default {
 
 As a user I want a page that will explain how elections work in the Netherlands and how this page will show you how to analyse the results.
 https://gitlab.fdmci.hva.nl/semester-3-hbo-ict/onderwijs/student-projecten/2024-2025/out-p-se-ti/semester-1/wiipuujaamee42/-/issues/61
+
+This user story is part of an epic, this epic is made for ethics and a social point of view. This user story was made to create a page that explains how elections work in the Netherlands and how users can analyze the results. The page contains information about the election process in the Netherlands, how political parties win seats, and how the results are analyzed. The page also shows users how to analyze the results of the elections and how to interpret the data. This user story contributes to society by educating people about the elections and how politics work in the Netherlands. This is an ethical user story because it educates people about the elections and how politics work in the Netherlands.
 
 ```vue
 <template>
