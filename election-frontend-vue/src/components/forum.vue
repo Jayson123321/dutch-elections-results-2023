@@ -2,46 +2,59 @@
   <div>
     <HeaderComponent />
     <div class="chat-container">
-      <h1>Forum</h1>
-      <p>Discussieer hier over de partijen.</p>
+      <h1>{{ $t('forum.title') }}</h1>
+      <p>{{ $t('forum.description') }}</p>
       <div class="forum-form">
         <div class="form-group" :class="{ 'has-error': errors.title }">
-          <input v-model="newForum.title" placeholder="Titel" @blur="validateField('title')" />
+          <input
+              v-model="newForum.title"
+              :placeholder="$t('forum.titlePlaceholder')"
+              @blur="validateField('title')"
+          />
           <span v-if="errors.title" class="error-message">{{ errors.title }}</span>
         </div>
 
         <div class="form-group" :class="{ 'has-error': errors.description }">
-          <textarea v-model="newForum.description" placeholder="Beschrijving" @blur="validateField('description')"></textarea>
+          <textarea
+              v-model="newForum.description"
+              :placeholder="$t('forum.descriptionPlaceholder')"
+              @blur="validateField('description')"
+          ></textarea>
           <span v-if="errors.description" class="error-message">{{ errors.description }}</span>
         </div>
-        <button @click="submitForum">Forum Posten</button>
-        <div v-if="successMessage" class="success-message">{{ successMessage }}</div>
+        <button @click="submitForum">{{ $t('forum.submitButton') }}</button>
+        <div v-if="successMessage" class="success-message">
+          {{ successMessage }}
+        </div>
       </div>
 
       <div class="forum-list">
-        <h2>Geposte Forums</h2>
+        <h2>{{ $t('forum.postedForums') }}</h2>
         <div v-for="forum in forums" :key="forum.forumId" class="forum-item">
-          <h3> <strong>{{ forum.username }}:</strong> {{ forum.title }}</h3>
-          <p> {{ forum.description }}</p>
+          <h3 @click="goToQuestionDetails(forum.forumId)">{{ forum.title }}</h3>
+          <p>{{ forum.description }}</p>
 
           <form @submit.prevent="submitReply(forum.forumId)">
             <div v-for="reply in forum.replies" :key="reply.replyId" class="reply-item">
               <p><strong>{{ reply.username }}:</strong> {{ reply.replyText }}</p>
             </div>
             <br>
-            <textarea v-model="forum.newReply.replyText" placeholder="Beantwoord dit vraag" required></textarea>
-            <button type="submit">Antwoord posten</button>
+            <textarea
+                v-model="forum.newReply.replyText"
+                :placeholder="$t('forum.replyPlaceholder')"
+                required
+            ></textarea>
+            <button type="submit">{{ $t('forum.submitReplyButton') }}</button>
           </form>
-          <button class="delete-button" @click="deleteForum(forum.forumId)">Verwijder post</button>
+          <button class="delete-button" @click="deleteForum(forum.forumId)">{{ $t('forum.deleteButton') }}</button>
         </div>
       </div>
       <div class="pagination">
-        <button @click="goToPage(currentPage - 1)" :disabled="currentPage <= 0">Vorige</button>
-        <span>Pagina {{ currentPage + 1 }} van {{ totalPages }}</span>
-        <button @click="goToPage(currentPage + 1)" :disabled="currentPage >= totalPages - 1">Volgende</button>
+        <button @click="goToPage(currentPage - 1)" :disabled="currentPage <= 0">{{ $t('forum.prevPage') }}</button>
+        <span>{{ $t('forum.page') }} {{ currentPage + 1 }} {{ $t('forum.of') }} {{ totalPages }}</span>
+        <button @click="goToPage(currentPage + 1)" :disabled="currentPage >= totalPages - 1">{{ $t('forum.nextPage') }}</button>
       </div>
     </div>
-    <FooterComponent />
   </div>
 </template>
 
@@ -85,6 +98,7 @@ export default {
           throw new Error(`Server error: ${response.status} - ${response.statusText}`);
         }
         const data = await response.json();
+        console.log(response.json())
         this.forums = data.content;
         this.totalPages = data.totalPages;
         this.currentPage = data.number;
@@ -97,7 +111,7 @@ export default {
           } else {
             forum.replies = [];
           }
-          forum.newReply = {replyText: ''};
+          forum.newReply = { replyText: '' };
         }
       } catch (error) {
         console.error('Fout bij het ophalen van forums:', error);
@@ -120,89 +134,71 @@ export default {
       const token = localStorage.getItem('jwtToken');
 
       if (!token) {
-        alert('You must be logged in to post a forum.');
+        alert('Je moet ingelogd zijn om een forum te plaatsen.');
         return;
       }
-
-      // Extract username from JWT token
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      const username = payload.sub;
-
-      this.newForum.user.username = username;
-
+      console.log('JWT Token:', token);
+      // Haal de token op uit localStorage
       try {
         const response = await axios.post('http://localhost:8080/api/usersforum', this.newForum, {
           headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}` // Voeg de token toe aan de headers
           }
         });
 
+      // try {
+      //   const response = await axios.post('http://localhost:8080/api/usersforum', this.newForum);
         const createdForum = response.data;
 
         this.forums.unshift({
           ...createdForum,
-          replies: [],
-          newReply: {replyText: ''},
+          replies: [], // Initialiseer lege replies voor het nieuwe forum
+          newReply: { replyText: '' }, // Voeg een lege newReply toe voor consistentie
         });
 
-        this.newForum = {
-          title: '',
-          description: '',
-          user: {id: '', username: ''},
-        };
+       this.newForum = {
+        title: '',
+       description: '',
+        user: { id: '' },
+      };
 
-        this.successMessage = "Forum successfully posted!";
+       this.successMessage = "Forum succesvol geplaatst!";
         setTimeout(() => {
-          this.successMessage = '';
-        }, 3000);
+        this.successMessage = '';
+       }, 3000);
 
       } catch (error) {
-        console.error('Error posting forum:', error);
-        alert('An error occurred while posting the forum.');
+        console.error('Fout bij het toevoegen van een forum:', error);
+        alert('Er is een fout opgetreden bij het plaatsen van het forum.');
       }
     },
 
     async submitReply(forumId) {
-      const token = localStorage.getItem('jwtToken');
-
-      if (!token) {
-        alert('You must be logged in to post a reply.');
-        return;
-      }
-
-      // Extract username from JWT token
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      const username = payload.sub;
-
-      const forum = this.forums.find(f => f.forumId === forumId);
-      forum.newReply.username = username;
-
       try {
-        const response = await axios.post(`http://localhost:8080/api/usersforum/${forumId}/replies`, forum.newReply, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
+        const forum = this.forums.find(f => f.forumId === forumId);
+        const response = await axios.post(`http://localhost:8080/api/usersforum/${forumId}/replies`, forum.newReply);
+        console.log('Reply succesvol toegevoegd:', response.data);
 
+        // Voeg de nieuwe reply toe aan de juiste forum
         if (forum) {
           forum.replies.push(response.data);
         }
 
+        // Reset het reply formulier
         forum.newReply.replyText = '';
       } catch (error) {
-        console.error('Error posting reply:', error);
-        alert('An error occurred while posting the reply.');
+        console.error('Fout bij het versturen van reply:', error);
+        alert('Er is een fout opgetreden bij het versturen van de reply.');
       }
     },
-
     goToQuestionDetails(forumId) {
-      this.$router.push({name: 'forum', params: {forumId}});
+      this.$router.push({ name: 'forum', params: { forumId } });
     },
 
     async deleteForum(forumId) {
       const token = localStorage.getItem('jwtToken');
 
-      if (!token) {
+      if(!token) {
         alert("Je moet ingelogd zijn om een forum te kunnen verwijderen.")
         return;
       }
@@ -229,10 +225,11 @@ export default {
         this.fetchForums(page);
       }
     }
+
   },
   mounted() {
     this.fetchForums(this.currentPage);
-  }
+  },
 };
 </script>
 
@@ -267,7 +264,7 @@ export default {
   --input-background-color: #ffffff;
   --button-text-color: #ffffff;
   --reply-background-color: #f9f9f9;
-  --link-color: #007bff;
+  --link-color: #0b4f99;
   --border-color: #cccccc;
 }
 
@@ -288,7 +285,7 @@ export default {
   margin-bottom: 20px;
   background-color: var(--card-background-color);
   padding: 20px;
-  border: 2px solid #007bff;
+  border: 5px solid #117CEE;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -308,7 +305,7 @@ export default {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  background-color: #007bff;
+  background-color: #117CEE;
   //color: var(--button-text-color);
   cursor: pointer;
   font-size: 16px;
@@ -382,7 +379,7 @@ form button {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  background-color: #7a7a7a;
+  background-color: #0B54A2;
   color: var(--button-text-color);
   cursor: pointer;
   font-size: 16px;
@@ -393,7 +390,7 @@ form button {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  background-color: #007bff;
+  background-color: #AD0000;
   color: #ffffff;
   cursor: pointer;
   font-size: 16px;
@@ -401,21 +398,34 @@ form button {
   display: block;
   margin: 10px auto;
 }
-.forum-item button:hover {
-  background-color: #0056b3;
+.forum-item .delete-button:hover {
+  background-color: #700000;
 }
 
+.forum-item button:hover {
+  background-color: #0B4F99;
+}
 .pagination button{
   color:var(--button-text-color) ;
   padding: 5px 10px;
   border: none;
   border-radius: 5px;
-  background-color: #7a7a7a;
+  background-color: #117CEE;
   color: var(--button-text-color);
   cursor: pointer;
   font-size: 15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 
+}
+
+h1{
+  color: #117CEE;
+}
+h2{
+  color: #117CEE;
+}
+h3{
+  color: #0B54A2;
 }
 </style>
 

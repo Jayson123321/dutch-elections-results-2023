@@ -11,6 +11,14 @@ const messages = {
             search: 'Search...',
             toggle_button: 'En'
         },
+        home: {
+            party: 'Party',
+            party_description: 'Discover the political parties in the Netherlands and their candidates.',
+            results: 'Results',
+            results_description: 'View the results of the 2023 elections in the Netherlands.',
+            forum: 'Forum',
+            forum_description: 'Ask questions and discuss topics with other users.',
+        },
         header: {
             home: 'Home',
             results: 'Results',
@@ -18,6 +26,7 @@ const messages = {
             login: 'Login',
             search: 'Search...',
             toggle_language: 'Toggle Language',
+            educativePage: 'Educative Support',
         },
         totalResults: {
             tweede_kamer_uitslagen: 'House of Representatives Results',
@@ -58,6 +67,7 @@ const messages = {
             votes: 'Votes',
             show_votes_per_candidate: 'Show votes per candidate',
             party_name: 'Party Name',
+            results: 'Results',
         },
         alleKandidaten: {
             title: 'All Candidates',
@@ -68,6 +78,13 @@ const messages = {
             unknown: 'Unknown',
             prev: 'Previous',
             next: 'Next'
+        },
+        userForums: {
+            title: 'Your Forums',
+            noForums: 'No forums to display.',
+            deleteButton: 'Delete Forum',
+            repliesTitle: 'Replies:',
+            loadMoreButton: 'Load More'
         },
         partijenPagina: {
             title: 'Parties and Candidates',
@@ -89,6 +106,7 @@ const messages = {
         forum: {
             title: 'Forum',
             titlePlaceholder: 'Title',
+            description: 'Discuss here about the parties',
             descriptionPlaceholder: 'Description',
             submitButton: 'Submit Forum',
             postedForums: 'Posted Forums',
@@ -99,9 +117,64 @@ const messages = {
             nextPage: 'Next',
             page: 'Page',
             of: 'of'
+        },
+        educativePage: {
+            title: 'Educational Support',
+            description: 'Learn more about elections, political processes, and how your vote matters.',
+            electionExplanation: 'Explanation about elections',
+            electionExplanationDesc: 'Read more about how elections work and how political parties win seats.',
+            readMore: 'Read more',
+            downloadPowerPoint: 'Download PowerPoint',
+            downloadPowerPointDesc: 'Download a PowerPoint presentation about elections.',
+            madeBy: 'PowerPoint made by Seneca.',
+            testYourKnowledge: 'Test your knowledge',
+            testYourKnowledgeDesc: 'Take a quiz and find out how much you know about the Dutch political system.',
+            startQuiz: 'Start quiz'
+        },
+        quiz: {
+            title: 'Elections 2023 Quiz',
+            nextButton: 'Next question',
+            resultsMessage: 'You answered {{ correctAnswers }} out of {{ questionsLength }} questions correctly!',
+            thankYouMessage: 'Thank you for taking the quiz!',
+            questions: [
+                {
+                    question: "Which candidate received the most votes in the 2023 elections in the Netherlands?",
+                    options: ["Frans Timmermans", "Geert Wilders", "Dylan Yesilguz", "Pieter Omtzigt"],
+                    answer: "Dylan Yesilguz"
+                },
+                {
+                    question: "What was the main theme during the 2023 elections?",
+                    options: ["Climate change", "Education", "Migration and integration", "Healthcare"],
+                    answer: "Climate change"
+                },
+                {
+                    question: "Which party won the most seats in the House of Representatives during the 2023 elections?",
+                    options: ["D66", "VVD", "FvD", "PVV"],
+                    answer: "VVD"
+                },
+                {
+                    question: "Who was the leader of the GroenLinks party during the 2023 elections?",
+                    options: ["Jesse Klaver", "Tofik Dibi", "Lilian Marijnissen", "Frans Timmermans"],
+                    answer: "Frans Timmermans"
+                },
+                {
+                    question: "What was the goal of the DENK party's campaign?",
+                    options: ["Striving for more open borders", "Improving the healthcare sector", "Promoting integration and inclusion", "Lowering taxes"],
+                    answer: "Promoting integration and inclusion"
+                }
+
+            ]
         }
     },
     nl: {
+        home: {
+            party: 'Partij',
+            party_description: 'Ontdek de politieke partijen in Nederland en hun kandidaten.',
+            results: 'Resultaten',
+            results_description: 'Bekijk de resultaten van de verkiezingen van 2023 in Nederland.',
+            forum: 'Forum',
+            forum_description: 'Stel vragen en bespreek onderwerpen met andere gebruikers.',
+        },
         common: {
             home: 'Home',
             results: 'Resultaten',
@@ -110,6 +183,13 @@ const messages = {
             search: 'Zoeken...',
             toggle_button: 'NL'
         },
+        userForums: {
+            title: 'Jouw Forums',
+            noForums: 'Geen forums om weer te geven.',
+            deleteButton: 'Verwijder Forum',
+            repliesTitle: 'Antwoorden:',
+            loadMoreButton: 'Meer laden'
+        },
         header: {
             home: 'Home',
             results: 'Resultaten',
@@ -117,6 +197,7 @@ const messages = {
             login: 'Inloggen',
             search: 'Zoeken...',
             toggle_language: 'Taal Wisselen',
+            educativePage: 'Educatieve Ondersteuning',
         },
         totalResults: {
             tweede_kamer_uitslagen: 'Tweede kamer uitslagen',
@@ -157,7 +238,7 @@ const messages = {
             votes: 'Stemmen',
             show_votes_per_candidate: 'Toon stemmen per kandidaat',
             party_name: 'Partij Naam',
-
+            results: 'resultaten',
         },
         alleKandidaten: {
             title: 'Alle Kandidaten',
@@ -189,6 +270,7 @@ const messages = {
         forum: {
             title: 'Forum',
             titlePlaceholder: 'Titel',
+            description: 'Discussieer hier over de partijen',
             descriptionPlaceholder: 'Beschrijving',
             submitButton: 'Forum Posten',
             postedForums: 'Geposte Forums',
@@ -199,6 +281,53 @@ const messages = {
             nextPage: 'Volgende',
             page: 'Pagina',
             of: 'van'
+        },
+        educativePage: {
+            title: 'Educatieve Ondersteuning',
+            description: 'Leer meer over verkiezingen, politieke processen en hoe je stem invloed heeft.',
+            electionExplanation: 'Uitleg over verkiezingen',
+            electionExplanationDesc: 'Lees meer over hoe verkiezingen werken en hoe politieke partijen hun zetels winnen.',
+            readMore: 'Lees meer',
+            downloadPowerPoint: 'Download PowerPoint',
+            downloadPowerPointDesc: 'Download een PowerPoint-presentatie over verkiezingen.',
+            madeBy: 'PowerPoint gemaakt door Seneca.',
+            testYourKnowledge: 'Test je kennis',
+            testYourKnowledgeDesc: 'Doe een quiz en ontdek hoeveel je weet over het Nederlandse politieke systeem.',
+            startQuiz: 'Start quiz',
+            educativePage: 'Educatieve Ondersteuning',
+        },
+        quiz: {
+            title: 'Verkiezingen 2023 Quiz',
+            nextButton: 'Volgende vraag',
+            resultsMessage: 'Je hebt {{ correctAnswers }} van de {{ questionsLength }} vragen goed beantwoord!',
+            thankYouMessage: 'Bedankt voor het doen van de quiz!',
+            questions: [
+                {
+                    question: "Op welke kandidaat heeft Nederland het meeste gestemd in de verkiezingen van 2023?",
+                    options: ["Frans Timmermans", "Geert Wilders", "Dylan Yesilguz", "Pieter Omtzigt"],
+                    answer: "Dylan Yesilguz"
+                },
+                {
+                    question: "Wat was het belangrijkste thema tijdens de verkiezingen van 2023?",
+                    options: ["Klimaatverandering", "Onderwijs", "Migratie en integratie", "Gezondheidszorg"],
+                    answer: "Klimaatverandering"
+                },
+                {
+                    question: "Welke partij behaalde de meeste zetels in de Tweede Kamer tijdens de verkiezingen van 2023?",
+                    options: ["D66", "VVD", "FvD", "PVV"],
+                    answer: "VVD"
+                },
+                {
+                    question: "Wie was de leider van de partij GroenLinks tijdens de verkiezingen van 2023?",
+                    options: ["Jesse Klaver", "Tofik Dibi", "Lilian Marijnissen", "Frans Timmermans"],
+                    answer: "Frans Timmermans"
+                },
+                {
+                    question: "Wat was het doel van de campagne van de partij DENK?",
+                    options: ["Streven naar meer open grenzen", "Verbeteren van de zorgsector", "Bevorderen van integratie en inclusie", "Verlaging van de belastingen"],
+                    answer: "Bevorderen van integratie en inclusie"
+                }
+            ]
         }
     }
 };

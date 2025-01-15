@@ -101,7 +101,6 @@ onMounted(() => {
         </ul>
       </div>
     </div>
-    <FooterComponent />
   </div>
 </template>
 

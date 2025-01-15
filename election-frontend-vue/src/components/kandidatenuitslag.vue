@@ -53,7 +53,6 @@
 
       <div v-if="error" class="error">{{ error }}</div>
     </div>
-    <FooterComponent />
   </div>
 </template>
 

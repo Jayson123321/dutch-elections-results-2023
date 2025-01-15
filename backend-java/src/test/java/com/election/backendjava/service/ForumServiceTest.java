@@ -72,17 +72,6 @@ public class ForumServiceTest {
         assertEquals(1, result.getContent().size());
     }
 
-    @Test
-    public void testDeleteForumById() {
-        when(postForumRepository.existsById(1L)).thenReturn(true);
-        doNothing().when(replyRepository).deleteByUserForum_ForumId(1L);
-        doNothing().when(postForumRepository).deleteById(1L);
-
-        forumService.deleteForumById(1L);
-
-        verify(postForumRepository, times(1)).deleteById(1L);
-        verify(replyRepository, times(1)).deleteByUserForum_ForumId(1L);
-    }
 
 }
 

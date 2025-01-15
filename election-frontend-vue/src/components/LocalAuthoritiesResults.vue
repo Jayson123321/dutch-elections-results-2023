@@ -9,7 +9,7 @@
       <h1>{{ $t('localAuthoritiesResults.score_per_stembureau') }}</h1>
       <h1>{{ $t('localAuthoritiesResults.verkiezingen') }} 2023 {{ selectedAuthority?.authorityName }}</h1>
     </div>
-    <span class="authority-select"><label for="authority-select">{{ $t('localAuthoritiesResults.select_authority') }}</label></span>
+    <span class="authority-select"><label for="authority-select">{{ $t('localAuthoritiesResults.select_authority') }}</label></span><br>
     <select id="authority-select" v-model="selectedAuthorityId" @change="showAllSelectedAuthorityVotes">
       <option value="" disabled>{{ $t('localAuthoritiesResults.select_authority') }}</option>
       <option class="authorityList" v-for="authority in localAuthorities" :key="authority.id" :value="authority.id">
@@ -21,7 +21,6 @@
       <div id="StembureauName">
         <h3>{{ selectedReportingUnitId ? reportingUnits.find(unit => unit.id === selectedReportingUnitId)?.name : '' }}</h3>
         <table>
-          <h2 id="h2uitslag">{{ $t('localAuthoritiesResults.results') }}</h2>
           <div id="sort-bar">
             <select id="sort" v-model="sortOrder" @change="showAllSelectedAuthorityVotes">
               <option value="votes">{{ $t('localAuthoritiesResults.votes') }}</option>
@@ -173,10 +172,21 @@ export default defineComponent({
         this.chart.destroy();
       }
 
-      const chart = document.getElementById('local-authorities-chart').getContext('2d');
+      const chartElement = document.getElementById('local-authorities-chart');
+      if (!chartElement) {
+        console.error('Chart element not found');
+        return;
+      }
+
+      const chartContext = chartElement.getContext('2d');
+      if (!chartContext) {
+        console.error('Chart context not found');
+        return;
+      }
+
       const totalVotes = this.votes.reduce((sum, vote) => sum + vote.validVotes, 0);
 
-      this.chart = new Chart(chart, {
+      this.chart = new Chart(chartContext, {
         type: 'pie',
         data: {
           labels: this.votes.map(vote => vote.affiliation.registeredName),
@@ -212,6 +222,7 @@ export default defineComponent({
   float: left;
   margin-left: 15%;
 }
+
 #description-container {
   border: 1px solid #ddd;
   padding: 20px;
@@ -222,6 +233,7 @@ export default defineComponent({
 #description-text {
   font-size: 1.1em;
   line-height: 1.6;
+  text-align: center;
 }
 
 #votes {
@@ -241,7 +253,6 @@ export default defineComponent({
   border-radius: 5px;
   cursor: pointer;
   transition: transform 0.2s ease;
-  margin-left: 10px;
 }
 
 .show-candidates-button:hover {
@@ -261,8 +272,11 @@ export default defineComponent({
   padding: 10px;
   font-size: 1em;
   border-radius: 5px;
+  float: left;
 }
-
+.authority-select {
+  float: left;
+}
 button {
   padding: 10px 20px;
   font-size: 1em;
@@ -288,8 +302,8 @@ th, td {
 }
 
 #local-authorities-chart {
-  max-width: 500px;
-  max-height: 500px;
+  max-width: 600px;
+  max-height: 600px;
   margin: 20px auto;
   width: 100%;
   height: auto;
@@ -311,10 +325,47 @@ th, td {
   margin-top: 40px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+  .votingTable {
+    float: none;
+    margin-left: 0;
+  }
+
+  #description-container {
+    padding: 10px;
+    margin: 10px 0;
+  }
+
+  #titel {
+    font-size: medium;
+    margin: 10px 0;
+  }
+
+  #authority-select {
+    width: 100%;
+  }
+
+  button {
+    width: 100%;
+    padding: 10px;
+  }
+
+  th, td {
+    width: 100%;
+    margin: 10px 0;
+  }
+
   #local-authorities-chart {
     max-width: 300px;
     max-height: 300px;
+  }
+
+  #sort-bar {
+    text-align: center;
+  }
+
+  #sort {
+    width: 100%;
   }
 }
 </style>

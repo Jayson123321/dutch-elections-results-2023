@@ -69,7 +69,6 @@
         </p>
       </section>
     </div>
-    <FooterComponent />
   </div>
 </template>
 

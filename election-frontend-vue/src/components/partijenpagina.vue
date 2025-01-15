@@ -16,7 +16,6 @@
         </h2>
       </div>
     </div>
-    <FooterComponent />
   </div>
 </template>
 

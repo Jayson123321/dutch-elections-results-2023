@@ -9,7 +9,9 @@
           <li><router-link to="/choose-results">{{ $t('common.results') }}</router-link></li>
           <li><router-link to="/partijenpagina">{{ $t('common.parties') }}</router-link></li>
           <li><router-link to="/login">{{ $t('common.login') }}</router-link></li>
-          <li><router-link to="/Educativepage">{{ $t('Educativepage') }}</router-link></li>
+          <li><router-link to="/Educativepage">{{ $t('header.educativePage') }}</router-link></li>
+          <li><router-link to="/forum">{{ $t('Forums') }}</router-link></li>
+          <li><router-link to="/userForums">{{ ('My forums') }}</router-link></li>
         </ul>
       </nav>
 
@@ -20,12 +22,17 @@
         <input type="checkbox" @change="toggleDarkMode" :checked="isDarkMode">
         <span class="slider round"></span>
       </label>
+      <button class="hamburger" @click="toggleMenu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
     </div>
   </header>
 </template>
 
 <script>
-import {useI18n} from "vue-i18n";
+import { useI18n } from "vue-i18n";
 
 export default {
   name: "HeaderComponent",
@@ -248,6 +255,10 @@ input:checked + .slider:before {
     flex-direction: column;
     align-items: center;
     width: 100%;
+  }
+
+  .nav.is-active {
+    display: flex;
   }
 
   .nav ul {
