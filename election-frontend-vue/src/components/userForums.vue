@@ -24,9 +24,10 @@
 </template>
 
 <script>
-import axios from 'axios';
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import FooterComponent from "@/components/FooterComponent.vue";
+import config from '@/config';
+
 
 export default {
   components: {FooterComponent, HeaderComponent},
@@ -40,49 +41,60 @@ export default {
     this.fetchUserForums();
   },
   methods: {
+
     async fetchUserForums() {
-      const token = localStorage.getItem('jwtToken');
-      if (!token) {
-        this.$router.push('/login');
-        return;
-      }
-
-      try {
-        const response = await axios.get('http://localhost:8080/api/usersforum/api/user', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: { page: this.currentPage },
-        });
-
-        this.forums = response.data.content;
-      } catch (error) {
-        console.error("Error fetching user forums:", error);
-      }
-    },
-    async deleteForum(forumId) {
-      const token = localStorage.getItem('jwtToken');
-      if (!token) {
-        this.$router.push('/login');
-        return;
-      }
-
-      const confirmed = confirm("Weet je zeker dat je dit forum wilt verwijderen?");
-      if (confirmed) {
-        try {
-          await axios.delete(`http://localhost:8080/api/usersforum/${forumId}`, {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          });
-          this.forums = this.forums.filter(forum => forum.forumId !== forumId);
-          alert('Forum succesvol verwijderd.');
-        } catch (error) {
-          console.error('Fout bij het verwijderen van het forum:', error);
-          alert('Er is een fout opgetreden bij het verwijderen van het forum.');
+        const token = localStorage.getItem("jwtToken");
+        if (!token) {
+          this.$router.push("/login");
+          return;
         }
-      }
-    },
+
+        try {
+          const response = await fetch(`${config.apiBaseUrl}/usersforum/api/user?page=${this.currentPage}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          if (!response.ok) {
+            throw new Error("Failed to fetch forums");
+          }
+          const data = await response.json();
+          this.forums = data.content;
+        } catch (error) {
+          console.error("Error fetching user forums:", error);
+          if (error.response?.status === 401) {
+            this.$router.push("/login");
+          }
+        }
+      },
+      async deleteForum(forumId) {
+        const token = localStorage.getItem("jwtToken");
+        if (!token) {
+          this.$router.push("/login");
+          return;
+        }
+
+        const confirmed = confirm(this.$t("Weet je zeker dat je dit forum wilt verwijderen?"));
+        if (confirmed) {
+          try {
+            const response = await fetch(`${config.apiBaseUrl}/usersforum/${forumId}`, {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+            if (!response.ok) {
+              throw new Error("Failed to delete forum");
+            }
+            this.forums = this.forums.filter((forum) => forum.forumId !== forumId);
+            alert(this.$t("Forum succesvol verwijderd."));
+          } catch (error) {
+            console.error("Error deleting forum:", error);
+            alert(this.$t("Er is een fout opgetreden bij het verwijderen van het forum."));
+          }
+        }
+      },
+
     loadMore() {
       this.currentPage++;
       this.fetchUserForums();
