@@ -34,7 +34,6 @@ export default {
             </router-link>
       </div>
     </div>
-    <FooterComponent />
   </div>
 </template>
 <style>
@@ -45,7 +44,7 @@ body {
   margin-top: 100px;
   text-align: center;
   align-items: center;
-  height: calc(100vh - 200px);
+  min-height: calc(100vh - 200px); /* 100vh minus the height of header and footer */
 }
 .flexcontainer {
   display: flex;

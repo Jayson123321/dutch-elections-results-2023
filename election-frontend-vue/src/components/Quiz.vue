@@ -114,7 +114,6 @@ export default {
         <p>Bedankt voor het doen van de quiz!</p>
       </div>
     </div>
-    <FooterComponent />
   </div>
 </template>
 

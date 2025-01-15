@@ -19,7 +19,6 @@
         </router-link>
       </div>
     </div>
-    <FooterComponent />
   </div>
 </template>
 
@@ -53,6 +52,7 @@ export default defineComponent({
   background-color: var(--vt-c-white-soft);
   color: var(--vt-c-black);
 }
+
 @media (max-width: 768px) {
   .flexcontainer {
     flex-direction: column;
@@ -62,6 +62,22 @@ export default defineComponent({
   .flexbox {
     width: 100%;
     margin: 10px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .flexbox {
+    padding: 10px;
+    width: 100%;
+    height: auto;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  p {
+    font-size: 1rem;
   }
 }
 </style>

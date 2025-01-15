@@ -19,7 +19,6 @@
     <div class="politicalComponent">
       <PoliticalNews />
     </div>
-    <FooterComponent />
   </div>
 </template>
 

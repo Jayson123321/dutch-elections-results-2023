@@ -55,7 +55,6 @@
         <button @click="goToPage(currentPage + 1)" :disabled="currentPage >= totalPages - 1">{{ $t('forum.nextPage') }}</button>
       </div>
     </div>
-    <FooterComponent />
   </div>
 </template>
 

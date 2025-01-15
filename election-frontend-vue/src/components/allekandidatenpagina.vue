@@ -21,7 +21,6 @@
       <button @click="nextPage" :disabled="currentPage === totalPages">{{ $t('alleKandidaten.next') }}</button>
     </div>
   </div>
-  <FooterComponent />
 </template>
 
 <script>

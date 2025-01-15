@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
+import FooterComponent from "@/components/FooterComponent.vue";
 
 const { locale, t } = useI18n();
 
@@ -13,6 +14,7 @@ const toggleLocale = () => {
     <button class="professional-button" @click="toggleLocale">{{ t('common.toggle_button') }}</button>
     <router-view></router-view>
   </div>
+<footer-component />
 </template>
 
 <style scoped>

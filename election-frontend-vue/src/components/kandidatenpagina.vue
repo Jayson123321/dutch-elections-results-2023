@@ -11,7 +11,6 @@
         </div>
       </li>
     </ul>
-    <FooterComponent />
   </div>
 </template>
 <script>

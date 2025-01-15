@@ -21,7 +21,6 @@
     </div>
     <button class="loadmore" @click="loadMore">{{ $t('userForums.loadMoreButton') }}</button>
   </div>
-  <FooterComponent />
 </template>
 
 <script>
