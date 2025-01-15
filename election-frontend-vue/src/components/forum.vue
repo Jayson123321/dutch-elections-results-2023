@@ -90,34 +90,34 @@ export default {
     };
   },
   methods: {
-    async fetchForums(page = 0) {
-      try {
-        console.log("Ophalen van forums...");
-        const response = await fetch(`http://localhost:8080/api/usersforum?page=${page}&size=5`);
-        if (!response.ok) {
-          throw new Error(`Server error: ${response.status} - ${response.statusText}`);
-        }
-        const data = await response.json();
-        console.log(response.json())
-        this.forums = data.content;
-        this.totalPages = data.totalPages;
-        this.currentPage = data.number;
-
-        // Fetch replies for each forum and initialize newReply for each forum
-        for (let forum of this.forums) {
-          const repliesResponse = await fetch(`http://localhost:8080/api/usersforum/${forum.forumId}/replies`);
-          if (repliesResponse.ok) {
-            forum.replies = await repliesResponse.json();
-          } else {
-            forum.replies = [];
-          }
-          forum.newReply = { replyText: '' };
-        }
-      } catch (error) {
-        console.error('Fout bij het ophalen van forums:', error);
-      }
-    },
-
+    // async fetchForums(page = 0) {
+    //   try {
+    //     console.log("Ophalen van forums...");
+    //     const response = await fetch(`http://localhost:8080/api/usersforum?page=${page}&size=5`);
+    //     if (!response.ok) {
+    //       throw new Error(`Server error: ${response.status} - ${response.statusText}`);
+    //     }
+    //     const data = await response.json();
+    //     console.log(response.json())
+    //     this.forums = data.content;
+    //     this.totalPages = data.totalPages;
+    //     this.currentPage = data.number;
+    //
+    //     // Fetch replies for each forum and initialize newReply for each forum
+    //     for (let forum of this.forums) {
+    //       const repliesResponse = await fetch(`http://localhost:8080/api/usersforum/${forum.forumId}/replies`);
+    //       if (repliesResponse.ok) {
+    //         forum.replies = await repliesResponse.json();
+    //       } else {
+    //         forum.replies = [];
+    //       }
+    //       forum.newReply = { replyText: '' };
+    //     }
+    //   } catch (error) {
+    //     console.error('Fout bij het ophalen van forums:', error);
+    //   }
+    // },
+    //
     validateField(field) {
       if (!this.newForum[field]?.trim()) {
         this.errors[field] = 'Vul dit veld in';
@@ -125,6 +125,44 @@ export default {
         delete this.errors[field];
       }
     },
+
+    async fetchForums(page = 0) {
+      try {
+        console.log("Ophalen van forums...");
+        const response = await fetch(`http://localhost:8080/api/usersforum?page=${page}&size=5`);
+
+        if (!response.ok) {
+          throw new Error(`Server error: ${response.status} - ${response.statusText}`);
+        }
+
+        const data = await response.json(); // Haal JSON één keer op
+        console.log('Forums data:', data);
+
+        // Forums met correcte structuur initialiseren
+        this.forums = data.content.map((forum) => ({
+          ...forum,
+          replies: [], // Initialiseer lege replies
+          newReply: { replyText: '' }, // Initialiseer een lege newReply
+        }));
+        this.totalPages = data.totalPages;
+        this.currentPage = data.number;
+
+        // Haal de replies voor elk forum op
+        for (const forum of this.forums) {
+          try {
+            const repliesResponse = await fetch(`http://localhost:8080/api/usersforum/${forum.forumId}/replies`);
+            if (repliesResponse.ok) {
+              forum.replies = await repliesResponse.json();
+            }
+          } catch (error) {
+            console.error(`Fout bij het ophalen van replies voor forum ${forum.forumId}:`, error);
+          }
+        }
+      } catch (error) {
+        console.error('Fout bij het ophalen van forums:', error);
+      }
+    },
+
 
     async submitForum() {
       this.validateField('title');
