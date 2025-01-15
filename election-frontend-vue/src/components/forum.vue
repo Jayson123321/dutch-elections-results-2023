@@ -2,13 +2,13 @@
   <div>
     <HeaderComponent />
     <div class="chat-container">
-      <h1>Forum</h1>
-      <p>Discussieer hier over de partijen.</p>
+      <h1>{{ $t('forum.title') }}</h1>
+      <p>{{ $t('forum.description') }}</p>
       <div class="forum-form">
         <div class="form-group" :class="{ 'has-error': errors.title }">
           <input
               v-model="newForum.title"
-              placeholder="Titel"
+              :placeholder="$t('forum.titlePlaceholder')"
               @blur="validateField('title')"
           />
           <span v-if="errors.title" class="error-message">{{ errors.title }}</span>
@@ -17,23 +17,22 @@
         <div class="form-group" :class="{ 'has-error': errors.description }">
           <textarea
               v-model="newForum.description"
-              placeholder="Beschrijving"
+              :placeholder="$t('forum.descriptionPlaceholder')"
               @blur="validateField('description')"
           ></textarea>
           <span v-if="errors.description" class="error-message">{{ errors.description }}</span>
         </div>
-        <button @click="submitForum">Forum Posten</button>
+        <button @click="submitForum">{{ $t('forum.submitButton') }}</button>
         <div v-if="successMessage" class="success-message">
           {{ successMessage }}
         </div>
       </div>
 
       <div class="forum-list">
-        <h2>Geposte Forums</h2>
+        <h2>{{ $t('forum.postedForums') }}</h2>
         <div v-for="forum in forums" :key="forum.forumId" class="forum-item">
           <h3 @click="goToQuestionDetails(forum.forumId)">{{ forum.title }}</h3>
           <p>{{ forum.description }}</p>
-
 
           <form @submit.prevent="submitReply(forum.forumId)">
             <div v-for="reply in forum.replies" :key="reply.replyId" class="reply-item">
@@ -41,19 +40,19 @@
             </div>
             <br>
             <textarea
-      v-model="forum.newReply.replyText"
-      placeholder="Beantwoord dit vraag"
-      required
-  ></textarea>
-            <button type="submit">Antwoord Posten</button>
+                v-model="forum.newReply.replyText"
+                :placeholder="$t('forum.replyPlaceholder')"
+                required
+            ></textarea>
+            <button type="submit">{{ $t('forum.submitReplyButton') }}</button>
           </form>
-          <button class="delete-button" @click="deleteForum(forum.forumId)">Verwijder post</button>
+          <button class="delete-button" @click="deleteForum(forum.forumId)">{{ $t('forum.deleteButton') }}</button>
         </div>
       </div>
       <div class="pagination">
-        <button @click="goToPage(currentPage - 1)" :disabled="currentPage <= 0">Vorige</button>
-        <span>Pagina {{ currentPage + 1 }} van {{ totalPages }}</span>
-        <button @click="goToPage(currentPage + 1)" :disabled="currentPage >= totalPages - 1">Volgende</button>
+        <button @click="goToPage(currentPage - 1)" :disabled="currentPage <= 0">{{ $t('forum.prevPage') }}</button>
+        <span>{{ $t('forum.page') }} {{ currentPage + 1 }} {{ $t('forum.of') }} {{ totalPages }}</span>
+        <button @click="goToPage(currentPage + 1)" :disabled="currentPage >= totalPages - 1">{{ $t('forum.nextPage') }}</button>
       </div>
     </div>
     <FooterComponent />

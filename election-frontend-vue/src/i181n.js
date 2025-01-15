@@ -77,6 +77,13 @@ const messages = {
             prev: 'Previous',
             next: 'Next'
         },
+        userForums: {
+            title: 'Your Forums',
+            noForums: 'No forums to display.',
+            deleteButton: 'Delete Forum',
+            repliesTitle: 'Replies:',
+            loadMoreButton: 'Load More'
+        },
         partijenPagina: {
             title: 'Parties and Candidates',
             allCandidates: 'All candidates'
@@ -97,6 +104,7 @@ const messages = {
         forum: {
             title: 'Forum',
             titlePlaceholder: 'Title',
+            description: 'Discuss here about the parties',
             descriptionPlaceholder: 'Description',
             submitButton: 'Submit Forum',
             postedForums: 'Posted Forums',
@@ -152,6 +160,7 @@ const messages = {
                     options: ["Striving for more open borders", "Improving the healthcare sector", "Promoting integration and inclusion", "Lowering taxes"],
                     answer: "Promoting integration and inclusion"
                 }
+
             ]
         }
     },
@@ -171,6 +180,13 @@ const messages = {
             login: 'Inloggen',
             search: 'Zoeken...',
             toggle_button: 'NL'
+        },
+        userForums: {
+            title: 'Jouw Forums',
+            noForums: 'Geen forums om weer te geven.',
+            deleteButton: 'Verwijder Forum',
+            repliesTitle: 'Antwoorden:',
+            loadMoreButton: 'Meer laden'
         },
         header: {
             home: 'Home',
@@ -251,6 +267,7 @@ const messages = {
         forum: {
             title: 'Forum',
             titlePlaceholder: 'Titel',
+            description: 'Discussieer hier over de partijen',
             descriptionPlaceholder: 'Beschrijving',
             submitButton: 'Forum Posten',
             postedForums: 'Geposte Forums',

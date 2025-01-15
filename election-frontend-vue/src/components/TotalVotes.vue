@@ -1,7 +1,7 @@
 <template>
   <div>
     <HeaderComponent />
-0    <h1 class="titel">{{ $t('totalResults.tweede_kamer_uitslagen') }}</h1>
+    <h1 class="titel">{{ $t('totalResults.tweede_kamer_uitslagen') }}</h1>
     <div class="totalResults">
       <div class="chartContainer">
         <canvas id="electionResults" ref="electionResults"></canvas>

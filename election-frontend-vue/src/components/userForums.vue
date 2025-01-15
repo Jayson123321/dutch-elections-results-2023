@@ -1,26 +1,25 @@
 <template>
   <HeaderComponent />
   <div>
-    <h1>Jouw Forums</h1>
-    <div v-if="forums.length === 0">No forums to display.</div>
+    <h1>{{ $t('userForums.title') }}</h1>
+    <div v-if="forums.length === 0">{{ $t('userForums.noForums') }}</div>
     <div v-else>
       <div v-for="forum in forums" :key="forum.forumId" class="forum-card">
         <h3>{{ forum.title }}</h3>
         <p>{{ forum.description }}</p>
-        <button @click="deleteForum(forum.forumId)">Verwijder Forum</button>
+        <button @click="deleteForum(forum.forumId)">{{ $t('userForums.deleteButton') }}</button>
 
         <div v-if="forum.replies.length > 0" class="replies">
-          <h4>Replies:</h4>
+          <h4>{{ $t('userForums.repliesTitle') }}</h4>
           <ul>
             <li v-for="reply in forum.replies" :key="reply.id">
               {{ reply.replyText }}
             </li>
           </ul>
-
         </div>
       </div>
     </div>
-    <button class="loadmore" @click="loadMore">Meer laden</button>
+    <button class="loadmore" @click="loadMore">{{ $t('userForums.loadMoreButton') }}</button>
   </div>
   <FooterComponent />
 </template>
