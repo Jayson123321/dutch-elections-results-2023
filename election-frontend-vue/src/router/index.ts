@@ -23,6 +23,7 @@ import Quiz from "@/components/Quiz.vue";
 import verkiezingsuitleg from "@/components/verkiezingsuitleg.vue";
 import MunicipalityPage from "@/components/MunicipalityPage.vue";
 import userForums from "@/components/userForums.vue";
+import AboutUs from "@/components/About-us.vue";
 
 const routes = [
     { path: '/', component: home },
@@ -49,7 +50,7 @@ const routes = [
     { path: '/verkiezingsuitleg', component: verkiezingsuitleg},
     { path: '/MunicipalityPage', component: MunicipalityPage },
     { path: '/userForums', component: userForums },
-
+    { path: '/About-us', component: AboutUs}
     // { path: '', component: :}
 
 ];
