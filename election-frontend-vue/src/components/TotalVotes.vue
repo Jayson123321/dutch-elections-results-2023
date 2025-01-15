@@ -1,10 +1,10 @@
 <template>
   <div>
     <HeaderComponent />
-    <h1 class="titel">Tweede kamer uitslagen</h1>
+    <h1 class="titel">{{ $t('totalResults.tweede_kamer_uitslagen') }}</h1>
     <div class="totalResults">
       <div class="chartContainer">
-            <canvas id="electionResults" ref="electionResults"></canvas>
+        <canvas id="electionResults" ref="electionResults"></canvas>
       </div>
       <table>
         <tbody>
@@ -17,9 +17,8 @@
       </table>
     </div>
     <div class="politicalComponent">
-      <PoliticalNews/>
+      <PoliticalNews />
     </div>
-    <FooterComponent />
   </div>
 </template>
 
@@ -131,10 +130,11 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
 .totalResults {
   margin-top: 100px;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
 }
 
 .titel {
@@ -145,13 +145,13 @@ export default defineComponent({
 }
 
 .chartContainer {
-  width: 35%;
-  float: right;
+  width: 100%;
+  max-width: 600px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   max-height: 600px;
   transition: transform 0.5s ease;
-  margin-left: 100px;
+  margin: 20px 0;
 }
 
 .chartContainer:hover {
@@ -164,12 +164,13 @@ canvas {
 }
 
 table {
-  width:25%;
+  width: 100%;
+  max-width: 600px;
   border-collapse: collapse;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   transition: transform 0.2s ease;
-  margin-right: 150px;
+  margin: 20px 0;
 }
 
 .table:hover {
@@ -190,5 +191,21 @@ tr:hover {
   background-color: #7e7d7d;
   transform: scale(1.05);
   transition: transform 0.2s ease;
+}
+@media (min-width: 768px) {
+  .totalResults {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .chartContainer {
+    width: 35%;
+    margin-left: 100px;
+  }
+
+  table {
+    width: 25%;
+    margin-right: 150px;
+  }
 }
 </style>

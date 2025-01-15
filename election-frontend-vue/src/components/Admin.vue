@@ -1,7 +1,6 @@
 <script>
 import axios from 'axios';
 import { Chart, DoughnutController, PieController, ArcElement, Tooltip, Legend } from "chart.js";
-import config from "@/config.ts";
 
 Chart.register(DoughnutController, ArcElement, PieController, Tooltip, Legend);
 
@@ -45,7 +44,7 @@ export default {
   },
   methods: {
     fetchUsers() {
-      axios.get(`${config.apiBaseUrl}/users/all`)
+      axios.get('http://localhost:8080/api/users/all')
           .then(response => {
             this.users = response.data;
             this.$nextTick(() => {
@@ -57,7 +56,7 @@ export default {
           });
     },
     fetchUserCount() {
-      axios.get(`${config.apiBaseUrl}/users/count`)
+      axios.get('http://localhost:8080/api/users/count')
           .then(response => {
             this.userCount = response.data;
           })
@@ -65,14 +64,31 @@ export default {
             console.error('An error occurred while retrieving the user count:', error);
           });
     },
+    fetchUnbanRequests() {
+      axios.get('http://localhost:8080/api/unban-requests')
+          .then(response => {
+            this.unbanRequests = response.data;
+          })
+          .catch(error => {
+            console.error('An error occurred while fetching unban requests:', error);
+          });
+    },
+    approveUnbanRequest(requestId) {
+      axios.put(`http://localhost:8080/api/unban-requests/${requestId}/approve`)
+          .then(() => {
+            alert('Unban request approved successfully.');
+            this.fetchUnbanRequests();
+            this.fetchUsers(); // Ververst de user data
+          })
+          .catch(error => {
+            console.error('An error occurred while approving the unban request:', error);
+          });
+    },
     renderChart() {
       if (this.chart) {
         this.chart.destroy();
       }
-
       const ctx = this.$refs.userChart.getContext('2d');
-
-      //Calculate amount of users per role
       const userCount = this.users.filter(user => user.role !== 'banned').length;
       const bannedCount = this.users.filter(user => user.role === 'banned').length;
 
@@ -93,9 +109,7 @@ export default {
         options: {
           responsive: true,
           plugins: {
-            legend: {
-              position: 'top',
-            },
+            legend: { position: 'top' },
             tooltip: {
               callbacks: {
                 label: function (context) {
@@ -111,7 +125,7 @@ export default {
     },
     deleteUser(userId) {
       if (confirm('Are you sure you want to delete this user?')) {
-        axios.delete(`${config.apiBaseUrl}/users/${userId}`)
+        axios.delete(`http://localhost:8080/api/users/${userId}`)
             .then(() => {
               alert('User successfully deleted.');
               this.fetchUsers();
@@ -142,14 +156,9 @@ export default {
     updateUsername() {
       if (this.newUsername.trim() !== '') {
         const userToUpdate = this.users.find(user => user.id === this.selectedUserId);
-
         if (userToUpdate) {
-          const updatedUser = {
-            ...userToUpdate,
-            username: this.newUsername
-          };
-
-          axios.put(`${config.apiBaseUrl}/users/${this.selectedUserId}`, updatedUser)
+          const updatedUser = { ...userToUpdate, username: this.newUsername };
+          axios.put(`http://localhost:8080/api/users/${this.selectedUserId}`, updatedUser)
               .then(() => {
                 alert('Username updated successfully.');
                 this.fetchUsers();
@@ -172,7 +181,7 @@ export default {
     },
     updateEmail() {
       if (this.newEmail.trim() !== '') {
-        axios.put(`${config.apiBaseUrl}/users/${this.selectedUserId}/email`, {email: this.newEmail})
+        axios.put(`http://localhost:8080/api/users/${this.selectedUserId}/email`, { email: this.newEmail })
             .then(() => {
               alert('Email updated successfully.');
               this.fetchUsers();
@@ -192,7 +201,7 @@ export default {
       this.showBanPopup = false;
     },
     banUser() {
-      axios.put(`${config.apiBaseUrl}/users/${this.selectedUserId}/ban`)
+      axios.put(`http://localhost:8080/api/users/${this.selectedUserId}/ban`)
           .then(() => {
             alert('User successfully banned.');
             this.fetchUsers();
@@ -210,7 +219,7 @@ export default {
       this.showUnbanPopup = false;
     },
     unbanUser() {
-      axios.put(`${config.apiBaseUrl}/users/${this.selectedUserId}/unban`)
+      axios.put(`http://localhost:8080/api/users/${this.selectedUserId}/unban`)
           .then(() => {
             alert('User successfully unbanned.');
             this.fetchUsers();
@@ -220,17 +229,33 @@ export default {
             console.error('An error occurred while unbanning the user:', error);
           });
     },
-    fetchUnbanRequests() {
-      axios.get('http://localhost:8080/api/unban-requests')
-          .then(response => {
-            this.unbanRequests = response.data;
+    rejectUnbanRequest(requestId) {
+      axios.delete(`http://localhost:8080/api/unban-requests/${requestId}/reject`)
+          .then(() => {
+            alert('Unban request rejected successfully.');
+            this.fetchUnbanRequests(); // Refresh de unban requests lijst
           })
           .catch(error => {
-            console.error('An error occurred while fetching unban requests:', error);
+            console.error('An error occurred while rejecting the unban request:', error);
           });
     },
+    acceptUnbanRequest(requestId) {
+      axios.put(`http://localhost:8080/api/unban-requests/${requestId}/approve`)
+          .then(() => {
+            alert('Unban request approved successfully.');
+            this.fetchUnbanRequests();
+            this.fetchUsers();
+          })
+          .catch(error => {
+            console.error('An error occurred while approving the unban request:', error);
+          });
 
   }
+
+  }
+
+
+
 }
 </script>
 
@@ -250,14 +275,26 @@ export default {
       <div class="content-box">
         <h2 class="section-title">Unban Requests</h2>
         <div v-if="unbanRequests.length > 0">
-          <div v-for="request in unbanRequests" :key="request.id" class="unban-request">
-            <p><strong>Request by:</strong> {{ request.user.username }}</p>
-            <p><strong>Message:</strong> {{ request.message }}</p>
+          <div v-for="request in unbanRequests" :key="request.id" class="unban-request-card">
+            <div class="request-header">
+              <p><strong>Ticket Number:</strong> {{ request.id }}</p>
+
+            </div>
+            <div class="request-body">
+              <p><strong>Username:</strong> {{ request.user.username }}</p>
+              <p><strong>Message:</strong> {{ request.message }}</p>
+              <div class="request-actions">
+                <button @click="acceptUnbanRequest(request.id)" class="accept-button">Accept</button>
+                <button @click="rejectUnbanRequest(request.id)" class="reject-button">Reject</button>
+              </div>
+
+            </div>
           </div>
         </div>
         <p v-else class="placeholder-text">No unban requests available</p>
       </div>
     </div>
+
 
 
     <div class="content-container">
@@ -593,6 +630,66 @@ button {
   background-color: #2A2A2A;
   color: white;
   font-size: 16px;
+}
+.unban-request-card {
+  background-color: #1A1A1A;
+  border: 1px solid #555;
+  border-radius: 8px;
+  padding: 15px;
+  margin: 10px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: white;
+  transition: transform 0.3s ease;
+}
+
+.unban-request-card:hover {
+  transform: scale(1.02);
+}
+
+.request-header {
+  font-size: 16px;
+  font-weight: bold;
+  color: #5bc0de;
+}
+
+.request-body {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #ddd;
+}
+
+.request-body p {
+  margin: 5px 0;
+}
+.request-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.accept-button, .reject-button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.accept-button {
+  background-color: #28a745;
+}
+
+.accept-button:hover {
+  background-color: #218838;
+}
+
+.reject-button {
+  background-color: #dc3545;
+}
+
+.reject-button:hover {
+  background-color: #c82333;
 }
 
 

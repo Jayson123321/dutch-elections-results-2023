@@ -11,4 +11,6 @@ public interface PartyVotesRepository extends JpaRepository<PartyVotes, Long> {
     List<PartyVotes> findByReportingUnitId(String reportingUnitId);
     List<PartyVotes> findByReportingUnitIdAndManagingAuthorityNumber(String reportingUnitId, String managingAuthorityNumber);
     List<PartyVotes> findByManagingAuthorityNumber(String managingAuthorityNumber);
+    List<PartyVotes> findByReportingUnitIdOrderByValidVotesDesc(String reportingUnitId);
+    List<PartyVotes> findByReportingUnitIdOrderByAffiliation(String reportingUnitId);
 }

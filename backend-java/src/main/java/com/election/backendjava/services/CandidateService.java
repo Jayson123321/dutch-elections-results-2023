@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CandidateService {
@@ -30,5 +31,14 @@ public class CandidateService {
 
     public Candidate findCandidateById(Long id) {
         return candidateRepository.findById(id).orElse(null);
+    }
+
+    public List<Candidate> searchCandidates(String searchTerm) {
+        List<Candidate> allCandidates = candidateRepository.findAll();
+        String searchTermLower = searchTerm.toLowerCase();
+        return allCandidates.stream()
+                .filter(candidate -> candidate.getCandidateName().toLowerCase().contains(searchTermLower) ||
+                        candidate.getQualifyingAddress().toLowerCase().contains(searchTermLower) )
+                .collect(Collectors.toList());
     }
 }

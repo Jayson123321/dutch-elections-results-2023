@@ -1,9 +1,9 @@
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 export default defineComponent({
-  name: "Registration",
+  name: "RegistrationComponent",
   setup() {
     const router = useRouter();
     const username = ref('');
@@ -12,7 +12,7 @@ export default defineComponent({
 
     const register = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/register', {
+        const response = await fetch('http://localhost:8080/api/auth/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -25,17 +25,42 @@ export default defineComponent({
         });
 
         if (!response.ok) {
-          throw new Error('Registration failed');
+          const errorText = await response.text();
+          alert(`Registration failed: ${errorText}`);
+          throw new Error(`Registration failed: ${errorText}`);
         }
 
-        const data = await response.json();
+        const contentType = response.headers.get('content-type');
+        let data;
+        if (contentType && contentType.includes('application/json')) {
+          data = await response.json();
+        } else {
+          const text = await response.text();
+          console.log(text);
+          data = { message: text };
+        }
+
         console.log(data);
 
-        router.push('/managing-authorities');
+        if (data.token) {
+          localStorage.setItem('jwtToken', data.token);
+          await router.push('/');
+        } else {
+          console.log(data.message);
+        }
       } catch (error) {
         console.error('Error:', error);
       }
     };
+
+    onMounted(() => {
+      const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
+      if (isDarkMode) {
+        document.body.classList.add('dark-mode');
+      } else {
+        document.body.classList.remove('dark-mode');
+      }
+    });
 
     return {
       username,
@@ -48,36 +73,43 @@ export default defineComponent({
 </script>
 
 <template>
-  <main class="form-container">
-    <div class="form-box">
-      <h1>Registration</h1>
-      <form @submit.prevent="register" class="form">
-        <label for="username">Username</label>
-        <input type="text" id="username" v-model="username" required>
-        <label for="password">Password</label>
-        <input type="password" id="password" v-model="password" required>
-        <label for="email">Email</label>
-        <input type="email" id="email" v-model="email" required>
-        <button type="submit">Register</button>
-      </form>
-    </div>
-  </main>
+  <div>
+    <router-link to="/" class="home-link">Home</router-link>
+      <div class="form-box">
+        <h1>Registration</h1>
+        <form @submit.prevent="register" class="form">
+          <label for="username">Username</label>
+          <input type="text" id="username" v-model="username" required>
+          <label for="password">Password</label>
+          <input type="password" id="password" v-model="password" required>
+          <label for="email">Email</label>
+          <input type="email" id="email" v-model="email" required>
+          <button type="submit">Register</button>
+          <p>Already have an account? <router-link to="/login">Log in here</router-link></p>
+        </form>
+      </div>
+  </div>
 </template>
 
 <style scoped>
-.form-container {
+body {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f0f0f0;
+  margin: 0;
 }
 
 .form-box {
-  background-color: #ffffff;
+  background-color: var(--box-background-color);
   padding: 2rem;
   border-radius: 0.5rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  position:absolute;
+  margin-left:690px;
+  margin-top: 150px;
 }
 
 .form {
@@ -88,21 +120,37 @@ export default defineComponent({
 
 .form label {
   font-weight: bold;
-  color: #333333;
+  color: var(--text-color);
 }
 
 .form input {
   padding: 0.5rem;
   border-radius: 0.25rem;
-  border: 1px solid #cccccc;
+  border: 1px solid var(--input-border-color);
 }
 
 .form button {
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
   border: none;
-  background-color: #333333;
-  color: white;
+  background-color: var(--button-background-color);
+  color: var(--button-text-color);
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.form button:hover {
+  background-color: var(--button-hover-background-color);
+}
+
+p {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+router-link {
+  color: var(--link-color);
+  text-decoration: underline;
   cursor: pointer;
 }
 </style>

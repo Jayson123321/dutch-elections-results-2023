@@ -3,29 +3,18 @@
     <div class="header-container">
       <div class="logo">
       </div>
-      <button class="hamburger" @click="toggleMenu">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-      </button>
-      <nav class="nav" :class="{ 'is-active': isMenuOpen }">
-        <div class="header-section links">
-          <ul>
-            <li><router-link to="/">Home</router-link></li>
-            <li><router-link to="/choose-results">Uitslagen</router-link></li>
-            <li><router-link to="/partijenpagina">Partijen</router-link></li>
-            <li><router-link to="/login">login</router-link></li>
-          </ul>
-        </div>
+      <nav :class="{ 'is-active': isMenuOpen }" class="nav">
+        <ul>
+          <li><router-link to="/">{{ $t('common.home') }}</router-link></li>
+          <li><router-link to="/choose-results">{{ $t('common.results') }}</router-link></li>
+          <li><router-link to="/partijenpagina">{{ $t('common.parties') }}</router-link></li>
+          <li><router-link to="/login">{{ $t('common.login') }}</router-link></li>
+          <li><router-link to="/Educativepage">{{ $t('header.educativePage') }}</router-link></li>
+          <li><router-link to="/forum">{{ $t('Forums') }}</router-link></li>
+          <li><router-link to="/userForums">{{ ('My forums') }}</router-link></li>
+        </ul>
       </nav>
-      <div class="search-container">
-        <input type="text" class="search-input" placeholder="Zoeken...">
-        <button class="search-button">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-            <path fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.471 6.471 0 001.48-5.34C15.24 5.64 13.3 3.7 10.88 3.7s-4.36 1.94-4.36 4.36S8.45 12.42 10.88 12.42c1.61 0 3.07-.61 4.13-1.64l.27.28v.79l4.25 4.25c.39.39.39 1.02 0 1.41-.39.39-1.02.39-1.41 0l-4.25-4.25zm-4.62 0C9.01 14 7.7 12.69 7.7 11s1.31-3 2.88-3 2.88 1.31 2.88 3-1.31 3-2.88 3z"/>
-          </svg>
-        </button>
-      </div>
+
       <div class="account">
         <router-link to="/account"><i class="fas fa-user"></i></router-link>
       </div>
@@ -33,20 +22,34 @@
         <input type="checkbox" @change="toggleDarkMode" :checked="isDarkMode">
         <span class="slider round"></span>
       </label>
+      <button class="hamburger" @click="toggleMenu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
     </div>
   </header>
 </template>
 
 <script>
-import PoliticalNews from "@/components/PoliticalNews.vue";
+import { useI18n } from "vue-i18n";
 
 export default {
   name: "HeaderComponent",
-  components: {PoliticalNews},
+  setup() {
+    const { locale } = useI18n();
+
+    const toggleLocale = () => {
+      locale.value = locale.value === 'en' ? 'nl' : 'en';
+    };
+
+    return {
+      toggleLocale
+    };
+  },
   data() {
     return {
       isDarkMode: false,
-      showPoliticalNews: false,
       isMenuOpen: false
     };
   },
@@ -68,6 +71,7 @@ export default {
 
 <style>
 .header {
+  background-color: var(--header-background-color);
   padding: 10px 0;
   width: 100%;
   top: 0;
@@ -219,7 +223,7 @@ export default {
 }
 
 input:checked + .slider {
-  background-color: #353535;
+  background-color: black;
 }
 
 input:checked + .slider:before {
@@ -241,6 +245,10 @@ input:checked + .slider:before {
     flex-direction: column;
     align-items: center;
     width: 100%;
+  }
+
+  .nav.is-active {
+    display: flex;
   }
 
   .nav ul {

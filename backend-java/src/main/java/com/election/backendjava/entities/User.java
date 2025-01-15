@@ -23,7 +23,7 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    private String role;
+    private String role ="USER";
 
     public Long getId() {
         return id;

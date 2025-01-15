@@ -19,7 +19,10 @@ public class UserForum {
    @Column(name = "description", nullable = false, updatable = false)
    private String description;
 
-   @ManyToOne(fetch = FetchType.LAZY)
+   private String username;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id" , nullable = false)
    @JsonBackReference
    private User user;
@@ -50,6 +53,12 @@ public class UserForum {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public String getUsername() {
+        return username;}
+
+    public void setUsername(String username) {
+        this.username = username;}
 
     public String getDescription() {
         return description;

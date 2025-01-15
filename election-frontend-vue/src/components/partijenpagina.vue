@@ -1,11 +1,11 @@
 <template>
-  <HeaderComponent />
   <div class="container">
-    <h1>Partijen en Kandidaten</h1>
+    <HeaderComponent />
+    <h1>{{ $t('partijenPagina.title') }}</h1>
     <div class="party-grid">
       <div class="all-candidates box">
         <router-link to="/allekandidatenpagina">
-          Alle kandidaten
+          {{ $t('partijenPagina.allCandidates') }}
         </router-link>
       </div>
       <div v-for="affiliation in affiliations" :key="affiliation.id" class="party box">
@@ -16,14 +16,12 @@
         </h2>
       </div>
     </div>
-    <FooterComponent />
   </div>
 </template>
 
 <script>
 import FooterComponent from './FooterComponent.vue';
 import HeaderComponent from './HeaderComponent.vue';
-import config from "@/config.ts";
 
 export default {
   name: "partijenpagina",
@@ -44,7 +42,7 @@ export default {
   methods: {
     async fetchAffiliations() {
       try {
-        const response = await fetch(`${config.apiBaseUrl}/affiliations`);
+        const response = await fetch('http://localhost:8080/api/affiliations');
         this.affiliations = await response.json();
       } catch (error) {
         console.error('Error fetching affiliations:', error);
@@ -56,8 +54,18 @@ export default {
 
 <style>
 /* Algemene stijlen voor de container */
+
+html, body, .container {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+
 .container {
-  max-width: 1200px;
+  width: 100%;
+  height: 100%;
   padding: 20px;
   font-family: Arial, sans-serif;
   margin: 50px auto 100px auto;

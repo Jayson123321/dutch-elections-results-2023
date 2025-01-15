@@ -20,4 +20,9 @@ public class CandidateAuthorityVotesController {
         List<CandidateAuthorityVotes> votes = candidateAuthorityVotesService.getVotesByCandidate(candidateId);
         return ResponseEntity.ok(votes);
     }
+
+    @GetMapping("/{candidateId}/total-valid-votes")
+    public int getTotalValidVotesByCandidate(@PathVariable Long candidateId) {
+        return candidateAuthorityVotesService.calculateTotalValidVotesByCandidate(candidateId);
+    }
 }
