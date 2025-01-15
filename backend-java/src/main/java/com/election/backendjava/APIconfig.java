@@ -18,6 +18,8 @@ public class APIconfig implements WebMvcConfigurer {
                         "http://localhost:5178",
                         "http://localhost:5179",
                         "http://localhost:8080",
+                        "https://wiipuujaamee42-frontend.onrender.com",
+                        "https://wiipuujaamee42-backend.onrender.com",
                         "http://demo-crazy.com",
                         "https://demo-crazy.com",
                         "http://*.hva.nl"

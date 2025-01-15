@@ -20,7 +20,7 @@ import PoliticalNews from "@/components/PoliticalNews.vue";
 import HeatMap from "@/components/HeatMap.vue";
 import Educativepage from "@/components/Educativepage.vue";
 import Quiz from "@/components/Quiz.vue";
-import verkiezingsuitleg from "@/components/verkiezingsuitleg.vue";
+import verkiezingsuitleg from '@/components/Verkiezingsuitleg.vue';
 import MunicipalityPage from "@/components/MunicipalityPage.vue";
 import userForums from "@/components/userForums.vue";
 import AboutUs from "@/components/About-us.vue";
