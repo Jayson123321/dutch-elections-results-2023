@@ -131,7 +131,7 @@ export default defineComponent({
   width: 100%;
   max-width: 600px;
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(250, 246, 246, 0.1);
   max-height: 600px;
   transition: transform 0.5s ease;
   margin: 20px 0;
