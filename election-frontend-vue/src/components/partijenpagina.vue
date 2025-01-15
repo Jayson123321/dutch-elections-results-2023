@@ -22,7 +22,7 @@
 <script>
 import FooterComponent from './FooterComponent.vue';
 import HeaderComponent from './HeaderComponent.vue';
-import config from "@/config.js";
+import config from "@/config.ts";
 
 export default {
   name: "partijenpagina",

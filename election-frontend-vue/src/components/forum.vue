@@ -62,7 +62,7 @@
 import HeaderComponent from './HeaderComponent.vue';
 import FooterComponent from './FooterComponent.vue';
 import axios from 'axios';
-import config from "@/config.js";
+import config from "@/config.ts";
 
 export default {
   name: "ForumComponent",

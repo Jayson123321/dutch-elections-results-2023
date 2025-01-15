@@ -1,7 +1,7 @@
 <script>
 import axios from 'axios';
 import { Chart, DoughnutController, PieController, ArcElement, Tooltip, Legend } from "chart.js";
-import config from "@/config.js";
+import config from "@/config.ts";
 
 Chart.register(DoughnutController, ArcElement, PieController, Tooltip, Legend);
 
