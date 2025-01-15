@@ -26,10 +26,10 @@
 <script>
 import axios from 'axios';
 import HeaderComponent from "@/components/HeaderComponent.vue";
-import FooterComponent from "@/components/FooterComponent.vue";
+import config from "@/config";
 
 export default {
-  components: {FooterComponent, HeaderComponent},
+  components: {HeaderComponent},
   data() {
     return {
       forums: [],
@@ -48,7 +48,7 @@ export default {
       }
 
       try {
-        const response = await axios.get('http://localhost:8080/api/usersforum/api/user', {
+        const response = await axios.get(`${config.apiBaseUrl}/usersforum/api/user`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -70,7 +70,7 @@ export default {
       const confirmed = confirm("Weet je zeker dat je dit forum wilt verwijderen?");
       if (confirmed) {
         try {
-          await axios.delete(`http://localhost:8080/api/usersforum/${forumId}`, {
+          await axios.delete(`${config.apiBaseUrl}/usersforum/${forumId}`, {
             headers: {
               Authorization: `Bearer ${token}`
             }

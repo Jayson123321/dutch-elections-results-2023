@@ -1,6 +1,7 @@
 <script>
 import axios from 'axios';
 import { Chart, DoughnutController, PieController, ArcElement, Tooltip, Legend } from "chart.js";
+import config from "@/config.js";
 
 Chart.register(DoughnutController, ArcElement, PieController, Tooltip, Legend);
 
@@ -44,7 +45,7 @@ export default {
   },
   methods: {
     fetchUsers() {
-      axios.get('http://localhost:8080/api/users/all')
+      axios.get(`${config.apiBaseUrl}/users/all`)
           .then(response => {
             this.users = response.data;
             this.$nextTick(() => {
@@ -56,7 +57,7 @@ export default {
           });
     },
     fetchUserCount() {
-      axios.get('http://localhost:8080/api/users/count')
+      axios.get(`${config.apiBaseUrl}/users/count`)
           .then(response => {
             this.userCount = response.data;
           })
@@ -65,7 +66,7 @@ export default {
           });
     },
     fetchUnbanRequests() {
-      axios.get('http://localhost:8080/api/unban-requests')
+      axios.get(`${config.apiBaseUrl}/unban-requests`)
           .then(response => {
             this.unbanRequests = response.data;
           })
@@ -74,7 +75,7 @@ export default {
           });
     },
     approveUnbanRequest(requestId) {
-      axios.put(`http://localhost:8080/api/unban-requests/${requestId}/approve`)
+      axios.put(`${config.apiBaseUrl}/unban-requests/${requestId}/approve`)
           .then(() => {
             alert('Unban request approved successfully.');
             this.fetchUnbanRequests();
@@ -125,7 +126,7 @@ export default {
     },
     deleteUser(userId) {
       if (confirm('Are you sure you want to delete this user?')) {
-        axios.delete(`http://localhost:8080/api/users/${userId}`)
+        axios.delete(`${config.apiBaseUrl}/users/${userId}`)
             .then(() => {
               alert('User successfully deleted.');
               this.fetchUsers();
@@ -158,7 +159,7 @@ export default {
         const userToUpdate = this.users.find(user => user.id === this.selectedUserId);
         if (userToUpdate) {
           const updatedUser = { ...userToUpdate, username: this.newUsername };
-          axios.put(`http://localhost:8080/api/users/${this.selectedUserId}`, updatedUser)
+          axios.put(`${config.apiBaseUrl}/users/${this.selectedUserId}`, updatedUser)
               .then(() => {
                 alert('Username updated successfully.');
                 this.fetchUsers();
@@ -181,7 +182,7 @@ export default {
     },
     updateEmail() {
       if (this.newEmail.trim() !== '') {
-        axios.put(`http://localhost:8080/api/users/${this.selectedUserId}/email`, { email: this.newEmail })
+        axios.put(`${config.apiBaseUrl}/users/${this.selectedUserId}/email`, { email: this.newEmail })
             .then(() => {
               alert('Email updated successfully.');
               this.fetchUsers();
@@ -201,7 +202,7 @@ export default {
       this.showBanPopup = false;
     },
     banUser() {
-      axios.put(`http://localhost:8080/api/users/${this.selectedUserId}/ban`)
+      axios.put(`${config.apiBaseUrl}/users/${this.selectedUserId}/ban`)
           .then(() => {
             alert('User successfully banned.');
             this.fetchUsers();
@@ -219,7 +220,7 @@ export default {
       this.showUnbanPopup = false;
     },
     unbanUser() {
-      axios.put(`http://localhost:8080/api/users/${this.selectedUserId}/unban`)
+      axios.put(`${config.apiBaseUrl}/users/${this.selectedUserId}/unban`)
           .then(() => {
             alert('User successfully unbanned.');
             this.fetchUsers();
@@ -230,7 +231,7 @@ export default {
           });
     },
     rejectUnbanRequest(requestId) {
-      axios.delete(`http://localhost:8080/api/unban-requests/${requestId}/reject`)
+      axios.delete(`${config.apiBaseUrl}/unban-requests/${requestId}/reject`)
           .then(() => {
             alert('Unban request rejected successfully.');
             this.fetchUnbanRequests(); // Refresh de unban requests lijst
@@ -240,7 +241,7 @@ export default {
           });
     },
     acceptUnbanRequest(requestId) {
-      axios.put(`http://localhost:8080/api/unban-requests/${requestId}/approve`)
+      axios.put(`${config.apiBaseUrl}/unban-requests/${requestId}/approve`)
           .then(() => {
             alert('Unban request approved successfully.');
             this.fetchUnbanRequests();

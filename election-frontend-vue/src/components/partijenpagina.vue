@@ -22,6 +22,7 @@
 <script>
 import FooterComponent from './FooterComponent.vue';
 import HeaderComponent from './HeaderComponent.vue';
+import config from "@/config.js";
 
 export default {
   name: "partijenpagina",
@@ -42,7 +43,7 @@ export default {
   methods: {
     async fetchAffiliations() {
       try {
-        const response = await fetch('http://localhost:8080/api/affiliations');
+        const response = await fetch(`${config.apiBaseUrl}/affiliations`);
         this.affiliations = await response.json();
       } catch (error) {
         console.error('Error fetching affiliations:', error);

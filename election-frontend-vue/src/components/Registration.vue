@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-
+import config from "@/config";
 export default defineComponent({
   name: "RegistrationComponent",
   setup() {
@@ -12,7 +12,7 @@ export default defineComponent({
 
     const register = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/auth/register', {
+        const response = await fetch(`${config.apiBaseUrl}/auth/register`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

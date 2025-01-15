@@ -2,9 +2,7 @@
 import { ref, onMounted, type Ref } from 'vue';
 import axios from 'axios';
 import HeaderComponent from '../components/HeaderComponent.vue';
-import FooterComponent from '../components/FooterComponent.vue';
-import config from "@/config.ts";
-
+import config from "@/config";
 interface Municipality {
   id: number;
   authorityName: string;
