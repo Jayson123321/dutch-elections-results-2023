@@ -63,7 +63,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 #input-0 {
   background-color: transparent;
   border: none;
@@ -81,6 +81,7 @@
   line-height: 1.6;
   text-align: center;
 }
+
 table {
   border-collapse: collapse;
 }
@@ -88,11 +89,13 @@ table {
 .affiliationVote {
   border-bottom: 1px solid;
 }
+
 #votes {
   border-bottom: 1px solid;
   font-weight: bold;
   font-size: medium;
 }
+
 #titel {
   text-align: center;
   margin-top: 5%;
@@ -103,6 +106,7 @@ table {
   border-bottom: 1px solid;
   width: 30%;
 }
+
 label {
   margin-right: 10px;
   display: block;
@@ -124,6 +128,7 @@ th, td {
   width: 50%;
   border-color: white;
 }
+
 table {
   border: white;
 }
@@ -142,7 +147,8 @@ table {
 #authority-select {
   padding: 10px;
   font-size: 1em;
-  border-radius: 5px;}
+  border-radius: 5px;
+}
 
 .authority-select {
   font-weight: bold;
@@ -160,6 +166,7 @@ canvas {
   width: auto;
   max-width: 35%;
 }
+
 .show-candidates-button {
   padding: 8px 16px;
   font-size: small;
@@ -170,6 +177,40 @@ canvas {
   margin-left: 10px;
 }
 
+@media (max-width: 768px) {
+  #description-container {
+    padding: 10px;
+    margin: 10px 0;
+  }
+
+  #titel {
+    font-size: medium;
+    margin-top: 10%;
+  }
+
+  #h2filter {
+    width: 100%;
+  }
+
+  label, select {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  th, td {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  #StembureauName {
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .autocomplete-container {
+    max-width: 100%;
+  }
+}
 </style>
 
 <script>

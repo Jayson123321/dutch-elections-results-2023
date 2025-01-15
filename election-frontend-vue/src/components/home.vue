@@ -82,5 +82,14 @@ body {
   background-color: var(--vt-c-white-soft);
   color: var(--vt-c-black);
 }
+@media (max-width: 768px) {
+  .flexcontainer {
+    flex-direction: column;
+    align-items: center;
+  }
 
+  .flexcontainer a {
+    margin: 10px 0;
+  }
+}
 </style>

@@ -199,4 +199,34 @@ h1 {
 .pagination button:hover:not(:disabled) {
   background-color: #0056b3;
 }
+
+@media (max-width: 768px) {
+  .candidate-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .candidate-card {
+    padding: 15px;
+  }
+
+  .pagination {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .pagination button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .candidate-list {
+    grid-template-columns: 1fr;
+  }
+
+  .candidate-card {
+    padding: 10px;
+  }
+}
 </style>

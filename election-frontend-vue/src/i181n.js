@@ -26,6 +26,7 @@ const messages = {
             login: 'Login',
             search: 'Search...',
             toggle_language: 'Toggle Language',
+            educativePage: 'Educative Support',
         },
         totalResults: {
             tweede_kamer_uitslagen: 'House of Representatives Results',
@@ -66,6 +67,7 @@ const messages = {
             votes: 'Votes',
             show_votes_per_candidate: 'Show votes per candidate',
             party_name: 'Party Name',
+            results: 'Results',
         },
         alleKandidaten: {
             title: 'All Candidates',
@@ -195,6 +197,7 @@ const messages = {
             login: 'Inloggen',
             search: 'Zoeken...',
             toggle_language: 'Taal Wisselen',
+            educativePage: 'Educatieve Ondersteuning',
         },
         totalResults: {
             tweede_kamer_uitslagen: 'Tweede kamer uitslagen',
@@ -235,7 +238,7 @@ const messages = {
             votes: 'Stemmen',
             show_votes_per_candidate: 'Toon stemmen per kandidaat',
             party_name: 'Partij Naam',
-
+            results: 'resultaten',
         },
         alleKandidaten: {
             title: 'Alle Kandidaten',
@@ -290,7 +293,8 @@ const messages = {
             madeBy: 'PowerPoint gemaakt door Seneca.',
             testYourKnowledge: 'Test je kennis',
             testYourKnowledgeDesc: 'Doe een quiz en ontdek hoeveel je weet over het Nederlandse politieke systeem.',
-            startQuiz: 'Start quiz'
+            startQuiz: 'Start quiz',
+            educativePage: 'Educatieve Ondersteuning',
         },
         quiz: {
             title: 'Verkiezingen 2023 Quiz',
