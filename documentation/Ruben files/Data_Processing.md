@@ -129,3 +129,6 @@ Get candidate details by ID.
 ```bash
 curl -X GET "http://localhost:8080/api/candidate/1"
 ```
+## Extra info
+- In this project we parsed all the data into the database via parsers, used services to interact with the database and controllers to handle the HTTP requests and responses. In the frontend we receive the data and put the logic in the script in the frontend.
+We only found out this was not the best way to make the project work on the 13th of Januari so we had no time to switch the entire project up. But the logic in the frontend looks almost identical as it would have looked in the services.
