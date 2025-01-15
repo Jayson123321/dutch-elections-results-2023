@@ -122,3 +122,10 @@ body {
   text-rendering: optimizeLegibility;
   -moz-osx-font-smoothing: grayscale;
 }
+:root[data-theme='light'] {
+  --button-text-color: #000000;
+}
+
+:root[data-theme='dark'] {
+  --button-text-color: #ffffff; /* Wit voor dark mode */
+}
