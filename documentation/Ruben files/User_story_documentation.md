@@ -1,5 +1,12 @@
-Display of the documentation and explanations for user story's.
 
+# Introduction
+This document provides a high-level overview of the application, its purpose, and key features. It sets the context for the reader and explains what the document covers. The following sections will detail the code written for this project, including user stories, unit tests, and implementation details.
+
+This document is intended for developers, testers, and other stakeholders involved in the project. It provides a comprehensive overview of the application's functionality and implementation details.
+
+The application is a web-based platform that allows users to view information about political candidates, parties, and elections. It provides educational resources, such as quizzes and PowerPoint presentations, to help users learn about the election process in the Netherlands. The application also includes features such as a search bar and pagination to improve user experience and accessibility.
+
+# User Stories
 As a user i want to navigate through the all candidates page per 30 candidates to improve loading times and save energy.
 https://gitlab.fdmci.hva.nl/semester-3-hbo-ict/onderwijs/student-projecten/2024-2025/out-p-se-ti/semester-1/wiipuujaamee42/-/issues/55
 
@@ -206,20 +213,22 @@ This user story is ethical because it provides educational resources to users an
 
 ```
 
-## Uitleg over Verkiezingen  
+
+## Uitleg over Verkiezingen
 - Beschrijving: Een pagina die uitlegt hoe verkiezingen in Nederland werken en hoe gebruikers de resultaten kunnen analyseren.
 - Ethische Impact: Door gebruikers te informeren over het verkiezingsproces, bevordert deze user story transparantie en begrip van democratische processen. Dit draagt bij aan een beter geïnformeerde bevolking die bewustere keuzes kan maken tijdens verkiezingen.
-Kennisquiz over Verkiezingen  
-- Beschrijving: Een quiz die de kennis van gebruikers over verkiezingen test, met feedback over correcte en incorrecte antwoorden.
+  Kennisquiz over Verkiezingen
+- Beschrijving: Een quiz die de kennis van gebruikers over verkiezingen test, met feedback over correcte en incorrecte antwoorden. Het is bewezen dat een quiz help bij sneller en efficienter leren(Brian Robert Cook and Andrea Babon 2016.)
 - Ethische Impact: Deze user story stimuleert educatie en betrokkenheid bij het politieke systeem. Door gebruikers, inclusief kinderen, te betrekken bij een interactieve leerervaring, wordt hun interesse in politiek en democratie vergroot. Dit kan leiden tot een meer betrokken en geïnformeerde burgerij.
-Downloadbare Educatieve PowerPoint  
+  Downloadbare Educatieve PowerPoint
 - Beschrijving: Een pagina waar gebruikers een PowerPoint-presentatie over verkiezingen kunnen downloaden voor educatieve doeleinden.
 - Ethische Impact: Het beschikbaar stellen van educatieve middelen zoals een PowerPoint-presentatie ondersteunt leraren, ouders en andere opvoeders bij het onderwijzen over verkiezingen. Dit bevordert de verspreiding van kennis en draagt bij aan de educatie van toekomstige generaties.
+
 ### Conclusie
 - Deze drie user stories dragen gezamenlijk bij aan een beter geïnformeerde en betrokken samenleving. Door transparantie te bevorderen, educatie te stimuleren en educatieve middelen beschikbaar te stellen, ondersteunen deze functionaliteiten de democratische waarden en dragen ze bij aan een ethisch verantwoorde maatschappij. Het project helpt gebruikers niet alleen om beter geïnformeerde kiezers te worden, maar ook om anderen te onderwijzen over het belang van verkiezingen en politieke betrokkenheid.
 
-
-
+### Bronnen:
+- Active learning through online quizzes: better learning and less (busy) work (Brian Robert Cook and Andrea Babon 2016.)
 
 
 As a user I want to be able to search for all candidates by using a search bar, I also want the search bar to be able to search on municipality's and political party's.
