@@ -125,7 +125,6 @@ th, td {
   border: none;
   display: block;
   margin: 20px;
-  width: 50%;
   border-color: white;
 }
 
