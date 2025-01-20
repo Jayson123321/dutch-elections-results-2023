@@ -62,6 +62,7 @@
 import HeaderComponent from './HeaderComponent.vue';
 import FooterComponent from './FooterComponent.vue';
 import axios from 'axios';
+import config from "@/config.ts";
 
 export default {
   name: "ForumComponent",
@@ -129,7 +130,7 @@ export default {
     async fetchForums(page = 0) {
       try {
         console.log("Ophalen van forums...");
-        const response = await fetch(`http://localhost:8080/api/usersforum?page=${page}&size=5`);
+        const response = await fetch(`${config.apiBaseUrl}/usersforum?page=${page}&size=5`);
 
         if (!response.ok) {
           throw new Error(`Server error: ${response.status} - ${response.statusText}`);
@@ -150,7 +151,7 @@ export default {
         // Haal de replies voor elk forum op
         for (const forum of this.forums) {
           try {
-            const repliesResponse = await fetch(`http://localhost:8080/api/usersforum/${forum.forumId}/replies`);
+            const repliesResponse = await fetch(`${config.apiBaseUrl}/usersforum/${forum.forumId}/replies`);
             if (repliesResponse.ok) {
               forum.replies = await repliesResponse.json();
             }
@@ -178,7 +179,7 @@ export default {
       console.log('JWT Token:', token);
       // Haal de token op uit localStorage
       try {
-        const response = await axios.post('http://localhost:8080/api/usersforum', this.newForum, {
+        const response = await axios.post(`${config.apiBaseUrl}/usersforum`, this.newForum, {
           headers: {
             'Authorization': `Bearer ${token}` // Voeg de token toe aan de headers
           }
@@ -214,7 +215,7 @@ export default {
     async submitReply(forumId) {
       try {
         const forum = this.forums.find(f => f.forumId === forumId);
-        const response = await axios.post(`http://localhost:8080/api/usersforum/${forumId}/replies`, forum.newReply);
+        const response = await axios.post(`${config.apiBaseUrl}/usersforum/${forumId}/replies`, forum.newReply);
         console.log('Reply succesvol toegevoegd:', response.data);
 
         // Voeg de nieuwe reply toe aan de juiste forum
@@ -244,7 +245,7 @@ export default {
       const confirmed = confirm("Weet je zeker dat je dit forum wilt verwijderen?");
       if (confirmed) {
         try {
-          await axios.delete(`http://localhost:8080/api/usersforum/${forumId}`, {
+          await axios.delete(`${config.apiBaseUrl}/usersforum/${forumId}`, {
             headers: {
               'Authorization': `Bearer ${token}`  // Pass the token in the request header
             }

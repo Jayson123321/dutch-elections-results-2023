@@ -26,7 +26,7 @@
 <script>
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import FooterComponent from "@/components/FooterComponent.vue";
-import config from '@/config';
+import config from "@/config.ts";
 
 
 export default {
