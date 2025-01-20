@@ -107,7 +107,6 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   max-width: 400px;
   width: 100%;
-  position:absolute;
   margin-left:690px;
   margin-top: 150px;
 }
