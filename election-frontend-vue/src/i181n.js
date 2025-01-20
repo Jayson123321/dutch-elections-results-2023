@@ -131,6 +131,11 @@ const messages = {
             testYourKnowledgeDesc: 'Take a quiz and find out how much you know about the Dutch political system.',
             startQuiz: 'Start quiz'
         },
+        politicalNews: {
+            title: 'Stay updated with the latest political news!',
+            source: 'Source: Nu.nl',
+            posted: 'Posted:'
+        },
         quiz: {
             title: 'Elections 2023 Quiz',
             nextButton: 'Next question',
@@ -295,6 +300,11 @@ const messages = {
             testYourKnowledgeDesc: 'Doe een quiz en ontdek hoeveel je weet over het Nederlandse politieke systeem.',
             startQuiz: 'Start quiz',
             educativePage: 'Educatieve Ondersteuning',
+        },
+        politicalNews: {
+            title: 'Blijf op de hoogte van het laatste politieke nieuws!',
+            source: 'Bron: Nu.nl',
+            posted: 'Geplaatst:'
         },
         quiz: {
             title: 'Verkiezingen 2023 Quiz',
