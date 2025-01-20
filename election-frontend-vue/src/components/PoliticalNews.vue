@@ -1,7 +1,7 @@
 <template>
   <div class="news-container">
-    <h2>Blijf op de hoogte van het laatste politieke nieuws!</h2>
-    <h4>(Bron: Nu.nl)</h4>
+    <h2>{{ $t('politicalNews.title') }}</h2>
+    <h4>{{ $t('politicalNews.source') }}</h4>
     <ul>
       <li v-for="(article, index) in news" :key="index" class="news-item">
         <a :href="article.link" target="_blank">
@@ -9,7 +9,7 @@
             <img :src="article.imageUrl" alt="News image" class="news-image" v-if="article.imageUrl" />
             <div class="news-details">
               <h3 class="news-title">{{ article.title }}</h3>
-              <p class="news-date">Geplaatst: {{ formatDate(article.pubDate) }}</p>
+              <p class="news-date">{{ $t('politicalNews.posted') }} {{ formatDate(article.pubDate) }}</p>
             </div>
           </div>
         </a>

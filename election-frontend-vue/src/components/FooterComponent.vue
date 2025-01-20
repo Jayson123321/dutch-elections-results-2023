@@ -2,6 +2,8 @@
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-section about">
+        <h3>Over Ons</h3>
+        <p>Wij zijn een organisatie die zich inzet voor democratische waarden en transparantie.</p>
       </div>
       <div class="footer-section links">
         <h3>Links</h3>
@@ -13,13 +15,16 @@
       <div class="footer-section contact">
         <h3>Contact</h3>
         <p>Email: info@democrazy.com</p>
+        <p>Telefoon: +31 123 456 789</p>
       </div>
       <div class="footer-section social">
         <h3>Volg Ons</h3>
-        <a href="#"><i class="fab fa-facebook-f"></i></a>
-        <a href="#"><i class="fab fa-twitter"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
-        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
       </div>
     </div>
   </footer>
@@ -31,38 +36,40 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .footer {
   padding: 40px 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  position: relative;
-  bottom: 0;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  text-align: center;
 }
 
 .footer-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
   max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 .footer-section {
-  padding: 0 20px;
+  flex: 1;
+  min-width: 200px;
+  margin: 20px;
 }
 
 .footer-section h3 {
   margin-bottom: 20px;
   font-size: 1.5em;
+  color: var(--color-heading);
 }
 
 .footer-section p,
 .footer-section a {
   text-decoration: none;
   margin: 5px 0;
+  color: var(--color-text);
 }
 
 .footer-section ul {
@@ -76,12 +83,22 @@ export default {
 
 .footer-section ul li a {
   text-decoration: none;
+  color: var(--color-text);
 }
 
-.footer-section .social a {
-  font-size: 24px;
-  margin: 0 10px;
-  text-decoration: none;
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 
+.social-icons a {
+  font-size: 32px;
+  color: var(--color-text);
+  transition: color 0.3s;
+}
+
+.social-icons a:hover {
+  color: var(--link-color);
+}
 </style>

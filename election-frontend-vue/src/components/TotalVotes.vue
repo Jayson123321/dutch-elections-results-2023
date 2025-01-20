@@ -81,9 +81,9 @@ export default defineComponent({
       }
 
       const colors = [
-        '#C0392B', '#74E600', '#36A2EB', '#99198C', '#9966FF', '#FF9F40', 'pink', '#661100', '#117733', '#882255',
-        '#332288', '#44AA99', '#FF3D00', '#3D1F0A', '#454416', 'gray', 'red', '#black', '#A62800', '#9B59B6',
-        '#F1C40F', '#f83964', '#FF9F40', '#ff6691', '#7F8C8D', '#163BF5'
+        '#D24737', '#74E600', '#137ABE', '#E038CC', '#9966FF', '#FF9F40', 'pink', '#137ABE', '#D24737', '#882255',
+        '#2E9900', '#368779', '#FF6738', '#DB29CC', '#91902B', 'gray', '#FF29E2', '#8575FF', '#FF5B29', '#137ABE',
+        '#137ABE', '#D24737', '#FF9F40', '#9966FF', '#7F8C8D', '#137ABE'
       ];
 
       const totalVotes = this.results.reduce((sum, result) => sum + result.totalVotes, 0);
@@ -148,7 +148,7 @@ export default defineComponent({
   width: 100%;
   max-width: 600px;
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(250, 246, 246, 0.1);
   max-height: 600px;
   transition: transform 0.5s ease;
   margin: 20px 0;

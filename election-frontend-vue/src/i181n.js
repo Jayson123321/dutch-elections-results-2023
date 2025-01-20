@@ -1,3 +1,4 @@
+// src/i18n.js
 import { createI18n } from 'vue-i18n';
 
 const messages = {
@@ -130,14 +131,10 @@ const messages = {
             testYourKnowledgeDesc: 'Take a quiz and find out how much you know about the Dutch political system.',
             startQuiz: 'Start quiz'
         },
-        municipalityPage: {
-            description: 'Compare the results of two municipalities below.',
-            selectMunicipality: 'Municipality',
-            selectMunicipalityPlaceholder: 'Select a municipality',
-            municipality1: 'Municipality 1',
-            municipality2: 'Municipality 2',
-            party: 'Party',
-            votes: 'Votes'
+        politicalNews: {
+            title: 'Stay updated with the latest political news!',
+            source: 'Source: Nu.nl',
+            posted: 'Posted:'
         },
         quiz: {
             title: 'Elections 2023 Quiz',
@@ -304,15 +301,11 @@ const messages = {
             startQuiz: 'Start quiz',
             educativePage: 'Educatieve Ondersteuning',
         },
-        municipalityPage: {
-            description: 'Vergelijk de resultaten van twee gemeenten hieronder.',
-            selectMunicipality: 'Gemeente',
-            selectMunicipalityPlaceholder: 'Selecteer een gemeente',
-            municipality1: 'Gemeente 1',
-            municipality2: 'Gemeente 2',
-            party: 'Partij',
-            votes: 'Stemmen'
-    },
+        politicalNews: {
+            title: 'Blijf op de hoogte van het laatste politieke nieuws!',
+            source: 'Bron: Nu.nl',
+            posted: 'Geplaatst:'
+        },
         quiz: {
             title: 'Verkiezingen 2023 Quiz',
             nextButton: 'Volgende vraag',

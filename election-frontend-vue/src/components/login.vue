@@ -1,10 +1,11 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import config from "@/config";
+import HeaderComponent from "@/components/HeaderComponent.vue";
 
 export default defineComponent({
   name: "LoginComponent",
+  components: {HeaderComponent},
   setup() {
     const router = useRouter();
     const email = ref('');
@@ -13,7 +14,7 @@ export default defineComponent({
 
     const login = async () => {
       try {
-        const response = await fetch(`${config.apiBaseUrl}/auth/login`, {
+        const response = await fetch('http://localhost:8080/api/auth/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -67,6 +68,7 @@ export default defineComponent({
 </script>
 
 <template>
+  <HeaderComponent />
   <div>
     <router-link to="/" class="home-link">Home</router-link>
     <div class="form-box">

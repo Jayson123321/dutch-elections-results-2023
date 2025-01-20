@@ -131,11 +131,21 @@ export default {
   margin: 0 15px;
 }
 
-.nav ul li a {
-  text-decoration: none;
-  font-size: 18px;
-  transition: color 0.3s;
+
+
+ .nav ul li a {
+   text-decoration: none;
+   font-size: 18px;
+   transition: color 0.3s;
+   color: var(--button-text-color);
+   padding: 10px 20px;
+   border-radius: 5px;
+ }
+
+.nav ul li a:hover {
+  opacity: 0.8;
 }
+
 
 .search-container {
   display: flex;
