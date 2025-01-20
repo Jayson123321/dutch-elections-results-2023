@@ -219,7 +219,6 @@ export default defineComponent({
 
 <style scoped>
 .votingTable {
-  float: left;
   margin-left: 15%;
 }
 
@@ -313,13 +312,13 @@ th, td {
   margin: 20px 0;
   text-align: right;
 }
-
 #sort {
   padding: 10px;
   font-size: 1em;
   border-radius: 5px;
   border: 1px solid #ccc;
 }
+
 
 .politicalComponent {
   margin-top: 40px;
