@@ -2,7 +2,7 @@
 import { defineComponent, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import HeaderComponent from "@/components/HeaderComponent.vue";
-import config from "@/config.ts";
+import config from "@/config";
 
 export default defineComponent({
   name: "LoginComponent",
@@ -104,7 +104,6 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   max-width: 400px;
   width: 100%;
-  position:absolute;
   margin-left:690px;
   margin-top: 150px;
 }
