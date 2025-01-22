@@ -31,3 +31,6 @@ Ik vind optie 2 het chilst. Het verschil tussen actieve gebruikers en de verbann
 Optie 3 heeft een futuristische vibe dus dan zou ik die kiezen voor een wat modernere website 
 ### Pascal
 Die tweede (optie 2) is iets wat ik ook zelf gebruik op mijn website. Het is duidelijk en niks wat te vel is dus dat biedt comfort aan voor als je het dagelijks gebruikt
+
+## Conclusie
+De meeste mensen kiezen voor optie 2, omdat deze een goede balans biedt tussen duidelijke kleuren voor zowel normale als "slechte" acties, terwijl de kleuren tegelijkertijd niet te fel zijn voor het oog. Dit is een belangrijk punt voor de admins, aangezien zij dagelijks met deze omgeving werken. Optie 1 kwam als tweede keuze naar voren, maar de voorkeur ging uiteindelijk uit naar een rustiger kleurenpalet, aangezien felrode tinten minder prettig zijn om dagelijks mee te werken.
