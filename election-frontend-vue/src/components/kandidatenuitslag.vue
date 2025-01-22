@@ -8,7 +8,6 @@
         <h2>{{ $t('kandidaatUitslag.name') }}: {{ candidate.candidateName }}</h2>
         <p>{{ $t('kandidaatUitslag.totalVotes') }}: {{ candidateVotes }}</p>
       </div>
-
       <div>
         <label for="authority-select">{{ $t('kandidaatUitslag.selectAuthority') }}:</label>
         <select id="authority-select" v-model="selectedAuthority" @change="filterVotesByAuthority">
