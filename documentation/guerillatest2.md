@@ -109,3 +109,10 @@ Ja, maar ik mis een mogelijkheid om gegevens te downloaden, bijvoorbeeld als CSV
 
 ---
 
+## Conclusie
+De testers waren over het algemeen positief over de website. Belangrijke verbeterpunten zijn:
+- Betere zichtbaarheid van functies (zoals de quiz en educatieve pagina).
+- Toevoegingen zoals een "home"-knop, breadcrumbs, en visuele content.
+- Technische verbeteringen, zoals snellere laadtijden en zoombare grafieken.
+
+
