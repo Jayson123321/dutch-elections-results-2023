@@ -107,5 +107,10 @@ De testers waren over het algemeen positief over de website. Belangrijke verbete
 - Betere zichtbaarheid van functies (zoals de quiz).
 - Toevoegingen zoals een "home"-knop.
 
-
+# Verbeteringen
+Er zijn verbeteringen gemaakt aan de pagina na het maken van de guerillatest. De volgende verbeteringen zijn doorgevoerd:
+- De "alle kandidaten"-knop is prominenter gemaakt.
+- De quiz is beter vindbaar gemaakt.
+- Er is een "home"-knop toegevoegd voor betere navigatie, hij was er al maar in de branch waarin werd getest was de header kapot.
+- Laadtijden zijn verbeterd door pagina's te cachen.
 
