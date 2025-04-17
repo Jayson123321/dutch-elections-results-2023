@@ -24,3 +24,4 @@ I was responsible for:
 - Processing the xml data set
 - Designing and configuring the frontend
 - UX/UI design
+- Docker deployment on Render server
