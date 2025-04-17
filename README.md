@@ -3,7 +3,7 @@
 
 # Dutch Parliamentary Elections 2023 - Results Visualization
 
-This project visualizes the results of the Dutch parliamentary elections held in 2023. It was developed as part of a semester assignment at the Amsterdam University ogesof Applied Sciences (Hogeschool van Amsterdam).
+This project visualizes the results of the Dutch parliamentary elections held in 2023. It was developed as part of a semester assignment at the Amsterdam University of Applied Sciences (Hogeschool van Amsterdam).
 
 ## Features
 
